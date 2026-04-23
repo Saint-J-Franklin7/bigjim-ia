@@ -509,9 +509,9 @@
     </div>
 
     <div class="field">
-      <label for="f-social">Instagram, Twitter ou LinkedIn</label>
-      <div class="sublabel">Colle l'URL complète (au moins un réseau social)</div>
-      <input type="text" id="f-social" name="reseaux_sociaux" placeholder="https://twitter.com/tonhandle" required />
+      <label for="f-social">Instagram, Twitter ou LinkedIn <span style="color:var(--muted);font-size:9px;letter-spacing:2px">(optionnel)</span></label>
+      <div class="sublabel">Colle l'URL complète si tu veux.</div>
+      <input type="text" id="f-social" name="reseaux_sociaux" placeholder="https://www.instagram.com/tonprofil" />
       <div class="field-error" id="err-social">Ce champ est requis.</div>
     </div>
 
@@ -857,12 +857,10 @@ const validators = {
     let ok = true;
     const wa     = document.getElementById('f-wa').value.trim();
     const email  = document.getElementById('f-email').value.trim();
-    const social = document.getElementById('f-social').value.trim();
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     showErr('err-wa',     !wa,       'f-wa');
     showErr('err-email',  !emailOk,  'f-email');
-    showErr('err-social', !social,   'f-social');
-    if (!wa || !emailOk || !social) ok = false;
+    if (!wa || !emailOk) ok = false;
     return ok;
   },
   3: () => {
