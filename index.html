@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Challenge Closer IA — Candidature</title>
+  <meta name="facebook-domain-verification" content="lbpkqxov5p1yhegbx6363axt6kpeia" />
+  <link rel="icon" type="image/png" href="BigJim.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- ══════════════════════════════════════
+       META PIXEL — remplace TON_PIXEL_ID
+       par ton vrai Pixel ID Meta
+  ══════════════════════════════════════ -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1782120289431326');
+  fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1782120289431326&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- ══ FIN META PIXEL ══ -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --noir:    #0D0D0D;
+      --grey:    #161616;
+      --grey2:   #1f1f1f;
+      --orange:  #E8612C;
+      --tiffany: #0ABAB5;
+      --white:   #F0F0EB;
+      --muted:   #555;
+      --danger:  #ff4d4d;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--noir);
+      color: var(--white);
+      font-family: 'Courier Prime', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ──────────── CURSOR (desktop) ──────────── */
+    .cursor {
+      position: fixed; width: 28px; height: 28px;
+      border: 1.5px solid var(--tiffany); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform .08s ease, width .2s, height .2s, opacity .2s;
+    }
+    .cursor-dot {
+      position: fixed; width: 4px; height: 4px;
+      background: var(--orange); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+    }
+    @media (hover: none) { .cursor, .cursor-dot { display: none; } }
+
+    /* ──────────── HEADER ──────────── */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 28px;
+      border-bottom: 1px solid #1a1a1a;
+      position: sticky; top: 0; background: var(--noir); z-index: 100;
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 12px; }
+    .logo-wrap span {
+      font-size: 13px; font-weight: 700; color: var(--orange);
+      letter-spacing: 3px; text-transform: uppercase;
+    }
+    .header-tag {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--tiffany); padding: 6px 14px; border: 1px solid var(--tiffany);
+    }
+
+    /* ──────────── PROGRESS BAR ──────────── */
+    #progress-wrap {
+      display: none;
+      padding: 20px 28px 0;
+    }
+    .progress-meta {
+      display: flex; justify-content: space-between;
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
+    }
+    .progress-meta .step-current { color: var(--tiffany); }
+    .progress-track {
+      height: 2px; background: #222; width: 100%;
+    }
+    .progress-fill {
+      height: 2px; background: var(--tiffany);
+      transition: width .4s ease;
+    }
+
+    /* ──────────── PAGES ──────────── */
+    .page {
+      display: none; opacity: 0;
+      transition: opacity .35s ease;
+      min-height: calc(100vh - 80px);
+    }
+    .page.active {
+      display: block; opacity: 1;
+    }
+    .page.fade-in { animation: fadeIn .35s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ──────────── LANDING (page 0) ──────────── */
+    .landing {
+      max-width: 680px; margin: 0 auto;
+      padding: 60px 28px 80px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block; color: var(--tiffany);
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      margin-bottom: 32px; border: 1px solid var(--tiffany); padding: 6px 16px;
+    }
+    .landing h1 {
+      font-size: clamp(32px, 7vw, 58px);
+      font-weight: 700; line-height: 1.05;
+      margin-bottom: 16px;
+    }
+    .landing h1 .orange { color: var(--orange); }
+    .landing h2 {
+      font-size: clamp(14px, 3vw, 18px);
+      font-weight: 400; color: var(--tiffany);
+      letter-spacing: 1px; margin-bottom: 40px; line-height: 1.5;
+    }
+
+    /* YouTube placeholder */
+    .yt-placeholder {
+      width: 100%; max-width: 560px; margin: 0 auto 40px;
+      background: var(--grey); aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid #222;
+    }
+    .yt-placeholder p {
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+    }
+    /* Remplace le .yt-placeholder par ceci quand tu as l'URL YouTube :
+       <iframe width="100%" height="100%" src="https://www.youtube.com/embed/TON_VIDEO_ID"
+         frameborder="0" allowfullscreen style="display:block;aspect-ratio:16/9"></iframe>
+    */
+
+    .intro-box {
+      background: var(--grey); padding: 28px 32px;
+      text-align: left; margin-bottom: 40px;
+      border-left: 2px solid var(--orange);
+    }
+    .intro-box p {
+      font-size: 14px; line-height: 1.8; color: #888;
+    }
+    .intro-box strong { color: var(--white); }
+
+    /* ──────────── FORM PAGES ──────────── */
+    .form-page {
+      max-width: 620px; margin: 0 auto;
+      padding: 48px 28px 80px;
+    }
+    .page-title {
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--tiffany); margin-bottom: 8px;
+    }
+    .page-heading {
+      font-size: clamp(22px, 5vw, 34px);
+      font-weight: 700; margin-bottom: 40px; line-height: 1.2;
+    }
+
+    /* Fields */
+    .field { margin-bottom: 28px; }
+    .field label {
+      display: block; font-size: 11px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--tiffany); margin-bottom: 8px;
+    }
+    .field .sublabel {
+      font-size: 12px; letter-spacing: 0; text-transform: none;
+      color: var(--muted); margin-bottom: 10px; line-height: 1.6;
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%; background: var(--grey);
+      border: 1px solid #2a2a2a; color: var(--white);
+      font-family: 'Courier Prime', monospace;
+      font-size: 15px; padding: 16px 18px;
+      outline: none; transition: border-color .2s;
+      -webkit-appearance: none; appearance: none;
+    }
+    .field input::placeholder,
+    .field textarea::placeholder { color: #3a3a3a; }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus { border-color: var(--tiffany); }
+    .field textarea { resize: vertical; min-height: 120px; }
+
+    /* Error state */
+    .field input.error,
+    .field textarea.error { border-color: var(--danger); }
+    .field-error {
+      font-size: 11px; color: var(--danger); letter-spacing: 1px;
+      margin-top: 6px; display: none;
+    }
+    .field-error.show { display: block; }
+
+    /* Character counter */
+    .char-counter {
+      text-align: right; font-size: 10px; letter-spacing: 1px;
+      color: var(--muted); margin-top: 6px;
+    }
+    .char-counter.warn { color: var(--orange); }
+
+    /* Radio options */
+    .radio-group { display: flex; flex-direction: column; gap: 10px; }
+    .radio-option {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: var(--grey); padding: 16px 18px;
+      border: 1px solid #2a2a2a; cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .radio-option:hover { border-color: var(--tiffany); }
+    .radio-option input[type="radio"] { display: none; }
+    .radio-option.selected {
+      border-color: var(--tiffany); background: #0a1f1f;
+    }
+    .radio-dot {
+      width: 14px; height: 14px; min-width: 14px;
+      border: 1.5px solid var(--muted); border-radius: 50%; margin-top: 2px;
+      transition: all .2s;
+    }
+    .radio-option.selected .radio-dot {
+      border-color: var(--tiffany); background: var(--tiffany);
+    }
+    .radio-label-text { font-size: 14px; line-height: 1.5; }
+
+    /* Checkbox */
+    .checkbox-option {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: var(--grey); padding: 20px 18px;
+      border: 1px solid #2a2a2a; cursor: pointer;
+      transition: border-color .2s;
+    }
+    .checkbox-option input[type="checkbox"] { display: none; }
+    .checkbox-option.checked { border-color: var(--tiffany); background: #0a1f1f; }
+    .checkbox-box {
+      width: 18px; height: 18px; min-width: 18px;
+      border: 1.5px solid var(--muted); margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .checkbox-option.checked .checkbox-box {
+      border-color: var(--tiffany); background: var(--tiffany);
+    }
+    .checkbox-tick { color: var(--noir); font-size: 12px; display: none; }
+    .checkbox-option.checked .checkbox-tick { display: block; }
+
+    /* Deal list */
+    .deal-block {
+      background: var(--grey); padding: 28px 24px;
+      border-left: 2px solid var(--tiffany); margin-bottom: 28px;
+    }
+    .deal-block h4 {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--tiffany); margin-bottom: 14px;
+    }
+    .deal-block ul {
+      list-style: none; display: flex; flex-direction: column; gap: 8px;
+    }
+    .deal-block ul li {
+      font-size: 13px; color: #aaa; line-height: 1.5;
+      padding-left: 16px; position: relative;
+    }
+    .deal-block ul li::before {
+      content: '→'; position: absolute; left: 0; color: var(--orange);
+    }
+    .deal-block.orange-block { border-left-color: var(--orange); }
+    .deal-block.orange-block h4 { color: var(--orange); }
+
+    /* Navigation buttons */
+    .nav-buttons {
+      display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap;
+    }
+    .btn-prev {
+      background: transparent; color: var(--muted);
+      border: 1px solid #333; padding: 16px 28px;
+      font-family: 'Courier Prime', monospace; font-size: 12px;
+      letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-prev:hover { border-color: var(--muted); color: var(--white); }
+    .btn-next, .btn-submit {
+      background: var(--orange); color: var(--white);
+      border: none; padding: 16px 36px;
+      font-family: 'Courier Prime', monospace; font-size: 13px;
+      letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+      transition: opacity .2s; flex: 1;
+    }
+    .btn-next:hover, .btn-submit:hover { opacity: .85; }
+    .btn-submit { background: var(--tiffany); color: var(--noir); }
+    .btn-cta-landing {
+      background: var(--orange); color: var(--white);
+      border: none; padding: 20px 48px;
+      font-family: 'Courier Prime', monospace; font-size: 14px;
+      letter-spacing: 3px; text-transform: uppercase; cursor: pointer;
+      transition: opacity .2s; display: inline-block;
+      text-decoration: none; width: 100%; max-width: 360px;
+    }
+    .btn-cta-landing:hover { opacity: .85; }
+
+    /* ──────────── THANK YOU ──────────── */
+    .thankyou {
+      max-width: 620px; margin: 0 auto;
+      padding: 80px 28px;
+      text-align: center;
+    }
+    .thankyou .checkmark {
+      font-size: 48px; margin-bottom: 32px; display: block; color: var(--tiffany);
+    }
+    .thankyou h1 {
+      font-size: clamp(26px, 5vw, 40px);
+      font-weight: 700; margin-bottom: 24px;
+    }
+    .thankyou .tiffany { color: var(--tiffany); }
+    .thankyou p {
+      font-size: 15px; color: #888; line-height: 1.8; margin-bottom: 20px;
+    }
+    .thankyou .timeline-box {
+      background: var(--grey); padding: 28px 24px;
+      text-align: left; border-left: 2px solid var(--tiffany);
+      margin: 32px 0;
+    }
+    .thankyou .timeline-box li {
+      font-size: 13px; color: #aaa; line-height: 1.6;
+      padding: 6px 0 6px 16px; position: relative; list-style: none;
+    }
+    .thankyou .timeline-box li::before {
+      content: '→'; position: absolute; left: 0; color: var(--tiffany);
+    }
+    .thankyou-ctas {
+      display: flex; flex-direction: column; gap: 12px; margin-top: 40px;
+    }
+    .btn-yt, .btn-tw {
+      display: block; padding: 16px 28px;
+      font-family: 'Courier Prime', monospace; font-size: 12px;
+      letter-spacing: 3px; text-transform: uppercase; text-decoration: none;
+      transition: opacity .2s; text-align: center;
+    }
+    .btn-yt { background: var(--orange); color: var(--white); }
+    .btn-tw { background: transparent; color: var(--tiffany); border: 1px solid var(--tiffany); }
+    .btn-yt:hover, .btn-tw:hover { opacity: .8; }
+
+    /* ──────────── SENDING STATE ──────────── */
+    .sending-overlay {
+      position: fixed; inset: 0; background: rgba(13,13,13,.92);
+      display: none; align-items: center; justify-content: center;
+      z-index: 9000; flex-direction: column; gap: 20px;
+    }
+    .sending-overlay.show { display: flex; }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 2px solid #2a2a2a; border-top-color: var(--tiffany);
+      border-radius: 50%; animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .sending-overlay p {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted);
+    }
+
+    /* ──────────── RESPONSIVE ──────────── */
+    @media (max-width: 480px) {
+      header { padding: 16px 20px; }
+      .landing, .form-page, .thankyou { padding-left: 20px; padding-right: 20px; }
+      .nav-buttons { flex-direction: column; }
+      .btn-prev { order: 2; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cursor (desktop) -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- Sending overlay -->
+<div class="sending-overlay" id="sendingOverlay">
+  <div class="spinner"></div>
+  <p>Envoi en cours...</p>
+</div>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header>
+  <a href="#" onclick="goTo(0);return false;" class="logo-wrap" style="text-decoration:none">
+    <img src="BigJim.png" alt="BigJim" style="width:36px;height:36px;object-fit:contain" />
+    <span>BigJim</span>
+  </a>
+  <button class="header-tag" onclick="scrollToCTA()" style="background:none;border:1px solid var(--tiffany);color:var(--tiffany);cursor:pointer;font-family:'Courier Prime',monospace">Challenge Closer IA</button>
+</header>
+
+<!-- ═══════════ PROGRESS BAR ═══════════ -->
+<div id="progress-wrap">
+  <div class="progress-meta">
+    <span>Candidature</span>
+    <span><span class="step-current" id="stepLabel">Étape 1</span> / 6</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 0 — LANDING
+═══════════════════════════════════ -->
+<div class="page active fade-in" id="page-0">
+  <div class="landing">
+    <div class="badge">Cohorte Bêta · 10 places</div>
+    <h1>Challenge<br><span class="orange">Closer IA</span></h1>
+    <h2>30 jours pour signer ton 1er client<br>en service IA. Gratuit. 10 places.</h2>
+
+    <!-- ── YouTube embed ──
+         Remplace ce bloc par ton iframe YouTube quand tu as l'URL :
+         <iframe width="100%" style="aspect-ratio:16/9;display:block;margin:0 auto 40px;max-width:560px"
+           src="https://www.youtube.com/embed/TON_VIDEO_ID"
+           frameborder="0" allowfullscreen></iframe>
+    -->
+    <div class="yt-placeholder">
+      <p>Vidéo à venir</p>
+    </div>
+
+    <div class="intro-box">
+      <p>
+        <strong>Avant de postuler, lis ça.</strong><br><br>
+        Ce programme demande un vrai engagement : <strong>15 heures par semaine minimum</strong>,
+        présence aux 2 calls groupe et 1 call 1:1 par semaine, exécution du plan sans excuses.<br><br>
+        Si tu n'as pas la bande passante ou la volonté, ne postule pas — tu bloques une place pour quelqu'un de sérieux.<br><br>
+        <strong>Temps de remplissage :</strong> 10 à 15 minutes. Je lis chaque candidature personnellement.
+      </p>
+    </div>
+
+    <button class="btn-cta-landing" onclick="goTo(1)">Je postule →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 1 — QUI TU ES
+═══════════════════════════════════ -->
+<div class="page" id="page-1">
+  <div class="form-page">
+    <div class="page-title">Étape 1 / 6</div>
+    <div class="page-heading">Commençons par les basiques</div>
+
+    <div class="field">
+      <label for="f-name">Prénom et nom</label>
+      <input type="text" id="f-name" name="nom" placeholder="Jean Dupont" required />
+      <div class="field-error" id="err-name">Ce champ est requis.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-age">Ton âge</label>
+      <input type="number" id="f-age" name="age" placeholder="25" min="16" max="70" required />
+      <div class="field-error" id="err-age">Requis — entre 16 et 70 ans.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-city">Ville et pays</label>
+      <input type="text" id="f-city" name="ville_pays" placeholder="Paris, France" required />
+      <div class="field-error" id="err-city">Ce champ est requis.</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-next" onclick="nextPage(1)">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 2 — CONTACT
+═══════════════════════════════════ -->
+<div class="page" id="page-2">
+  <div class="form-page">
+    <div class="page-title">Étape 2 / 6</div>
+    <div class="page-heading">Comment je te joins</div>
+
+    <div class="field">
+      <label for="f-wa">WhatsApp</label>
+      <div class="sublabel">C'est par là que je te contacte si tu es sélectionné</div>
+      <input type="tel" id="f-wa" name="whatsapp" placeholder="+33 6 12 34 56 78" required />
+      <div class="field-error" id="err-wa">Ce champ est requis.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-email">Email</label>
+      <input type="email" id="f-email" name="email" placeholder="ton@email.com" required />
+      <div class="field-error" id="err-email">Email invalide.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-social">Instagram, Twitter ou LinkedIn</label>
+      <div class="sublabel">Colle l'URL complète (au moins un réseau social)</div>
+      <input type="text" id="f-social" name="reseaux_sociaux" placeholder="https://twitter.com/tonhandle" required />
+      <div class="field-error" id="err-social">Ce champ est requis.</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-prev" onclick="goTo(1)">← Précédent</button>
+      <button class="btn-next" onclick="nextPage(2)">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 3 — TON NIVEAU
+═══════════════════════════════════ -->
+<div class="page" id="page-3">
+  <div class="form-page">
+    <div class="page-title">Étape 3 / 6</div>
+    <div class="page-heading">Ton background</div>
+
+    <div class="field">
+      <label>Ton niveau actuel en IA</label>
+      <div class="radio-group" id="rg-niveau">
+        <label class="radio-option" onclick="selectRadio(this,'niveau','debutant')">
+          <input type="radio" name="niveau_ia" value="debutant" />
+          <div class="radio-dot"></div>
+          <span class="radio-label-text">Débutant — Je connais ChatGPT, c'est tout</span>
+        </label>
+        <label class="radio-option" onclick="selectRadio(this,'niveau','intermediaire')">
+          <input type="radio" name="niveau_ia" value="intermediaire" />
+          <div class="radio-dot"></div>
+          <span class="radio-label-text">Intermédiaire — J'ai déjà construit des trucs simples (prompts, automations basiques)</span>
+        </label>
+        <label class="radio-option" onclick="selectRadio(this,'niveau','avance')">
+          <input type="radio" name="niveau_ia" value="avance" />
+          <div class="radio-dot"></div>
+          <span class="radio-label-text">Avancé — Je code, j'ai déjà utilisé n8n / Make / API, je comprends bien</span>
+        </label>
+      </div>
+      <div class="field-error" id="err-niveau">Sélectionne une option.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-vente">As-tu déjà vendu un service ?</label>
+      <div class="sublabel">Raconte brièvement : quoi, combien, comment tu as trouvé le client. Si jamais, écris "jamais".</div>
+      <textarea id="f-vente" name="experience_vente"
+        placeholder="J'ai fait du community management en freelance pendant 6 mois, 500€/mois par client, trouvés sur LinkedIn..."
+        maxlength="500" oninput="updateCounter(this,'cnt-vente',500)" rows="5" required></textarea>
+      <div class="char-counter" id="cnt-vente">0 / 500</div>
+      <div class="field-error" id="err-vente">Ce champ est requis.</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-prev" onclick="goTo(2)">← Précédent</button>
+      <button class="btn-next" onclick="nextPage(3)">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 4 — ENGAGEMENT
+═══════════════════════════════════ -->
+<div class="page" id="page-4">
+  <div class="form-page">
+    <div class="page-title">Étape 4 / 6</div>
+    <div class="page-heading">Ta disponibilité</div>
+
+    <div class="field">
+      <label for="f-hours">Heures par semaine disponibles</label>
+      <div class="sublabel">Minimum requis : 15h/semaine. Sois honnête, pas d'intérêt à gonfler.</div>
+      <input type="number" id="f-hours" name="heures_semaine" placeholder="20" min="1" max="80" required />
+      <div class="field-error" id="err-hours">Requis — entre 1 et 80 heures.</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-prev" onclick="goTo(3)">← Précédent</button>
+      <button class="btn-next" onclick="nextPage(4)">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 5 — MOTIVATION
+═══════════════════════════════════ -->
+<div class="page" id="page-5">
+  <div class="form-page">
+    <div class="page-title">Étape 5 / 6</div>
+    <div class="page-heading">La partie qui compte</div>
+
+    <div class="field">
+      <label for="f-why">Pourquoi toi plutôt qu'un autre candidat ?</label>
+      <div class="sublabel">Vends-toi. C'est la question qui va vraiment déterminer si je te sélectionne.</div>
+      <textarea id="f-why" name="pourquoi_moi"
+        placeholder="Je pense être un bon candidat parce que..."
+        maxlength="1000" oninput="updateCounter(this,'cnt-why',1000)" rows="7" required></textarea>
+      <div class="char-counter" id="cnt-why">0 / 1000</div>
+      <div class="field-error" id="err-why">Ce champ est requis.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-goal">Qu'est-ce que tu vises CONCRÈTEMENT à la fin des 30 jours ?</label>
+      <div class="sublabel">Sois précis. Chiffré si possible. Pas de "je veux réussir".</div>
+      <textarea id="f-goal" name="objectif_30j"
+        placeholder="Signer 2 clients à 2000€ chacun dans la niche des agences immobilières pour générer 4000€ de CA le premier mois..."
+        maxlength="500" oninput="updateCounter(this,'cnt-goal',500)" rows="5" required></textarea>
+      <div class="char-counter" id="cnt-goal">0 / 500</div>
+      <div class="field-error" id="err-goal">Ce champ est requis.</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-prev" onclick="goTo(4)">← Précédent</button>
+      <button class="btn-next" onclick="nextPage(5)">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 6 — VALIDATION DU DEAL
+═══════════════════════════════════ -->
+<div class="page" id="page-6">
+  <div class="form-page">
+    <div class="page-title">Étape 6 / 6</div>
+    <div class="page-heading">Dernière étape</div>
+
+    <div class="deal-block">
+      <h4>Ce que tu reçois gratuitement</h4>
+      <ul>
+        <li>5 masterclass live au tableau blanc</li>
+        <li>2 calls groupe par semaine (90 min)</li>
+        <li>1 call 1:1 par semaine (30 min)</li>
+        <li>Accès à la communauté privée Skool</li>
+        <li>Tous les bonus (agents IA templates, scripts, frameworks)</li>
+      </ul>
+    </div>
+
+    <div class="deal-block orange-block">
+      <h4>En échange, tu t'engages à</h4>
+      <ul>
+        <li>Donner 15h par semaine minimum pendant 30 jours</li>
+        <li>Assister à 80% des calls groupe minimum</li>
+        <li>Appliquer le plan, prospecter, vendre</li>
+        <li>Filmer un témoignage vidéo à la fin (3-5 min)</li>
+        <li>Écrire un case study avec tes chiffres</li>
+        <li>Céder les droits d'image sur le parcours (je filme, je peux reposter)</li>
+      </ul>
+    </div>
+
+    <div class="field">
+      <label class="checkbox-option" id="chk-deal-label" onclick="toggleCheckbox('chk-deal','chk-deal-label')">
+        <input type="checkbox" id="chk-deal" name="accord_deal" value="oui" />
+        <div class="checkbox-box"><span class="checkbox-tick">✓</span></div>
+        <span style="font-size:14px;line-height:1.5">Je confirme avoir lu et accepté le deal ci-dessus</span>
+      </label>
+      <div class="field-error" id="err-deal">Tu dois accepter le deal pour continuer.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-bonus">Un dernier mot ? <span style="color:var(--muted);font-size:9px;letter-spacing:2px">(optionnel)</span></label>
+      <div class="sublabel">Si tu as envie de me dire quelque chose directement, c'est ici.</div>
+      <textarea id="f-bonus" name="mot_final"
+        placeholder="Laisse vide si rien à dire"
+        maxlength="500" oninput="updateCounter(this,'cnt-bonus',500)" rows="4"></textarea>
+      <div class="char-counter" id="cnt-bonus">0 / 500</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-prev" onclick="goTo(5)">← Précédent</button>
+      <button class="btn-submit" onclick="submitForm()">Envoyer ma candidature →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 7 — REMERCIEMENT
+═══════════════════════════════════ -->
+<div class="page" id="page-7">
+  <div class="thankyou">
+    <span class="checkmark">✓</span>
+    <h1>Candidature<br><span class="tiffany">reçue.</span></h1>
+    <p>Merci d'avoir pris le temps.<br>
+    Je lis chaque candidature personnellement. Pas de filtre algo, pas d'assistant.</p>
+
+    <div class="timeline-box">
+      <ul>
+        <li>Je review toutes les applications avant le <strong>5 mai</strong></li>
+        <li>Si tu es retenu pour un call de qualif de 15 min, tu reçois un message sur <strong>WhatsApp entre le 5 et le 11 mai</strong></li>
+        <li>Si tu n'es pas retenu, je te réponds aussi — <strong>tout le monde reçoit une réponse</strong></li>
+      </ul>
+    </div>
+
+    <p>En attendant, abonne-toi à la chaîne YouTube. C'est là que je poste les updates du challenge, les coulisses de la bêta, et les vidéos gratuites qui t'avanceront déjà.</p>
+
+    <div class="thankyou-ctas">
+      <a href="https://www.youtube.com/@Big_Jim_777" target="_blank" rel="noopener" class="btn-yt">
+        S'abonner à la chaîne →
+      </a>
+      <a href="https://x.com/Big_Jim_777" target="_blank" rel="noopener" class="btn-tw">
+        Me suivre sur X (Twitter) →
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCRIPT
+═══════════════════════════════════ -->
+<script>
+// ── CONFIG ────────────────────────────────────────────────────
+// 👇 Remplace par ton endpoint Formspree
+const FORMSPREE = 'https://formspree.io/f/xwvanvgq';
+
+const TOTAL_STEPS = 6; // pages 1-6
+let currentPage = 0;
+
+// ── CURSOR ────────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const cursorDot = document.getElementById('cursorDot');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+  cursorDot.style.left = e.clientX + 'px';
+  cursorDot.style.top  = e.clientY + 'px';
+});
+
+// ── CHAR COUNTER ──────────────────────────────────────────────
+function updateCounter(el, counterId, max) {
+  const cnt = el.value.length;
+  const counter = document.getElementById(counterId);
+  counter.textContent = cnt + ' / ' + max;
+  counter.classList.toggle('warn', cnt > max * 0.85);
+}
+
+// ── RADIO ─────────────────────────────────────────────────────
+function selectRadio(el, groupName, value) {
+  document.querySelectorAll(`[name="${groupName}_ia"]`).forEach(r => {
+    r.closest('.radio-option').classList.remove('selected');
+  });
+  el.classList.add('selected');
+  el.querySelector('input').checked = true;
+  saveData();
+}
+
+// ── CHECKBOX ──────────────────────────────────────────────────
+function toggleCheckbox(checkboxId, labelId) {
+  const cb = document.getElementById(checkboxId);
+  const lb = document.getElementById(labelId);
+  cb.checked = !cb.checked;
+  lb.classList.toggle('checked', cb.checked);
+  saveData();
+}
+
+// ── COLLECT ALL DATA ──────────────────────────────────────────
+function collectData(step) {
+  const safe = id => (document.getElementById(id)?.value || '').trim();
+  const radioVal = name => {
+    const r = document.querySelector(`input[name="${name}"]:checked`);
+    return r ? r.value : '';
+  };
+  return {
+    _step:           'Étape ' + step,
+    nom:             safe('f-name'),
+    age:             safe('f-age'),
+    ville_pays:      safe('f-city'),
+    whatsapp:        safe('f-wa'),
+    email:           safe('f-email'),
+    reseaux_sociaux: safe('f-social'),
+    niveau_ia:       radioVal('niveau_ia'),
+    experience_vente:safe('f-vente'),
+    heures_semaine:  safe('f-hours'),
+    pourquoi_moi:    safe('f-why'),
+    objectif_30j:    safe('f-goal'),
+    accord_deal:     document.getElementById('chk-deal')?.checked ? 'oui' : 'non',
+    mot_final:       safe('f-bonus'),
+  };
+}
+
+// ── LOCALSTORAGE ──────────────────────────────────────────────
+function saveData() {
+  const data = collectData('partial');
+  localStorage.setItem('candidature_closer_ia', JSON.stringify(data));
+}
+
+function loadSaved() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('candidature_closer_ia') || '{}');
+    if (!saved || !saved.nom) return;
+    const set = (id, val) => { if (document.getElementById(id) && val) document.getElementById(id).value = val; };
+    set('f-name', saved.nom);
+    set('f-age', saved.age);
+    set('f-city', saved.ville_pays);
+    set('f-wa', saved.whatsapp);
+    set('f-email', saved.email);
+    set('f-social', saved.reseaux_sociaux);
+    set('f-vente', saved.experience_vente);
+    if (saved.experience_vente) updateCounter(document.getElementById('f-vente'), 'cnt-vente', 500);
+    set('f-hours', saved.heures_semaine);
+    set('f-why', saved.pourquoi_moi);
+    if (saved.pourquoi_moi) updateCounter(document.getElementById('f-why'), 'cnt-why', 1000);
+    set('f-goal', saved.objectif_30j);
+    if (saved.objectif_30j) updateCounter(document.getElementById('f-goal'), 'cnt-goal', 500);
+    set('f-bonus', saved.mot_final);
+    if (saved.mot_final) updateCounter(document.getElementById('f-bonus'), 'cnt-bonus', 500);
+    // Radio
+    if (saved.niveau_ia) {
+      const r = document.querySelector(`input[value="${saved.niveau_ia}"]`);
+      if (r) {
+        r.checked = true;
+        r.closest('.radio-option').classList.add('selected');
+      }
+    }
+  } catch(e) {}
+}
+
+// ── SEND TO FORMSPREE (partial or final) ──────────────────────
+async function sendToFormspree(data) {
+  if (FORMSPREE.includes('YOUR_ENDPOINT')) return; // skip if not configured
+  try {
+    await fetch(FORMSPREE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+  } catch(e) {
+    console.warn('Formspree error:', e);
+  }
+}
+
+// ── VALIDATION ────────────────────────────────────────────────
+const validators = {
+  1: () => {
+    let ok = true;
+    const name = document.getElementById('f-name').value.trim();
+    const age  = parseInt(document.getElementById('f-age').value);
+    const city = document.getElementById('f-city').value.trim();
+    showErr('err-name', !name, 'f-name');
+    showErr('err-age', !age || age < 16 || age > 70, 'f-age');
+    showErr('err-city', !city, 'f-city');
+    if (!name || !age || age < 16 || age > 70 || !city) ok = false;
+    return ok;
+  },
+  2: () => {
+    let ok = true;
+    const wa     = document.getElementById('f-wa').value.trim();
+    const email  = document.getElementById('f-email').value.trim();
+    const social = document.getElementById('f-social').value.trim();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    showErr('err-wa',     !wa,       'f-wa');
+    showErr('err-email',  !emailOk,  'f-email');
+    showErr('err-social', !social,   'f-social');
+    if (!wa || !emailOk || !social) ok = false;
+    return ok;
+  },
+  3: () => {
+    let ok = true;
+    const niveau = document.querySelector('input[name="niveau_ia"]:checked');
+    const vente  = document.getElementById('f-vente').value.trim();
+    showErr('err-niveau', !niveau);
+    showErr('err-vente',  !vente, 'f-vente');
+    if (!niveau || !vente) ok = false;
+    return ok;
+  },
+  4: () => {
+    const h = parseInt(document.getElementById('f-hours').value);
+    const ok = h && h >= 1 && h <= 80;
+    showErr('err-hours', !ok, 'f-hours');
+    return ok;
+  },
+  5: () => {
+    let ok = true;
+    const why  = document.getElementById('f-why').value.trim();
+    const goal = document.getElementById('f-goal').value.trim();
+    showErr('err-why',  !why,  'f-why');
+    showErr('err-goal', !goal, 'f-goal');
+    if (!why || !goal) ok = false;
+    return ok;
+  },
+  6: () => {
+    const deal = document.getElementById('chk-deal').checked;
+    showErr('err-deal', !deal);
+    return deal;
+  }
+};
+
+function showErr(errId, condition, inputId) {
+  const errEl = document.getElementById(errId);
+  if (errEl) { errEl.classList.toggle('show', !!condition); }
+  if (inputId) {
+    const inp = document.getElementById(inputId);
+    if (inp) inp.classList.toggle('error', !!condition);
+  }
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────
+function goTo(pageNum) {
+  document.getElementById('page-' + currentPage).classList.remove('active', 'fade-in');
+  currentPage = pageNum;
+  const el = document.getElementById('page-' + pageNum);
+  el.classList.add('active');
+  // Re-trigger fade
+  void el.offsetWidth;
+  el.classList.add('fade-in');
+  updateProgress(pageNum);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(page) {
+  const wrap = document.getElementById('progress-wrap');
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('stepLabel');
+  if (page >= 1 && page <= TOTAL_STEPS) {
+    wrap.style.display = 'block';
+    const pct = ((page - 1) / TOTAL_STEPS) * 100;
+    fill.style.width = pct + '%';
+    label.textContent = 'Étape ' + page;
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+async function nextPage(fromPage) {
+  if (!validators[fromPage]()) return;
+  saveData();
+  // Envoi Formspree uniquement à l'étape 2 (on a nom + contact)
+  if (fromPage === 2) {
+    const data = collectData(2);
+    sendToFormspree({ ...data, _subject: '[CONTACT CAPTURÉ] Closer IA — ' + (data.nom || 'Anonyme') });
+    // Meta Pixel — Lead (coordonnées capturées)
+    if (typeof fbq !== 'undefined') fbq('track', 'Lead');
+  }
+  goTo(fromPage + 1);
+}
+
+// ── SUBMIT FINAL ──────────────────────────────────────────────
+async function submitForm() {
+  if (!validators[6]()) return;
+  saveData();
+
+  document.getElementById('sendingOverlay').classList.add('show');
+
+  const data = collectData('FINALE');
+  data._subject = '[CANDIDATURE COMPLÈTE] Closer IA — ' + (data.nom || 'Anonyme');
+  // Ajoute l'email pour que Formspree puisse créer le _replyto
+  if (data.email) data._replyto = data.email;
+
+  try {
+    const res = await fetch(FORMSPREE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (res.ok || FORMSPREE.includes('YOUR_ENDPOINT')) {
+      localStorage.removeItem('candidature_closer_ia');
+      document.getElementById('sendingOverlay').classList.remove('show');
+      // Meta Pixel — CompleteRegistration (candidature complète)
+      if (typeof fbq !== 'undefined') fbq('track', 'CompleteRegistration');
+      goTo(7);
+    } else {
+      throw new Error('Formspree error');
+    }
+  } catch(e) {
+    document.getElementById('sendingOverlay').classList.remove('show');
+    alert('Erreur lors de l\'envoi. Vérifie ta connexion et réessaie.');
+  }
+}
+
+// ── AUTO-SAVE on input ─────────────────────────────────────────
+document.querySelectorAll('input, textarea').forEach(el => {
+  el.addEventListener('input', saveData);
+  el.addEventListener('change', saveData);
+});
+
+// ── SCROLL TO CTA (header button) ─────────────────────────────
+function scrollToCTA() {
+  if (currentPage !== 0) goTo(0);
+  setTimeout(() => {
+    document.querySelector('.btn-cta-landing')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 50);
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+loadSaved();
+updateProgress(0);
+</script>
+</body>
+</html>
