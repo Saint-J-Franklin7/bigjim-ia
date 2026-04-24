@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/agent-ia/api/(.*)", "destination": "/agent-ia/api/$1" },
+    { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/agent-ia", "destination": "/agent-ia/index.html" }
   ]
 }
