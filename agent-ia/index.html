@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Closer IA — Générateur de niche</title>
+  <link rel="icon" type="image/png" href="BigJim.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --noir:    #0D0D0D;
+      --grey:    #161616;
+      --grey2:   #1f1f1f;
+      --orange:  #E8612C;
+      --tiffany: #0ABAB5;
+      --white:   #F0F0EB;
+      --muted:   #555;
+      --danger:  #ff4d4d;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--noir);
+      color: var(--white);
+      font-family: 'Courier Prime', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── CURSOR ── */
+    .cursor {
+      position: fixed; width: 28px; height: 28px;
+      border: 1.5px solid var(--tiffany); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform .08s ease, width .2s, height .2s;
+    }
+    .cursor-dot {
+      position: fixed; width: 4px; height: 4px;
+      background: var(--orange); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+    }
+    @media (hover: none) { .cursor, .cursor-dot { display: none; } }
+
+    /* ── HEADER ── */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 28px;
+      border-bottom: 1px solid #1a1a1a;
+      position: sticky; top: 0; background: var(--noir); z-index: 100;
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-wrap span {
+      font-size: 13px; font-weight: 700; color: var(--orange);
+      letter-spacing: 3px; text-transform: uppercase;
+    }
+    .header-tag {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--tiffany); padding: 6px 14px; border: 1px solid var(--tiffany);
+    }
+
+    /* ── PROGRESS ── */
+    #progress-wrap { display: none; padding: 20px 28px 0; }
+    .progress-meta {
+      display: flex; justify-content: space-between;
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
+    }
+    .progress-meta .step-current { color: var(--tiffany); }
+    .progress-track { height: 2px; background: #222; width: 100%; }
+    .progress-fill { height: 2px; background: var(--tiffany); transition: width .4s ease; }
+
+    /* ── PAGES ── */
+    .page { display: none; opacity: 0; transition: opacity .35s ease; min-height: calc(100vh - 80px); }
+    .page.active { display: block; opacity: 1; }
+    .page.fade-in { animation: fadeIn .35s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── CONTAINERS ── */
+    .landing, .form-page {
+      max-width: 640px; margin: 0 auto; padding: 52px 28px 80px;
+    }
+    .landing { text-align: center; }
+
+    /* ── LANDING (page 0) ── */
+    .badge {
+      display: inline-block; color: var(--tiffany);
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      margin-bottom: 32px; border: 1px solid var(--tiffany); padding: 6px 16px;
+    }
+    .landing h1 {
+      font-size: clamp(30px, 6vw, 52px); font-weight: 700; line-height: 1.05; margin-bottom: 14px;
+    }
+    .landing h1 .orange { color: var(--orange); }
+    .landing .subtitle {
+      font-size: clamp(13px, 2.5vw, 16px); color: var(--tiffany);
+      letter-spacing: 1px; margin-bottom: 44px; line-height: 1.6;
+    }
+
+    /* API key block */
+    .api-block {
+      background: var(--grey); padding: 32px;
+      border-left: 2px solid var(--tiffany);
+      text-align: left; margin-bottom: 28px;
+    }
+    .api-block h3 {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--tiffany); margin-bottom: 16px;
+    }
+    .api-block p {
+      font-size: 13px; color: #888; line-height: 1.8; margin-bottom: 20px;
+    }
+    .api-block p strong { color: var(--white); }
+    .api-block a {
+      color: var(--orange); text-decoration: none; border-bottom: 1px solid var(--orange);
+    }
+    .api-block a:hover { opacity: .8; }
+
+    .api-input-wrap { position: relative; margin-top: 6px; }
+    .api-input-wrap input {
+      width: 100%; background: var(--noir);
+      border: 1px solid #2a2a2a; color: var(--white);
+      font-family: 'Courier Prime', monospace; font-size: 14px;
+      padding: 16px 52px 16px 18px; outline: none;
+      transition: border-color .2s;
+      letter-spacing: 1px;
+    }
+    .api-input-wrap input:focus { border-color: var(--tiffany); }
+    .api-input-wrap input::placeholder { color: #333; }
+    .toggle-eye {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--muted); cursor: pointer;
+      font-size: 14px; padding: 0;
+    }
+    .toggle-eye:hover { color: var(--white); }
+    .api-notice {
+      font-size: 11px; color: var(--muted); letter-spacing: 1px;
+      margin-top: 10px; line-height: 1.6;
+    }
+    .api-notice span { color: var(--tiffany); }
+
+    /* API steps */
+    .api-steps { display: flex; flex-direction: column; gap: 20px; margin-bottom: 24px; }
+    .api-step { display: flex; flex-direction: column; gap: 10px; }
+    .api-step-label {
+      font-size: 13px; color: #aaa; line-height: 1.6;
+    }
+    .api-step-label strong { color: var(--white); }
+    .api-step-label a { color: var(--orange); text-decoration: none; border-bottom: 1px solid var(--orange); }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--tiffany); color: var(--noir);
+      font-size: 11px; font-weight: 700; margin-right: 6px;
+      flex-shrink: 0; vertical-align: middle;
+    }
+    .api-screenshot {
+      width: 100%; border: 1px solid #2a2a2a; display: block;
+      border-radius: 2px;
+    }
+    .api-screenshot--tall { max-width: 220px; }
+    .api-screenshot--sm  { max-width: 180px; }
+
+    .api-error {
+      font-size: 11px; color: var(--danger); letter-spacing: 1px;
+      margin-top: 10px; display: none;
+    }
+    .api-error.show { display: block; }
+
+    /* Steps overview */
+    .steps-list {
+      background: var(--grey); padding: 24px 28px;
+      border-left: 2px solid var(--orange); margin-bottom: 32px;
+      text-align: left;
+    }
+    .steps-list h4 {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 14px;
+    }
+    .steps-list ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .steps-list ul li {
+      font-size: 13px; color: #aaa; line-height: 1.5;
+      padding-left: 20px; position: relative;
+    }
+    .steps-list ul li::before { content: '→'; position: absolute; left: 0; color: var(--orange); }
+
+    /* ── FORM ── */
+    .page-title {
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--tiffany); margin-bottom: 8px;
+    }
+    .page-heading {
+      font-size: clamp(22px, 5vw, 34px); font-weight: 700;
+      margin-bottom: 40px; line-height: 1.2;
+    }
+
+    .field { margin-bottom: 28px; }
+    .field label {
+      display: block; font-size: 11px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--tiffany); margin-bottom: 8px;
+    }
+    .field .sublabel {
+      font-size: 12px; letter-spacing: 0; text-transform: none;
+      color: var(--muted); margin-bottom: 10px; line-height: 1.6;
+    }
+    .field input[type="text"],
+    .field input[type="number"],
+    .field textarea,
+    .field select {
+      width: 100%; background: var(--grey);
+      border: 1px solid #2a2a2a; color: var(--white);
+      font-family: 'Courier Prime', monospace; font-size: 15px;
+      padding: 16px 18px; outline: none; transition: border-color .2s;
+      -webkit-appearance: none; appearance: none;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: #333; }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--tiffany); }
+    .field textarea { resize: vertical; min-height: 110px; }
+    .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230ABAB5' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+
+    .field input.error, .field textarea.error { border-color: var(--danger); }
+    .field-error { font-size: 11px; color: var(--danger); letter-spacing: 1px; margin-top: 6px; display: none; }
+    .field-error.show { display: block; }
+
+    /* Checkboxes langues */
+    .check-grid { display: flex; gap: 10px; flex-wrap: wrap; }
+    .check-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--grey); padding: 12px 18px;
+      border: 1px solid #2a2a2a; cursor: pointer;
+      font-size: 13px; transition: border-color .2s, background .2s;
+      user-select: none;
+    }
+    .check-pill input { display: none; }
+    .check-pill.checked { border-color: var(--tiffany); background: #0a1f1f; color: var(--tiffany); }
+    .check-pill-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: 1.5px solid var(--muted); transition: all .2s;
+    }
+    .check-pill.checked .check-pill-dot { background: var(--tiffany); border-color: var(--tiffany); }
+
+    /* Nav */
+    .nav-buttons { display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
+    .btn-prev {
+      background: transparent; color: var(--muted);
+      border: 1px solid #333; padding: 16px 28px;
+      font-family: 'Courier Prime', monospace; font-size: 12px;
+      letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-prev:hover { border-color: var(--muted); color: var(--white); }
+    .btn-next, .btn-submit, .btn-cta {
+      background: var(--orange); color: var(--white);
+      border: none; padding: 16px 36px;
+      font-family: 'Courier Prime', monospace; font-size: 13px;
+      letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+      transition: opacity .2s; flex: 1;
+    }
+    .btn-next:hover, .btn-submit:hover, .btn-cta:hover { opacity: .85; }
+    .btn-cta { display: inline-block; text-align: center; width: 100%; max-width: 360px; }
+    .btn-generate { background: var(--tiffany); color: var(--noir); }
+
+    /* ── GÉNÉRATION (page 4) ── */
+    .gen-page {
+      max-width: 520px; margin: 0 auto; padding: 80px 28px;
+      text-align: center;
+    }
+    .gen-spinner {
+      width: 48px; height: 48px; margin: 0 auto 36px;
+      border: 2px solid #2a2a2a; border-top-color: var(--tiffany);
+      border-radius: 50%; animation: spin .9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .gen-page h2 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+    .gen-page p { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+    .gen-steps { margin-top: 40px; text-align: left; display: flex; flex-direction: column; gap: 10px; }
+    .gen-step {
+      display: flex; align-items: center; gap: 14px;
+      font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #333;
+      transition: color .3s;
+    }
+    .gen-step.active { color: var(--tiffany); }
+    .gen-step.done { color: var(--muted); }
+    .gen-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #2a2a2a; transition: background .3s; flex-shrink: 0;
+    }
+    .gen-step.active .gen-dot { background: var(--tiffany); }
+    .gen-step.done .gen-dot { background: var(--muted); }
+
+    .gen-error {
+      background: var(--grey); border-left: 2px solid var(--danger);
+      padding: 24px 28px; margin-top: 32px; text-align: left; display: none;
+    }
+    .gen-error.show { display: block; }
+    .gen-error h4 { color: var(--danger); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+    .gen-error p { font-size: 13px; color: #888; line-height: 1.7; }
+    .gen-error button {
+      margin-top: 16px; background: none; border: 1px solid var(--muted); color: var(--muted);
+      font-family: 'Courier Prime', monospace; font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; padding: 10px 20px; cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .gen-error button:hover { border-color: var(--white); color: var(--white); }
+
+    /* ── RÉSULTATS (page 5) ── */
+    .results-page {
+      max-width: 760px; margin: 0 auto; padding: 40px 28px 80px;
+    }
+    .results-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 32px; gap: 16px; flex-wrap: wrap;
+    }
+    .results-header h2 { font-size: clamp(20px, 4vw, 30px); font-weight: 700; }
+    .results-header h2 span { color: var(--tiffany); }
+    .results-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-dl {
+      background: var(--orange); color: var(--white); border: none;
+      padding: 12px 22px; font-family: 'Courier Prime', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: opacity .2s; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-dl:hover { opacity: .85; }
+    .btn-restart {
+      background: transparent; color: var(--muted); border: 1px solid #333;
+      padding: 12px 22px; font-family: 'Courier Prime', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: border-color .2s, color .2s;
+    }
+    .btn-restart:hover { border-color: var(--muted); color: var(--white); }
+
+    /* Markdown output */
+    .md-output {
+      background: var(--grey); padding: 36px 32px;
+      border: 1px solid #1a1a1a;
+    }
+    .md-output h2 {
+      font-size: 20px; font-weight: 700; color: var(--white);
+      margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 1px solid #2a2a2a;
+    }
+    .md-output h2:first-child { margin-top: 0; }
+    .md-output h3 { font-size: 15px; font-weight: 700; color: var(--tiffany); margin: 20px 0 10px; }
+    .md-output h4 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin: 16px 0 8px; }
+    .md-output p { font-size: 14px; color: #aaa; line-height: 1.85; margin-bottom: 14px; }
+    .md-output ul, .md-output ol { margin: 0 0 14px 0; padding: 0; list-style: none; }
+    .md-output ul li, .md-output ol li {
+      font-size: 14px; color: #aaa; line-height: 1.7;
+      padding: 4px 0 4px 20px; position: relative;
+    }
+    .md-output ul li::before { content: '→'; position: absolute; left: 0; color: var(--orange); }
+    .md-output ol { counter-reset: ol-counter; }
+    .md-output ol li::before {
+      content: counter(ol-counter) '.'; counter-increment: ol-counter;
+      position: absolute; left: 0; color: var(--tiffany); font-weight: 700;
+    }
+    .md-output strong { color: var(--white); font-weight: 700; }
+    .md-output em { color: var(--tiffany); font-style: normal; }
+    .md-output code {
+      background: #0a0a0a; color: var(--orange); padding: 2px 8px;
+      font-family: 'Courier Prime', monospace; font-size: 13px;
+    }
+    .md-output pre {
+      background: #0a0a0a; padding: 20px; margin: 14px 0;
+      overflow-x: auto; border-left: 2px solid var(--tiffany);
+    }
+    .md-output pre code { background: none; padding: 0; color: #ccc; }
+    .md-output blockquote {
+      border-left: 2px solid var(--orange); padding: 12px 20px;
+      margin: 14px 0; background: #111;
+    }
+    .md-output blockquote p { color: #888; margin: 0; }
+    .md-output hr { border: none; border-top: 1px solid #222; margin: 32px 0; }
+    .md-output a { color: var(--tiffany); }
+    .md-output input[type="checkbox"] { margin-right: 8px; accent-color: var(--tiffany); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 520px) {
+      header { padding: 16px 20px; }
+      .landing, .form-page, .gen-page, .results-page { padding-left: 20px; padding-right: 20px; }
+      .nav-buttons { flex-direction: column; }
+      .btn-prev { order: 2; text-align: center; }
+      .md-output { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header>
+  <a href="/" class="logo-wrap">
+    <img src="BigJim.png" alt="BigJim" style="width:36px;height:36px;object-fit:contain" />
+    <span>BigJim</span>
+  </a>
+  <div class="header-tag">Closer IA — Générateur</div>
+</header>
+
+<!-- ═══════════ PROGRESS ═══════════ -->
+<div id="progress-wrap">
+  <div class="progress-meta">
+    <span>Profil</span>
+    <span><span class="step-current" id="stepLabel">Étape 1</span> / 3</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 0 — CLÉ API
+═══════════════════════════════════ -->
+<div class="page active fade-in" id="page-0">
+  <div class="landing">
+    <div class="badge">Challenge Closer IA · Outil gratuit</div>
+    <h1>Trouve ta <span class="orange">niche IA</span><br>en 30 secondes.</h1>
+    <p class="subtitle">
+      Tu donnes ton profil, l'IA te sort :<br>
+      niche validée · problème chiffré · pitch · agent à construire
+    </p>
+
+    <div class="steps-list">
+      <h4>Ce que tu vas obtenir</h4>
+      <ul>
+        <li>La niche B2B la plus rentable pour TON profil</li>
+        <li>Le problème qui coûte 1 000€+/mois au pro</li>
+        <li>L'agent IA à construire (skeleton n8n inclus)</li>
+        <li>Cold email + script téléphonique prêts à l'emploi</li>
+        <li>Ta to-do des 48h suivantes</li>
+      </ul>
+    </div>
+
+    <div class="api-block">
+      <h3>Étape préalable — Ta clé API Claude</h3>
+      <p>
+        Cet outil utilise l'API Claude d'Anthropic pour générer ton plan.<br>
+        Tu as besoin d'une clé API personnelle — suis ces 4 étapes :
+      </p>
+
+      <div class="api-steps">
+
+        <div class="api-step">
+          <div class="api-step-label"><span class="step-num">1</span> Va sur <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> → Gérer → <strong>Clés API</strong></div>
+          <img src="api1.png" alt="Étape 1 — Menu Clés API" class="api-screenshot api-screenshot--tall" />
+        </div>
+
+        <div class="api-step">
+          <div class="api-step-label"><span class="step-num">2</span> Clique sur <strong>+ Créer une clé</strong></div>
+          <img src="api2.png" alt="Étape 2 — Créer une clé" class="api-screenshot" />
+        </div>
+
+        <div class="api-step">
+          <div class="api-step-label"><span class="step-num">3</span> Nomme-la <strong>closer-ia</strong> puis clique Ajouter</div>
+          <img src="api3.png" alt="Étape 3 — Nommer la clé" class="api-screenshot" />
+        </div>
+
+        <div class="api-step">
+          <div class="api-step-label"><span class="step-num">4</span> Clique <strong>Copier la clé</strong> et colle-la ci-dessous</div>
+          <img src="api4.png" alt="Étape 4 — Copier la clé" class="api-screenshot api-screenshot--sm" />
+        </div>
+
+      </div>
+
+      <div class="api-input-wrap">
+        <input
+          type="password"
+          id="api-key-input"
+          placeholder="sk-ant-api03-..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button class="toggle-eye" onclick="toggleApiVisibility()" id="eye-btn" title="Afficher/masquer">👁</button>
+      </div>
+      <div class="api-notice">
+        <span>🔒 Ta clé reste 100% locale</span> — elle n'est jamais envoyée à nos serveurs.<br>
+        Coût estimé par génération : ~0,10€ (Claude Sonnet)
+      </div>
+      <div class="api-error" id="api-error">Colle une clé valide (commence par "sk-ant-")</div>
+    </div>
+
+    <button class="btn-cta" onclick="startWithApiKey()">C'est parti →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 1 — TOI
+═══════════════════════════════════ -->
+<div class="page" id="page-1">
+  <div class="form-page">
+    <div class="page-title">Étape 1 / 3 — Ton profil</div>
+    <div class="page-heading">Parle-moi de toi</div>
+
+    <div class="field">
+      <label for="f-geo">Zone géographique cible</label>
+      <div class="sublabel">Où tu veux prospecter. Ex : "France entière", "Lyon + 50km", "Belgique francophone"</div>
+      <input type="text" id="f-geo" placeholder="France entière" />
+      <div class="field-error" id="err-geo">Ce champ est requis.</div>
+    </div>
+
+    <div class="field">
+      <label>Langues parlées</label>
+      <div class="sublabel">Coche tout ce qui te correspond</div>
+      <div class="check-grid" id="lang-grid">
+        <label class="check-pill" onclick="togglePill(this)">
+          <input type="checkbox" value="Français" /> <div class="check-pill-dot"></div> Français
+        </label>
+        <label class="check-pill" onclick="togglePill(this)">
+          <input type="checkbox" value="Anglais" /> <div class="check-pill-dot"></div> Anglais
+        </label>
+        <label class="check-pill" onclick="togglePill(this)">
+          <input type="checkbox" value="Espagnol" /> <div class="check-pill-dot"></div> Espagnol
+        </label>
+        <label class="check-pill" onclick="togglePill(this)">
+          <input type="checkbox" value="Portugais" /> <div class="check-pill-dot"></div> Portugais
+        </label>
+        <label class="check-pill" onclick="togglePill(this)">
+          <input type="checkbox" value="Arabe" /> <div class="check-pill-dot"></div> Arabe
+        </label>
+      </div>
+      <div class="field-error" id="err-lang">Sélectionne au moins une langue.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-bg">Ton background le plus fort</label>
+      <div class="sublabel">2-3 phrases sur ton parcours, compétences, expériences business ou tech</div>
+      <textarea id="f-bg" placeholder="Ex : j'ai fait du dropshipping 2 ans, je comprends la vente B2B, je suis à l'aise avec les outils no-code..." rows="5"></textarea>
+      <div class="field-error" id="err-bg">Dis-moi quelque chose sur toi.</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-prev" onclick="goTo(0)">← Retour</button>
+      <button class="btn-next" onclick="nextPage(1)">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 2 — PRÉFÉRENCES
+═══════════════════════════════════ -->
+<div class="page" id="page-2">
+  <div class="form-page">
+    <div class="page-title">Étape 2 / 3 — Tes préférences</div>
+    <div class="page-heading">Ce qui t'attire (et ce que tu veux éviter)</div>
+
+    <div class="field">
+      <label for="f-time">Temps dispo par semaine (heures)</label>
+      <div class="sublabel">Sois honnête. Si c'est 5h, dis 5h.</div>
+      <input type="number" id="f-time" placeholder="10" min="1" max="80" />
+      <div class="field-error" id="err-time">Indique ton nombre d'heures.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-yes">3 secteurs qui t'attirent</label>
+      <div class="sublabel">Laisse vide si tu n'as aucune préférence — l'IA choisira pour toi</div>
+      <input type="text" id="f-yes" placeholder="Ex : santé, juridique, e-commerce — ou laisse vide" />
+    </div>
+
+    <div class="field">
+      <label for="f-no">3 secteurs à éviter absolument</label>
+      <div class="sublabel">Laisse vide si tu n'as pas de contrainte</div>
+      <input type="text" id="f-no" placeholder="Ex : immobilier, crypto, MLM — ou laisse vide" />
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-prev" onclick="goTo(1)">← Précédent</button>
+      <button class="btn-next" onclick="nextPage(2)">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 3 — CONTRAINTES
+═══════════════════════════════════ -->
+<div class="page" id="page-3">
+  <div class="form-page">
+    <div class="page-title">Étape 3 / 3 — Contraintes</div>
+    <div class="page-heading">Tes limites (pour calibrer les reco)</div>
+
+    <div class="field">
+      <label for="f-budget">Budget outils maximum / mois</label>
+      <select id="f-budget">
+        <option value="" disabled selected>— Sélectionne —</option>
+        <option value="Moins de 50€/mois">Moins de 50€/mois</option>
+        <option value="50 à 200€/mois">50 à 200€/mois</option>
+        <option value="200€+/mois">200€+/mois (pas de limite)</option>
+      </select>
+      <div class="field-error" id="err-budget">Sélectionne une option.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-tech">Complexité technique que tu acceptes</label>
+      <select id="f-tech">
+        <option value="" disabled selected>— Sélectionne —</option>
+        <option value="Simple (workflow basique, 1-2 outils)">Simple — workflow basique, 1-2 outils</option>
+        <option value="Moyenne (intégrations multiples, webhooks)">Moyenne — intégrations multiples, webhooks</option>
+        <option value="Complexe (agents autonomes, code, API)">Complexe — agents autonomes, code, API</option>
+      </select>
+      <div class="field-error" id="err-tech">Sélectionne une option.</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-prev" onclick="goTo(2)">← Précédent</button>
+      <button class="btn-next btn-generate" onclick="nextPage(3)">Générer mon plan →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 4 — GÉNÉRATION
+═══════════════════════════════════ -->
+<div class="page" id="page-4">
+  <div class="gen-page">
+    <div class="gen-spinner" id="gen-spinner"></div>
+    <h2>Analyse en cours...</h2>
+    <p id="gen-status">Connexion à Claude</p>
+
+    <div class="gen-steps">
+      <div class="gen-step active" id="gstep-1"><div class="gen-dot"></div>Analyse du profil</div>
+      <div class="gen-step" id="gstep-2"><div class="gen-dot"></div>Sélection de la niche</div>
+      <div class="gen-step" id="gstep-3"><div class="gen-dot"></div>Chiffrage du problème</div>
+      <div class="gen-step" id="gstep-4"><div class="gen-dot"></div>Construction du pitch</div>
+      <div class="gen-step" id="gstep-5"><div class="gen-dot"></div>Skeleton n8n + to-do</div>
+    </div>
+
+    <div class="gen-error" id="gen-error">
+      <h4>Erreur</h4>
+      <p id="gen-error-msg">Une erreur est survenue. Vérifie ta clé API et ta connexion.</p>
+      <button onclick="goTo(0)">← Revérifier la clé API</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 5 — RÉSULTATS
+═══════════════════════════════════ -->
+<div class="page" id="page-5">
+  <div class="results-page">
+    <div class="results-header">
+      <h2>Ton plan <span>Closer IA</span></h2>
+      <div class="results-actions">
+        <button class="btn-dl" id="btn-download" onclick="downloadMD()">↓ Télécharger .md</button>
+        <button class="btn-restart" onclick="restart()">Recommencer</button>
+      </div>
+    </div>
+
+    <div class="md-output" id="md-output">
+      <!-- Résultat généré ici -->
+    </div>
+
+    <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn-dl" onclick="copyAll()">Copier tout</button>
+      <button class="btn-restart" onclick="goTo(1)">Modifier mes réponses</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCRIPT
+═══════════════════════════════════ -->
+<script>
+// ═══════════════════════════════════
+// SYSTEM PROMPT
+// ═══════════════════════════════════
+const SYSTEM_PROMPT = `Tu es un expert en identification de niches B2B profitables pour la vente de services en intelligence artificielle aux professionnels francophones. Tu combines 3 expertises : analyse de marché (Hormozi 100M Offers), segmentation B2B (Sean Ellis), et architecture d'automatisations IA (n8n, Claude API, workflows).
+
+OBJECTIF : À partir du profil utilisateur fourni, identifie LA niche la plus rentable pour lui, LE problème à résoudre qui justifie 1500€+ de prestation, et fournis tous les éléments pour qu'il puisse prospecter et vendre dans les 48h.
+
+CRITÈRES DE SÉLECTION DE NICHE (ordre d'importance) :
+1. Capacité à payer : le pro type doit avoir >3000€/mois de marge nette
+2. Douleur chiffrable : le problème doit être quantifiable en €/mois perdus
+3. Accessibilité : contacts publics (annuaires, sites pro, Instagram pro)
+4. Taille marché : >5000 prospects potentiels dans la zone géo de l'utilisateur
+5. Concurrence IA faible : pas déjà saturé par des agences IA francophones
+6. Compatibilité avec le profil/background de l'utilisateur
+7. Compatibilité avec ses contraintes tech/budget
+
+INSTRUCTIONS :
+1. Analyse le profil utilisateur en détail
+2. Parmi ces niches candidates : kinés, ostéopathes, notaires, avocats, experts-comptables, agences immobilières, coachs sportifs, coachs bien-être, dentistes, orthodontistes, vétérinaires, restaurateurs, salons de coiffure, instituts beauté, auto-écoles, plombiers/artisans, photographes pro, wedding planners, consultants indépendants, e-commerçants DTC, SaaS early-stage, infirmiers libéraux, sophrologues, psys, opticiens — identifie la TOP 1 niche qui matche
+3. Pour cette niche, identifie LE problème opérationnel n°1 qui coûte de l'argent chaque jour
+4. Chiffre précisément le coût de ce problème en €/mois pour un pro moyen
+5. Conçois l'agent IA qui résout ce problème
+6. Rédige un pitch de prospection (cold email + cold call)
+7. Fournis un skeleton technique n8n ou équivalent
+
+FORMAT DE RÉPONSE (strictement en Markdown structuré) :
+
+## 🎯 NICHE RECOMMANDÉE : [Nom niche]
+
+### Pourquoi cette niche pour toi
+[3-4 phrases liant le profil utilisateur à cette niche]
+
+### Fiche marché
+- **Taille France** : [nombre] pros actifs
+- **Marge nette moyenne** : [X]€/mois
+- **Accessibilité contacts** : [annuaires précis à scraper]
+- **Score global** : [X]/10
+
+## 💸 LE PROBLÈME À 1000€+/MOIS
+
+### Le problème opérationnel
+[1 phrase ultra claire]
+
+### Coût chiffré pour le pro
+- Fréquence : [X fois/jour ou /semaine]
+- Coût unitaire : [X€ par occurrence]
+- **Total mensuel : [XXX]€/mois de CA perdu ou de temps perdu**
+
+### Pourquoi ils ne l'ont pas résolu
+[2-3 phrases sur la friction actuelle : pas de temps, pas de tech, embauche trop chère, etc.]
+
+## 🤖 L'AGENT IA À CONSTRUIRE
+
+### Nom commercial
+[Ex : "Assistant WhatsApp Smart Booking"]
+
+### Fonctionnement en 1 paragraphe
+[Ce que l'agent fait concrètement pour le pro]
+
+### Skeleton technique (n8n compatible)
+[Description node par node du workflow, 5-10 étapes]
+
+Exemple :
+Node 1 : Trigger [type] — [source]
+Node 2 : [Module] — [action]
+...
+
+### Prix de vente recommandé
+- Setup : [X]€
+- Récurrent : [Y]€/mois
+- Justification du prix par rapport au problème chiffré
+
+## 📞 PROSPECTION — TA JOURNÉE
+
+### Où trouver 50 prospects en 1h
+1. [Source 1 + méthode précise]
+2. [Source 2 + méthode précise]
+3. [Source 3 + méthode précise]
+
+### Cold email prêt à envoyer
+**Objet** : [objet punchy]
+
+[Corps du mail, 80-120 mots, perso par niche]
+
+### Script cold call (60 secondes max)
+"Bonjour [M./Mme Nom], [Prénom Utilisateur] à l'appareil. Je ne vais pas vous faire perdre de temps, 30 secondes : [accroche ultra-ciblée sur LEUR problème]. Est-ce que c'est un sujet pour vous ou pas du tout ?"
+
+[Suite du script selon réponse]
+
+## 🎬 POUR LA DÉMO ZOOM
+
+### Structure du call démo (20 min)
+1. [Étape 1] — X min
+2. [Étape 2] — X min
+...
+
+### Objections probables + réponses
+- **"C'est trop cher"** → [réponse]
+- **"Je vais réfléchir"** → [réponse]
+- **"J'ai déjà une solution"** → [réponse]
+
+## ✅ TA TO-DO DES 48H
+
+- [ ] Action 1
+- [ ] Action 2
+- [ ] Action 3
+- [ ] Action 4
+- [ ] Action 5
+
+---
+
+Sois ULTRA spécifique et actionnable. Pas de généralités. Chaque recommandation doit pouvoir être exécutée dans l'heure.`;
+
+// ═══════════════════════════════════
+// STATE
+// ═══════════════════════════════════
+let currentPage = 0;
+let apiKey = '';
+let lastResult = '';
+const TOTAL_STEPS = 3;
+
+// ═══════════════════════════════════
+// CURSOR
+// ═══════════════════════════════════
+const cursor = document.getElementById('cursor');
+const cursorDot = document.getElementById('cursorDot');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+  cursorDot.style.left = e.clientX + 'px';
+  cursorDot.style.top  = e.clientY + 'px';
+});
+
+// ═══════════════════════════════════
+// API KEY
+// ═══════════════════════════════════
+function toggleApiVisibility() {
+  const inp = document.getElementById('api-key-input');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function startWithApiKey() {
+  const key = document.getElementById('api-key-input').value.trim();
+  const errEl = document.getElementById('api-error');
+  if (!key || !key.startsWith('sk-ant-')) {
+    errEl.classList.add('show');
+    return;
+  }
+  errEl.classList.remove('show');
+  apiKey = key;
+  localStorage.setItem('cia_api_key', key);
+  goTo(1);
+}
+
+// ═══════════════════════════════════
+// CHECKBOX PILLS
+// ═══════════════════════════════════
+function togglePill(el) {
+  const cb = el.querySelector('input[type="checkbox"]');
+  cb.checked = !cb.checked;
+  el.classList.toggle('checked', cb.checked);
+}
+
+function getLangs() {
+  return [...document.querySelectorAll('#lang-grid input:checked')]
+    .map(cb => cb.value).join(', ');
+}
+
+// ═══════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════
+function goTo(pageNum) {
+  document.getElementById('page-' + currentPage).classList.remove('active', 'fade-in');
+  currentPage = pageNum;
+  const el = document.getElementById('page-' + pageNum);
+  el.classList.add('active');
+  void el.offsetWidth;
+  el.classList.add('fade-in');
+  updateProgress(pageNum);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(page) {
+  const wrap = document.getElementById('progress-wrap');
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('stepLabel');
+  if (page >= 1 && page <= TOTAL_STEPS) {
+    wrap.style.display = 'block';
+    fill.style.width = ((page - 1) / TOTAL_STEPS * 100) + '%';
+    label.textContent = 'Étape ' + page;
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+// ═══════════════════════════════════
+// VALIDATION
+// ═══════════════════════════════════
+function showErr(errId, condition, inputId) {
+  const errEl = document.getElementById(errId);
+  if (errEl) errEl.classList.toggle('show', !!condition);
+  if (inputId) {
+    const inp = document.getElementById(inputId);
+    if (inp) inp.classList.toggle('error', !!condition);
+  }
+}
+
+const validators = {
+  1: () => {
+    const geo = document.getElementById('f-geo').value.trim();
+    const langs = getLangs();
+    const bg = document.getElementById('f-bg').value.trim();
+    showErr('err-geo', !geo, 'f-geo');
+    showErr('err-lang', !langs);
+    showErr('err-bg', !bg, 'f-bg');
+    return geo && langs && bg;
+  },
+  2: () => {
+    const t = document.getElementById('f-time').value;
+    const ok = t && parseInt(t) >= 1;
+    showErr('err-time', !ok, 'f-time');
+    return ok;
+  },
+  3: () => {
+    const budget = document.getElementById('f-budget').value;
+    const tech = document.getElementById('f-tech').value;
+    showErr('err-budget', !budget, 'f-budget');
+    showErr('err-tech', !tech, 'f-tech');
+    return budget && tech;
+  }
+};
+
+async function nextPage(fromPage) {
+  if (!validators[fromPage]()) return;
+  if (fromPage === 3) {
+    goTo(4);
+    await generatePlan();
+  } else {
+    goTo(fromPage + 1);
+  }
+}
+
+// ═══════════════════════════════════
+// BUILD USER MESSAGE
+// ═══════════════════════════════════
+function buildUserMessage() {
+  const geo    = document.getElementById('f-geo').value.trim();
+  const langs  = getLangs();
+  const bg     = document.getElementById('f-bg').value.trim();
+  const time   = document.getElementById('f-time').value.trim();
+  const yes    = document.getElementById('f-yes').value.trim() || 'Aucune préférence';
+  const no     = document.getElementById('f-no').value.trim() || 'Aucun secteur à exclure';
+  const budget = document.getElementById('f-budget').value;
+  const tech   = document.getElementById('f-tech').value;
+
+  return `PROFIL UTILISATEUR :
+
+**Zone géographique cible** : ${geo}
+**Langues parlées** : ${langs}
+**Background** : ${bg}
+**Temps disponible** : ${time} heures/semaine
+**Secteurs attirés** : ${yes}
+**Secteurs à éviter** : ${no}
+**Budget outils maximum** : ${budget}
+**Complexité technique acceptée** : ${tech}
+
+Génère le plan complet en suivant exactement le format Markdown demandé. Sois ultra-spécifique et actionnable.`;
+}
+
+// ═══════════════════════════════════
+// ANIMATION STEPS
+// ═══════════════════════════════════
+let stepTimer = null;
+function animateGenSteps() {
+  const steps = ['gstep-1','gstep-2','gstep-3','gstep-4','gstep-5'];
+  const labels = ['Analyse du profil','Sélection de la niche','Chiffrage du problème','Construction du pitch','Skeleton n8n + to-do'];
+  let idx = 0;
+  steps.forEach(s => {
+    document.getElementById(s).className = 'gen-step';
+  });
+  document.getElementById(steps[0]).classList.add('active');
+  document.getElementById('gen-status').textContent = labels[0];
+
+  stepTimer = setInterval(() => {
+    if (idx < steps.length - 1) {
+      document.getElementById(steps[idx]).classList.remove('active');
+      document.getElementById(steps[idx]).classList.add('done');
+      idx++;
+      document.getElementById(steps[idx]).classList.add('active');
+      document.getElementById('gen-status').textContent = labels[idx];
+    }
+  }, 3500);
+}
+
+// ═══════════════════════════════════
+// CALL CLAUDE API
+// ═══════════════════════════════════
+async function generatePlan() {
+  document.getElementById('gen-error').classList.remove('show');
+  document.getElementById('gen-spinner').style.display = 'block';
+  animateGenSteps();
+
+  const userMessage = buildUserMessage();
+
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        apiKey,
+        systemPrompt: SYSTEM_PROMPT,
+        userMessage,
+      })
+    });
+
+    clearInterval(stepTimer);
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData?.error?.message || `HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    const mdText = data.content?.[0]?.text || '';
+
+    if (!mdText) throw new Error('Réponse vide de Claude');
+
+    lastResult = mdText;
+    displayResults(mdText);
+    goTo(5);
+
+  } catch (err) {
+    clearInterval(stepTimer);
+    document.getElementById('gen-spinner').style.display = 'none';
+    document.getElementById('gen-error-msg').textContent = err.message || 'Erreur inconnue.';
+    document.getElementById('gen-error').classList.add('show');
+    console.error('Claude API error:', err);
+  }
+}
+
+// ═══════════════════════════════════
+// DISPLAY RESULTS
+// ═══════════════════════════════════
+function displayResults(mdText) {
+  const container = document.getElementById('md-output');
+  // Configure marked
+  marked.setOptions({ breaks: true, gfm: true });
+  container.innerHTML = marked.parse(mdText);
+
+  // Make checkboxes interactive
+  container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.removeAttribute('disabled');
+  });
+}
+
+// ═══════════════════════════════════
+// DOWNLOAD
+// ═══════════════════════════════════
+function downloadMD() {
+  if (!lastResult) return;
+  const blob = new Blob([lastResult], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'closer-ia-plan-' + new Date().toISOString().slice(0,10) + '.md';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ═══════════════════════════════════
+// COPY ALL
+// ═══════════════════════════════════
+async function copyAll() {
+  if (!lastResult) return;
+  try {
+    await navigator.clipboard.writeText(lastResult);
+    const btn = event.currentTarget;
+    const orig = btn.textContent;
+    btn.textContent = 'Copié ✓';
+    setTimeout(() => btn.textContent = orig, 2000);
+  } catch(e) {
+    alert('Copie manuelle : sélectionne tout le texte du résultat.');
+  }
+}
+
+// ═══════════════════════════════════
+// RESTART
+// ═══════════════════════════════════
+function restart() {
+  lastResult = '';
+  document.getElementById('md-output').innerHTML = '';
+  // Reset fields
+  ['f-geo','f-bg','f-time','f-yes','f-no'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.querySelectorAll('#lang-grid .check-pill').forEach(p => p.classList.remove('checked'));
+  document.querySelectorAll('#lang-grid input').forEach(cb => cb.checked = false);
+  document.getElementById('f-budget').value = '';
+  document.getElementById('f-tech').value = '';
+  goTo(1);
+}
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+(function init() {
+  const saved = localStorage.getItem('cia_api_key');
+  if (saved) {
+    document.getElementById('api-key-input').value = saved;
+    apiKey = saved;
+  }
+  updateProgress(0);
+})();
+</script>
+</body>
+</html>
