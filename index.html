@@ -416,8 +416,8 @@
     <h1>Challenge<br><span class="orange">Closer IA</span></h1>
     <h2>30 jours pour signer ton 1er client<br>en service IA. Gratuit. 10 places.</h2>
 
-    <iframe width="100%" style="aspect-ratio:16/9;display:block;margin:0 auto 40px;max-width:560px"
-      src="https://www.youtube.com/embed/1UQAkzC7UFY"
+    <iframe id="yt-player" width="100%" style="aspect-ratio:16/9;display:block;margin:0 auto 40px;max-width:560px"
+      src="https://www.youtube.com/embed/1UQAkzC7UFY?enablejsapi=1"
       frameborder="0" allowfullscreen></iframe>
 
     <div class="intro-box">
@@ -973,6 +973,43 @@ function scrollToCTA() {
 // ── INIT ──────────────────────────────────────────────────────
 loadSaved();
 updateProgress(0);
+</script>
+
+<!-- YouTube IFrame API + Meta Pixel video tracking -->
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+var ytPlayer;
+var videoPlayed = false;
+var video50Tracked = false;
+
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('yt-player', {
+    events: {
+      onStateChange: onPlayerStateChange
+    }
+  });
+}
+
+function onPlayerStateChange(event) {
+  if (event.data === YT.PlayerState.PLAYING && !videoPlayed) {
+    videoPlayed = true;
+    if (typeof fbq !== 'undefined') fbq('trackCustom', 'VideoPlay');
+    startProgressTracking();
+  }
+}
+
+function startProgressTracking() {
+  var interval = setInterval(function() {
+    if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+    var current = ytPlayer.getCurrentTime();
+    var duration = ytPlayer.getDuration();
+    if (duration > 0 && current / duration >= 0.5 && !video50Tracked) {
+      video50Tracked = true;
+      if (typeof fbq !== 'undefined') fbq('trackCustom', 'Video50Percent');
+      clearInterval(interval);
+    }
+  }, 2000);
+}
 </script>
 </body>
 </html>
