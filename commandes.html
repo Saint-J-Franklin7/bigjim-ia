@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Code GRATUIT — Commandes | BigJim</title>
+  <meta name="description" content="Les commandes pour utiliser Claude Code gratuitement — Méthode Ollama et Méthode OpenClaude + NVIDIA." />
+  <link rel="icon" type="image/png" href="BigJim.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1782120289431326');
+  fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1782120289431326&ev=PageView&noscript=1"/>
+  </noscript>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --noir:    #0D0D0D;
+      --grey:    #161616;
+      --grey2:   #1f1f1f;
+      --orange:  #E8612C;
+      --tiffany: #0ABAB5;
+      --white:   #F0F0EB;
+      --muted:   #555;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--noir);
+      color: var(--white);
+      font-family: 'Courier Prime', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ──────────── CURSOR ──────────── */
+    .cursor {
+      position: fixed; width: 28px; height: 28px;
+      border: 1.5px solid var(--tiffany); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform .08s ease, width .2s, height .2s, opacity .2s;
+    }
+    .cursor-dot {
+      position: fixed; width: 4px; height: 4px;
+      background: var(--orange); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+    }
+    @media (hover: none) { .cursor, .cursor-dot { display: none; } }
+
+    /* ──────────── HEADER ──────────── */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 28px;
+      border-bottom: 1px solid #1a1a1a;
+      position: sticky; top: 0; background: var(--noir); z-index: 100;
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-wrap span {
+      font-size: 13px; font-weight: 700; color: var(--orange);
+      letter-spacing: 3px; text-transform: uppercase;
+    }
+    .header-tag {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--tiffany); padding: 6px 14px; border: 1px solid var(--tiffany);
+      background: none; font-family: 'Courier Prime', monospace; cursor: default;
+    }
+
+    /* ──────────── MAIN ──────────── */
+    .main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 60px 28px 100px;
+    }
+
+    .page-label {
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--tiffany); margin-bottom: 16px;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .page-label::before {
+      content: ''; display: inline-block;
+      width: 20px; height: 1px; background: var(--tiffany);
+    }
+
+    h1 {
+      font-size: clamp(26px, 5vw, 42px);
+      font-weight: 700; line-height: 1.1;
+      margin-bottom: 40px;
+    }
+    h1 .orange { color: var(--orange); }
+
+    /* ──────────── METHOD CARD ──────────── */
+    .method {
+      margin-bottom: 48px;
+      border: 1px solid #222;
+    }
+
+    .method-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--grey);
+      border-bottom: 1px solid #222;
+      flex-wrap: wrap; gap: 10px;
+    }
+    .method-num {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .method-title {
+      font-size: 14px; font-weight: 700;
+      letter-spacing: 1px; color: var(--white);
+    }
+    .btn-copy-all {
+      background: transparent; color: var(--tiffany);
+      border: 1px solid var(--tiffany); padding: 7px 16px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: background .2s, color .2s;
+      white-space: nowrap;
+    }
+    .btn-copy-all:hover { background: var(--tiffany); color: var(--noir); }
+    .btn-copy-all.copied { background: var(--tiffany); color: var(--noir); }
+
+    /* ──────────── TERMINAL BLOCK ──────────── */
+    .terminal {
+      background: #0a0a0a;
+      padding: 0;
+      overflow: hidden;
+    }
+    .terminal-bar {
+      display: flex; align-items: center; gap: 6px;
+      padding: 10px 16px;
+      border-bottom: 1px solid #1a1a1a;
+      background: #111;
+    }
+    .terminal-bar .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #28ca41; }
+
+    pre {
+      padding: 24px 20px;
+      overflow-x: auto;
+      font-family: 'Courier Prime', monospace;
+      font-size: 13.5px;
+      line-height: 1.75;
+      color: var(--white);
+      white-space: pre;
+    }
+    pre .comment { color: var(--muted); }
+    pre .cmd { color: var(--white); }
+    pre .key { color: var(--tiffany); }
+    pre .val { color: var(--orange); }
+
+    /* ──────────── NOTE BOX ──────────── */
+    .note {
+      background: var(--grey);
+      border-left: 2px solid var(--orange);
+      padding: 20px 20px;
+      margin-top: 12px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #888;
+    }
+    .note strong { color: var(--white); }
+    .note a { color: var(--tiffany); text-decoration: underline; }
+
+    /* ──────────── FOOTER CTA ──────────── */
+    .back-cta {
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid #1a1a1a;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .back-cta p {
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .btn-back {
+      display: inline-block;
+      background: var(--orange); color: var(--white);
+      border: none; padding: 16px 32px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; text-decoration: none;
+      transition: opacity .2s; align-self: flex-start;
+    }
+    .btn-back:hover { opacity: .85; }
+
+    @media (max-width: 480px) {
+      header { padding: 16px 20px; }
+      .main { padding-left: 20px; padding-right: 20px; }
+      pre { font-size: 12px; padding: 16px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header>
+  <a href="/" class="logo-wrap">
+    <img src="BigJim.png" alt="BigJim" style="width:36px;height:36px;object-fit:contain" />
+    <span>BigJim</span>
+  </a>
+  <span class="header-tag">Claude Code Gratuit</span>
+</header>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<main class="main">
+
+  <span class="page-label">Ressource gratuite</span>
+  <h1>Claude Code <span class="orange">GRATUIT</span><br>— Commandes</h1>
+
+  <!-- ═══ MÉTHODE 1 ═══ -->
+  <div class="method">
+    <div class="method-header">
+      <div>
+        <div class="method-num">Méthode 01</div>
+        <div class="method-title">Ollama + Claude</div>
+      </div>
+      <button class="btn-copy-all" onclick="copyAll(this, 'code-1')">Tout copier</button>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot dot-r"></span>
+        <span class="dot dot-y"></span>
+        <span class="dot dot-g"></span>
+      </div>
+      <pre id="code-1"><span class="comment"># Installer Ollama</span>
+<span class="cmd">curl -fsSL https://ollama.com/install.sh | sh</span>
+
+<span class="comment"># Vérifier l'installation</span>
+<span class="cmd">ollama --version</span>
+
+<span class="comment"># Installer Claude Code</span>
+<span class="cmd">curl -fsSL https://claude.ai/install.sh | bash</span>
+
+<span class="comment"># Télécharger le modèle (remplace TON_MODELE)</span>
+<span class="cmd">ollama pull <span class="val">TON_MODELE</span></span>
+
+<span class="comment"># Lancer Claude avec le modèle</span>
+<span class="cmd">ollama launch claude --model <span class="val">TON_MODELE</span></span></pre>
+    </div>
+    <div class="note">
+      Remplace <strong>TON_MODELE</strong> par le nom du modèle que tu veux utiliser
+      (ex : <strong>llama3</strong>, <strong>mistral</strong>…).
+      Retrouve la liste complète sur <a href="https://ollama.com/library" target="_blank" rel="noopener">ollama.com/library</a>.
+    </div>
+  </div>
+
+  <!-- ═══ MÉTHODE 2 ═══ -->
+  <div class="method">
+    <div class="method-header">
+      <div>
+        <div class="method-num">Méthode 02</div>
+        <div class="method-title">OpenClaude + NVIDIA</div>
+      </div>
+      <button class="btn-copy-all" onclick="copyAll(this, 'code-2')">Tout copier</button>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot dot-r"></span>
+        <span class="dot dot-y"></span>
+        <span class="dot dot-g"></span>
+      </div>
+      <pre id="code-2"><span class="comment"># Installer OpenClaude</span>
+<span class="cmd">npm install -g @gitlawb/openclaude</span>
+
+<span class="comment"># Configurer les variables d'environnement</span>
+<span class="key">export</span> <span class="cmd">CLAUDE_CODE_USE_OPENAI=<span class="val">1</span></span>
+<span class="key">export</span> <span class="cmd">OPENAI_BASE_URL=<span class="val">https://integrate.api.nvidia.com/v1</span></span>
+<span class="key">export</span> <span class="cmd">OPENAI_API_KEY=<span class="val">TA_CLÉ_API</span></span>
+<span class="key">export</span> <span class="cmd">OPENAI_MODEL=<span class="val">z-ai/glm-5.1</span></span>
+
+<span class="comment"># Vérifier la clé API</span>
+<span class="cmd">echo $OPENAI_API_KEY</span>
+
+<span class="comment"># Lancer</span>
+<span class="cmd">openclaude</span></pre>
+    </div>
+    <div class="note">
+      Remplace <strong>TA_CLÉ_API</strong> par ta clé NVIDIA NIM.
+      Tu peux en générer une gratuitement sur
+      <a href="https://build.nvidia.com" target="_blank" rel="noopener">build.nvidia.com</a>
+      (crédit gratuit à l'inscription).
+    </div>
+  </div>
+
+  <!-- ═══ BACK CTA ═══ -->
+  <div class="back-cta">
+    <p>Tu veux aller plus loin ?</p>
+    <a href="/" class="btn-back">Rejoindre le Challenge Closer IA →</a>
+  </div>
+
+</main>
+
+<script>
+const cursor = document.getElementById('cursor');
+const cursorDot = document.getElementById('cursorDot');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+  cursorDot.style.left = e.clientX + 'px';
+  cursorDot.style.top  = e.clientY + 'px';
+});
+
+function copyAll(btn, preId) {
+  const pre = document.getElementById(preId);
+  const text = pre.innerText || pre.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copié';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
