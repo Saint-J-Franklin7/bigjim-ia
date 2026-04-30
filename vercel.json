@@ -3,6 +3,7 @@
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/agent-ia", "destination": "/agent-ia/index.html" },
     { "source": "/commandes", "destination": "/commandes.html" },
-    { "source": "/prompt", "destination": "/prompt.html" }
+    { "source": "/prompt", "destination": "/prompt.html" },
+    { "source": "/agent-hormozi", "destination": "/agent-hormozi/index.html" }
   ]
 }

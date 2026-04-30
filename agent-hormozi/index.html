@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent Hormozi — Construis ton offre à 100M | BigJim</title>
+  <meta name="description" content="L'agent IA basé sur le framework 100M Offers d'Alex Hormozi. Donne ta niche, obtiens une offre irrésistible complète." />
+  <link rel="icon" type="image/png" href="../BigJim.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1782120289431326');
+  fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1782120289431326&ev=PageView&noscript=1"/>
+  </noscript>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --noir:    #0D0D0D;
+      --grey:    #161616;
+      --grey2:   #1f1f1f;
+      --orange:  #E8612C;
+      --tiffany: #0ABAB5;
+      --white:   #F0F0EB;
+      --muted:   #555;
+      --danger:  #e05252;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--noir);
+      color: var(--white);
+      font-family: 'Courier Prime', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ──────────── CURSOR ──────────── */
+    .cursor {
+      position: fixed; width: 28px; height: 28px;
+      border: 1.5px solid var(--tiffany); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform .08s ease, width .2s, height .2s, opacity .2s;
+    }
+    .cursor-dot {
+      position: fixed; width: 4px; height: 4px;
+      background: var(--orange); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+    }
+    @media (hover: none) { .cursor, .cursor-dot { display: none; } }
+
+    /* ──────────── HEADER ──────────── */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 28px;
+      border-bottom: 1px solid #1a1a1a;
+      position: sticky; top: 0; background: var(--noir); z-index: 100;
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-wrap span {
+      font-size: 13px; font-weight: 700; color: var(--orange);
+      letter-spacing: 3px; text-transform: uppercase;
+    }
+    .header-tag {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--tiffany); padding: 6px 14px; border: 1px solid var(--tiffany);
+      background: none; font-family: 'Courier Prime', monospace; cursor: default;
+    }
+
+    /* ──────────── PROGRESS ──────────── */
+    #progress-wrap {
+      display: none;
+      padding: 12px 28px 0;
+      max-width: 680px; margin: 0 auto;
+    }
+    .progress-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    .step-current { color: var(--tiffany); }
+    .progress-track {
+      height: 2px; background: #1a1a1a; width: 100%;
+    }
+    .progress-fill {
+      height: 100%; background: var(--tiffany);
+      transition: width .4s ease;
+    }
+
+    /* ──────────── PAGES ──────────── */
+    .page { display: none; }
+    .page.active { display: block; }
+    .fade-in { animation: fadeIn .3s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* ──────────── LANDING ──────────── */
+    .landing {
+      max-width: 600px; margin: 0 auto;
+      padding: 48px 28px 80px;
+    }
+    .badge {
+      display: inline-block; font-size: 9px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--orange);
+      border: 1px solid var(--orange); padding: 5px 12px; margin-bottom: 24px;
+    }
+    .landing h1 {
+      font-size: clamp(28px, 6vw, 46px); font-weight: 700;
+      line-height: 1.08; margin-bottom: 20px;
+    }
+    .landing h1 .orange { color: var(--orange); }
+    .landing h1 .tiff { color: var(--tiffany); }
+    .landing .subtitle {
+      font-size: 14px; line-height: 1.8; color: #888;
+      margin-bottom: 36px;
+    }
+
+    /* ──────────── PIXEL ART ──────────── */
+    .pixel-wrap {
+      display: flex; justify-content: center;
+      margin: 0 auto 36px;
+    }
+    #hormozi-canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    /* ──────────── DELIVERABLES LIST ──────────── */
+    .steps-list {
+      background: var(--grey); border: 1px solid #222;
+      padding: 24px 24px; margin-bottom: 36px;
+    }
+    .steps-list h4 {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--tiffany); margin-bottom: 16px;
+    }
+    .steps-list ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .steps-list ul li {
+      font-size: 13px; color: #aaa; padding-left: 18px; position: relative; line-height: 1.5;
+    }
+    .steps-list ul li::before { content: '→'; position: absolute; left: 0; color: var(--orange); }
+
+    /* ──────────── API BLOCK ──────────── */
+    .api-block {
+      background: var(--grey); border: 1px solid #222;
+      padding: 28px 24px; margin-bottom: 28px;
+    }
+    .api-block h3 {
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--tiffany); margin-bottom: 12px;
+    }
+    .api-block p {
+      font-size: 13px; color: #888; line-height: 1.7; margin-bottom: 20px;
+    }
+    .api-block a { color: var(--tiffany); }
+
+    .api-steps { display: flex; flex-direction: column; gap: 20px; margin-bottom: 24px; }
+    .api-step {}
+    .api-step-label {
+      font-size: 13px; color: #888; line-height: 1.7; margin-bottom: 10px;
+    }
+    .api-step-label a { color: var(--tiffany); }
+    .api-step-label strong { color: var(--white); }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; background: var(--orange);
+      color: var(--white); font-size: 11px; font-weight: 700;
+      margin-right: 6px; vertical-align: middle; flex-shrink: 0;
+    }
+    .api-screenshot { width: 100%; max-width: 420px; display: block; border: 1px solid #2a2a2a; }
+    .api-screenshot--tall { max-width: 240px; }
+    .api-screenshot--sm  { max-width: 300px; }
+
+    .api-input-wrap {
+      display: flex; align-items: stretch; gap: 0;
+      border: 1px solid #2a2a2a; margin-bottom: 12px;
+    }
+    .api-input-wrap input {
+      flex: 1; background: #0a0a0a; color: var(--white);
+      border: none; font-family: 'Courier Prime', monospace;
+      font-size: 14px; padding: 14px 16px; outline: none;
+    }
+    .api-input-wrap input::placeholder { color: #333; }
+    .toggle-eye {
+      background: #0a0a0a; border: none; border-left: 1px solid #2a2a2a;
+      padding: 0 16px; cursor: pointer; font-size: 16px;
+    }
+    .api-notice {
+      font-size: 12px; color: #444; line-height: 1.7;
+    }
+    .api-notice span { color: var(--tiffany); }
+    .api-error {
+      font-size: 11px; color: var(--danger); letter-spacing: 1px;
+      margin-top: 10px; display: none;
+    }
+    .api-error.show { display: block; }
+
+    /* ──────────── FORM PAGES ──────────── */
+    .form-page {
+      max-width: 600px; margin: 0 auto;
+      padding: 48px 28px 80px;
+    }
+    .page-title {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--tiffany); margin-bottom: 8px;
+    }
+    .page-heading {
+      font-size: clamp(22px, 5vw, 34px); font-weight: 700;
+      margin-bottom: 8px; line-height: 1.2;
+    }
+    .page-sub {
+      font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 36px;
+    }
+
+    .field { margin-bottom: 28px; }
+    .field label {
+      display: block; font-size: 11px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--tiffany); margin-bottom: 8px;
+    }
+    .field .sublabel {
+      font-size: 12px; letter-spacing: 0; text-transform: none;
+      color: var(--muted); margin-bottom: 10px; line-height: 1.6;
+    }
+    .field input[type="text"],
+    .field input[type="number"],
+    .field textarea,
+    .field select {
+      width: 100%; background: var(--grey);
+      border: 1px solid #2a2a2a; color: var(--white);
+      font-family: 'Courier Prime', monospace; font-size: 15px;
+      padding: 16px 18px; outline: none; transition: border-color .2s;
+      -webkit-appearance: none; appearance: none;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: #333; }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--tiffany); }
+    .field textarea { resize: vertical; min-height: 110px; }
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230ABAB5' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px;
+    }
+    .field input.error, .field textarea.error, .field select.error { border-color: var(--danger); }
+    .field-error { font-size: 11px; color: var(--danger); letter-spacing: 1px; margin-top: 6px; display: none; }
+    .field-error.show { display: block; }
+
+    /* ──────────── NAV BUTTONS ──────────── */
+    .nav-buttons { display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
+    .btn-prev {
+      background: transparent; color: var(--muted);
+      border: 1px solid #333; padding: 16px 28px;
+      font-family: 'Courier Prime', monospace; font-size: 12px;
+      letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-prev:hover { border-color: var(--muted); color: var(--white); }
+    .btn-next, .btn-submit, .btn-cta {
+      background: var(--orange); color: var(--white);
+      border: none; padding: 16px 36px;
+      font-family: 'Courier Prime', monospace; font-size: 13px;
+      letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+      transition: opacity .2s; flex: 1;
+    }
+    .btn-next:hover, .btn-submit:hover, .btn-cta:hover { opacity: .85; }
+    .btn-cta { display: inline-block; text-align: center; width: 100%; max-width: 380px; }
+    .btn-generate { background: var(--tiffany); color: var(--noir); }
+
+    /* ──────────── GÉNÉRATION ──────────── */
+    .gen-page {
+      max-width: 520px; margin: 0 auto; padding: 80px 28px;
+      text-align: center;
+    }
+    .gen-spinner {
+      width: 48px; height: 48px; margin: 0 auto 36px;
+      border: 2px solid #2a2a2a; border-top-color: var(--tiffany);
+      border-radius: 50%; animation: spin .9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .gen-page h2 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+    .gen-page p { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+    .gen-steps { margin-top: 40px; text-align: left; display: flex; flex-direction: column; gap: 10px; }
+    .gen-step {
+      display: flex; align-items: center; gap: 14px;
+      font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #333;
+      transition: color .3s;
+    }
+    .gen-step.active { color: var(--tiffany); }
+    .gen-step.done { color: var(--muted); }
+    .gen-dot { width: 6px; height: 6px; border-radius: 50%; background: #2a2a2a; transition: background .3s; flex-shrink: 0; }
+    .gen-step.active .gen-dot { background: var(--tiffany); }
+    .gen-step.done .gen-dot { background: var(--muted); }
+    .gen-error {
+      background: var(--grey); border-left: 2px solid var(--danger);
+      padding: 24px 28px; margin-top: 32px; text-align: left; display: none;
+    }
+    .gen-error.show { display: block; }
+    .gen-error h4 { color: var(--danger); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+    .gen-error p { font-size: 13px; color: #888; line-height: 1.7; }
+    .gen-error button {
+      margin-top: 16px; background: none; border: 1px solid var(--muted); color: var(--muted);
+      font-family: 'Courier Prime', monospace; font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; padding: 10px 20px; cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .gen-error button:hover { border-color: var(--white); color: var(--white); }
+
+    /* ──────────── RÉSULTATS ──────────── */
+    .results-page {
+      max-width: 760px; margin: 0 auto; padding: 40px 28px 80px;
+    }
+    .results-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 32px; gap: 16px; flex-wrap: wrap;
+    }
+    .results-header h2 { font-size: clamp(20px, 4vw, 30px); font-weight: 700; }
+    .results-header h2 span { color: var(--orange); }
+    .results-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-dl {
+      background: var(--orange); color: var(--white); border: none;
+      padding: 12px 22px; font-family: 'Courier Prime', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: opacity .2s; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-dl:hover { opacity: .85; }
+    .btn-restart {
+      background: transparent; color: var(--muted); border: 1px solid #333;
+      padding: 12px 22px; font-family: 'Courier Prime', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: border-color .2s, color .2s;
+    }
+    .btn-restart:hover { border-color: var(--muted); color: var(--white); }
+
+    /* Markdown output */
+    .md-output {
+      background: var(--grey); padding: 36px 32px;
+      border: 1px solid #1a1a1a;
+    }
+    .md-output h2 {
+      font-size: 20px; font-weight: 700; color: var(--white);
+      margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 1px solid #2a2a2a;
+    }
+    .md-output h2:first-child { margin-top: 0; }
+    .md-output h3 { font-size: 15px; font-weight: 700; color: var(--tiffany); margin: 20px 0 10px; }
+    .md-output h4 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin: 16px 0 8px; }
+    .md-output p { font-size: 14px; color: #aaa; line-height: 1.85; margin-bottom: 14px; }
+    .md-output ul, .md-output ol { margin: 0 0 14px 0; padding: 0; list-style: none; }
+    .md-output ul li, .md-output ol li {
+      font-size: 14px; color: #aaa; line-height: 1.7;
+      padding: 4px 0 4px 20px; position: relative;
+    }
+    .md-output ul li::before { content: '→'; position: absolute; left: 0; color: var(--orange); }
+    .md-output ol { counter-reset: ol-counter; }
+    .md-output ol li::before {
+      content: counter(ol-counter) '.'; counter-increment: ol-counter;
+      position: absolute; left: 0; color: var(--tiffany); font-weight: 700;
+    }
+    .md-output strong { color: var(--white); font-weight: 700; }
+    .md-output em { color: var(--tiffany); font-style: normal; }
+    .md-output code {
+      background: #0a0a0a; color: var(--orange); padding: 2px 8px;
+      font-family: 'Courier Prime', monospace; font-size: 13px;
+    }
+    .md-output pre {
+      background: #0a0a0a; padding: 20px; margin: 14px 0;
+      overflow-x: auto; border-left: 2px solid var(--tiffany);
+    }
+    .md-output pre code { background: none; padding: 0; color: #ccc; }
+    .md-output blockquote {
+      border-left: 2px solid var(--orange); padding: 12px 20px;
+      margin: 14px 0; background: #111;
+    }
+    .md-output blockquote p { color: #888; margin: 0; }
+    .md-output hr { border: none; border-top: 1px solid #222; margin: 32px 0; }
+    .md-output table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+    .md-output th {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--tiffany); border-bottom: 1px solid #2a2a2a;
+      padding: 10px 12px; text-align: left;
+    }
+    .md-output td {
+      font-size: 13px; color: #aaa; padding: 10px 12px;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .md-output a { color: var(--tiffany); }
+    .md-output input[type="checkbox"] { margin-right: 8px; accent-color: var(--tiffany); }
+
+    /* ──────────── RESPONSIVE ──────────── */
+    @media (max-width: 520px) {
+      header { padding: 16px 20px; }
+      .landing, .form-page, .gen-page, .results-page { padding-left: 20px; padding-right: 20px; }
+      .nav-buttons { flex-direction: column; }
+      .btn-prev { order: 2; text-align: center; }
+      .md-output { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header>
+  <a href="/" class="logo-wrap">
+    <img src="../BigJim.png" alt="BigJim" style="width:36px;height:36px;object-fit:contain" />
+    <span>BigJim</span>
+  </a>
+  <div class="header-tag">Agent Hormozi</div>
+</header>
+
+<!-- ═══════════ PROGRESS ═══════════ -->
+<div id="progress-wrap">
+  <div class="progress-meta">
+    <span>Offre</span>
+    <span><span class="step-current" id="stepLabel">Étape 1</span> / 3</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 0 — LANDING + CLÉ API
+═══════════════════════════════════ -->
+<div class="page active fade-in" id="page-0">
+  <div class="landing">
+
+    <div class="badge">Closer IA · Bonus Exclusif</div>
+    <h1>Construis ton offre<br><span class="orange">à 100M</span> en<br><span class="tiff">10 minutes.</span></h1>
+    <p class="subtitle">
+      Tu réponds à 8 questions sur ton business.<br>
+      L'agent structure ton offre complète selon le framework<br>
+      <strong>100M Offers d'Alex Hormozi</strong>.
+    </p>
+
+    <div class="pixel-wrap">
+      <canvas id="hormozi-canvas" width="288" height="360"></canvas>
+    </div>
+
+    <div class="steps-list">
+      <h4>Ce que tu vas obtenir</h4>
+      <ul>
+        <li>Dream outcome formulé pour convaincre ton prospect</li>
+        <li>Équation de valeur scorée sur 4 variables (Hormozi)</li>
+        <li>Stack de valeur complet avec prix justifiés</li>
+        <li>Nom de l'offre — framework MAGIC</li>
+        <li>Garantie avec conditions strictes + texte prêt à l'emploi</li>
+        <li>Bonus stack (chaque bonus vs une objection)</li>
+        <li>Pitch en une phrase prêt à prospecter</li>
+      </ul>
+    </div>
+
+    <div class="api-block">
+      <h3>Étape préalable — Ta clé API Claude</h3>
+      <p>
+        Cet outil utilise l'API Claude d'Anthropic.<br>
+        Tu as besoin d'une clé API personnelle — suis ces 4 étapes :
+      </p>
+
+      <div class="api-steps">
+        <div class="api-step">
+          <div class="api-step-label"><span class="step-num">1</span> Va sur <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a> → Gérer → <strong>Clés API</strong></div>
+        </div>
+        <div class="api-step">
+          <div class="api-step-label"><span class="step-num">2</span> Clique sur <strong>+ Créer une clé</strong></div>
+        </div>
+        <div class="api-step">
+          <div class="api-step-label"><span class="step-num">3</span> Nomme-la <strong>hormozi-agent</strong> puis clique Ajouter</div>
+        </div>
+        <div class="api-step">
+          <div class="api-step-label"><span class="step-num">4</span> Clique <strong>Copier la clé</strong> et colle-la ci-dessous</div>
+        </div>
+      </div>
+
+      <div class="api-input-wrap">
+        <input
+          type="password"
+          id="api-key-input"
+          placeholder="sk-ant-api03-..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button class="toggle-eye" onclick="toggleApiVisibility()" id="eye-btn" title="Afficher/masquer">👁</button>
+      </div>
+      <div class="api-notice">
+        <span>🔒 Ta clé reste 100% locale</span> — elle n'est jamais envoyée à nos serveurs.<br>
+        Coût estimé par génération : ~0,12€ (Claude Sonnet)
+      </div>
+      <div class="api-error" id="api-error">Colle une clé valide (commence par "sk-ant-")</div>
+    </div>
+
+    <button class="btn-cta" onclick="startWithApiKey()">Construire mon offre →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 1 — NICHE + CLIENT + DREAM OUTCOME
+═══════════════════════════════════ -->
+<div class="page" id="page-1">
+  <div class="form-page">
+    <div class="page-title">Étape 1 / 3 — Ton client</div>
+    <div class="page-heading">Qui tu aides, et vers quoi</div>
+    <p class="page-sub">Sois ultra précis. "PME" c'est flou. "Dentistes libéraux qui veulent remplir leur agenda" c'est une offre.</p>
+
+    <div class="field">
+      <label for="f-niche">Ton client idéal</label>
+      <div class="sublabel">Type de business, secteur, taille. Ex : "Dentistes libéraux en France", "E-commerçants DTC 50k-500k€/an", "Coachs sportifs indépendants"</div>
+      <input type="text" id="f-niche" placeholder="Ex : Plombiers artisans en région parisienne" />
+      <div class="field-error" id="err-niche">Ce champ est requis.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-dream">Le dream outcome de ton client</label>
+      <div class="sublabel">Le résultat de rêve en 1 phrase précise, du point de vue du client. Ce qu'il veut VRAIMENT obtenir. Ex : "Avoir 3 nouveaux clients B2B par mois sans prospecter"</div>
+      <textarea id="f-dream" placeholder="Ex : Remplir son agenda automatiquement et ne plus perdre de patients faute de rappels" rows="3"></textarea>
+      <div class="field-error" id="err-dream">Décris le dream outcome de ton client.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-pain">La douleur principale</label>
+      <div class="sublabel">Le problème n°1 qui l'empêche d'atteindre son dream outcome. Chiffre-le si tu peux (€/mois perdus, heures/semaine gaspillées).</div>
+      <textarea id="f-pain" placeholder="Ex : Il perd 8-12 rendez-vous/mois à cause de no-shows et oublis de confirmation. Soit 800-1200€ de CA perdu." rows="3"></textarea>
+      <div class="field-error" id="err-pain">Décris la douleur principale.</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-prev" onclick="goTo(0)">← Retour</button>
+      <button class="btn-next" onclick="nextPage(1)">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 2 — OBSTACLES + SOLUTIONS
+═══════════════════════════════════ -->
+<div class="page" id="page-2">
+  <div class="form-page">
+    <div class="page-title">Étape 2 / 3 — Ton offre</div>
+    <div class="page-heading">Obstacles et comment tu les résouds</div>
+    <p class="page-sub">Hormozi dit : liste TOUS les problèmes qui bloquent le dream outcome, puis transforme chaque problème en solution (= un livrable de ton offre).</p>
+
+    <div class="field">
+      <label for="f-obstacles">Les 3 à 6 obstacles secondaires</label>
+      <div class="sublabel">Ce qui l'empêche aussi d'atteindre son résultat. Pas juste le problème principal — tout ce qu'il devrait résoudre seul si tu n'existais pas. Liste-les séparés par des virgules ou retours à la ligne.</div>
+      <textarea id="f-obstacles" placeholder="Ex : Il ne sait pas configurer un outil de rappel automatique&#10;Il n'a pas le temps de le faire&#10;Il a peur que ce soit complexe&#10;Il ne veut pas embaucher une secrétaire" rows="5"></textarea>
+      <div class="field-error" id="err-obstacles">Liste au moins 2 obstacles.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-solutions">Tes livrables / comment tu résouds chaque obstacle</label>
+      <div class="sublabel">Ce que tu livres concrètement. 1 livrable par obstacle idéalement. Ex : "Agent IA de rappel WhatsApp", "Configuration complète en 48h", "Tuto vidéo step-by-step", "Support 30 jours"</div>
+      <textarea id="f-solutions" placeholder="Ex : Agent IA de rappel automatique par WhatsApp&#10;Setup complet en 48h (zéro technique pour lui)&#10;Tableau de bord de suivi des confirmations&#10;30 jours de support inclus" rows="5"></textarea>
+      <div class="field-error" id="err-solutions">Décris tes livrables.</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-prev" onclick="goTo(1)">← Précédent</button>
+      <button class="btn-next" onclick="nextPage(2)">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 3 — PREUVES + PRIX + DÉLAI
+═══════════════════════════════════ -->
+<div class="page" id="page-3">
+  <div class="form-page">
+    <div class="page-title">Étape 3 / 3 — Crédibilité & prix</div>
+    <div class="page-heading">Preuves, pricing et délai</div>
+    <p class="page-sub">Ces infos permettent à l'agent de calibrer ta garantie et ton positionnement prix correctement.</p>
+
+    <div class="field">
+      <label for="f-proof">Tes preuves / résultats clients</label>
+      <div class="sublabel">Témoignages, chiffres, case studies, résultats passés. Si tu n'as rien encore, écris "Aucune preuve pour l'instant" — l'agent te donnera une stratégie pour les obtenir rapidement.</div>
+      <textarea id="f-proof" placeholder="Ex : 1 client dentiste — 0 no-show en 30 jours (était à 10/mois avant)&#10;Ou : Aucune preuve pour l'instant" rows="3"></textarea>
+      <div class="field-error" id="err-proof">Mets tes preuves ou écris "Aucune preuve".</div>
+    </div>
+
+    <div class="field">
+      <label for="f-price">Ton prix actuel (ou envisagé) + ce que les concurrents facturent</label>
+      <div class="sublabel">Sois honnête sur tes chiffres. Si tu ne sais pas ce que facturent les concurrents, dis-le.</div>
+      <input type="text" id="f-price" placeholder="Ex : Je vends 800€ setup + 200€/mois. Concurrents : 500-1500€ selon la niche." />
+      <div class="field-error" id="err-price">Indique ton prix ou une estimation.</div>
+    </div>
+
+    <div class="field">
+      <label for="f-delay">Délai pour obtenir le résultat + ton différenciateur</label>
+      <div class="sublabel">En combien de temps ton client voit les premiers résultats ? Et ce qui te rend unique par rapport aux alternatives (agence généraliste, faire soi-même, concurrent direct).</div>
+      <textarea id="f-delay" placeholder="Ex : Premiers résultats en 48h après setup. Différenciateur : je me spécialise uniquement sur les dentistes — je connais leur métier et leurs outils." rows="3"></textarea>
+      <div class="field-error" id="err-delay">Indique le délai et ton différenciateur.</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-prev" onclick="goTo(2)">← Précédent</button>
+      <button class="btn-next btn-generate" onclick="nextPage(3)">Construire mon offre →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 4 — GÉNÉRATION
+═══════════════════════════════════ -->
+<div class="page" id="page-4">
+  <div class="gen-page">
+    <div class="gen-spinner" id="gen-spinner"></div>
+    <h2>Hormozi analyse...</h2>
+    <p id="gen-status">Connexion à Claude</p>
+
+    <div class="gen-steps">
+      <div class="gen-step active" id="gstep-1"><div class="gen-dot"></div>Dream outcome + équation de valeur</div>
+      <div class="gen-step" id="gstep-2"><div class="gen-dot"></div>Stack de valeur + prix justifiés</div>
+      <div class="gen-step" id="gstep-3"><div class="gen-dot"></div>Naming MAGIC de l'offre</div>
+      <div class="gen-step" id="gstep-4"><div class="gen-dot"></div>Garantie + bonus stack</div>
+      <div class="gen-step" id="gstep-5"><div class="gen-dot"></div>Pitch + scarcité + urgence</div>
+    </div>
+
+    <div class="gen-error" id="gen-error">
+      <h4>Erreur</h4>
+      <p id="gen-error-msg">Une erreur est survenue. Vérifie ta clé API et ta connexion.</p>
+      <button onclick="goTo(0)">← Revérifier la clé API</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     PAGE 5 — RÉSULTATS
+═══════════════════════════════════ -->
+<div class="page" id="page-5">
+  <div class="results-page">
+    <div class="results-header">
+      <h2>Ton offre <span>Hormozi</span></h2>
+      <div class="results-actions">
+        <button class="btn-dl" onclick="downloadMD()">↓ Télécharger .md</button>
+        <button class="btn-restart" onclick="restart()">Recommencer</button>
+      </div>
+    </div>
+
+    <div class="md-output" id="md-output"></div>
+
+    <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn-dl" onclick="copyAll()">Copier tout</button>
+      <button class="btn-restart" onclick="goTo(1)">Modifier mes réponses</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SCRIPT
+═══════════════════════════════════ -->
+<script>
+
+// ═══════════════════════════════════
+// PIXEL ART — HORMOZI PORTRAIT
+// ═══════════════════════════════════
+(function drawHormozi() {
+  const canvas = document.getElementById('hormozi-canvas');
+  const ctx = canvas.getContext('2d');
+  const S = 12; // pixel size
+
+  const B = '#0D0D0D'; // background
+  const H = '#1A1A1A'; // hat dark
+  const O = '#E8612C'; // orange (cap logo)
+  const K = '#0F0800'; // hair / dark
+  const F = '#C4956A'; // skin flesh
+  const W = '#E8E8DF'; // nasal strip / eye white
+  const P = '#0F0800'; // pupil
+  const D = '#1E1410'; // beard dark
+  const R = '#8B1A1A'; // flannel red
+  const G = '#1E3D2A'; // flannel green
+  const T = '#2A2A2A'; // shadow/collar
+
+  // 24 cols × 30 rows
+  const art = [
+    // Row  0
+    [B,B,B,H,H,H,H,H,H,H,H,H,H,H,H,H,H,H,H,H,H,B,B,B],
+    // Row  1
+    [B,B,K,H,H,H,H,H,H,H,H,H,H,H,H,H,H,H,H,H,H,K,B,B],
+    // Row  2
+    [B,K,K,H,H,H,H,H,H,H,O,O,O,H,H,H,H,H,H,H,H,K,K,B],
+    // Row  3
+    [K,K,K,K,H,H,H,H,H,H,H,H,H,H,H,H,H,H,H,H,K,K,K,K],
+    // Row  4 — brim
+    [K,K,K,K,K,H,H,H,H,H,H,H,H,H,H,H,H,H,H,K,K,K,K,K],
+    // Row  5 — forehead
+    [K,K,K,K,K,F,F,F,F,F,F,F,F,F,F,F,F,F,F,K,K,K,K,K],
+    // Row  6
+    [K,K,K,K,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,K,K,K,K],
+    // Row  7 — eyebrows
+    [K,K,K,K,F,F,D,D,D,F,F,F,F,F,D,D,D,F,F,F,K,K,K,K],
+    // Row  8 — eyes open
+    [K,K,K,K,F,W,W,W,W,F,F,F,F,F,W,W,W,W,F,F,K,K,K,K],
+    // Row  9 — pupils
+    [K,K,K,K,F,W,P,P,W,F,F,F,F,F,W,P,P,W,F,F,K,K,K,K],
+    // Row 10 — nasal strip starts
+    [K,K,K,K,F,W,W,W,W,F,W,W,W,W,W,W,W,W,F,F,K,K,K,K],
+    // Row 11 — nasal strip main
+    [K,K,K,F,F,F,F,F,F,F,W,W,W,W,F,F,F,F,F,F,F,K,K,K],
+    // Row 12 — nose + cheeks
+    [K,K,K,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,K,K,K],
+    // Row 13 — upper lip
+    [K,K,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,K,K],
+    // Row 14 — mustache / lip
+    [K,K,F,F,F,F,D,D,D,D,D,D,D,D,D,D,F,F,F,F,F,F,K,K],
+    // Row 15 — beard starts
+    [K,K,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,K,K],
+    // Row 16
+    [K,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,K],
+    // Row 17
+    [K,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,K],
+    // Row 18
+    [B,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,B],
+    // Row 19 — beard lower
+    [B,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,D,B],
+    // Row 20 — neck
+    [B,B,T,T,T,D,D,D,D,D,D,D,D,D,D,D,D,D,T,T,T,T,B,B],
+    // Row 21 — shirt
+    [B,B,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,B,B],
+    // Row 22
+    [B,B,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,B,B],
+    // Row 23
+    [B,B,R,R,G,G,R,R,G,G,R,R,G,G,R,R,G,G,R,R,G,G,B,B],
+    // Row 24
+    [B,B,G,G,R,R,G,G,R,R,G,G,R,R,G,G,R,R,G,G,R,R,B,B],
+    // Row 25
+    [B,B,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,B,B],
+    // Row 26
+    [B,B,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,B,B],
+    // Row 27
+    [B,B,R,R,G,G,R,R,G,G,R,R,G,G,R,R,G,G,R,R,G,G,B,B],
+    // Row 28
+    [B,B,G,G,R,R,G,G,R,R,G,G,R,R,G,G,R,R,G,G,R,R,B,B],
+    // Row 29
+    [B,B,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,R,G,B,B],
+  ];
+
+  art.forEach((row, y) => {
+    row.forEach((color, x) => {
+      ctx.fillStyle = color;
+      ctx.fillRect(x * S, y * S, S, S);
+    });
+  });
+})();
+
+// ═══════════════════════════════════
+// SYSTEM PROMPT — 100M OFFERS
+// ═══════════════════════════════════
+const SYSTEM_PROMPT = `Tu es Alex Hormozi. Tu as vendu pour plus de 100 millions de dollars d'offres. Tu appliques ton framework 100M Offers avec une précision chirurgicale.
+
+Ta mission : construire l'offre complète et irrésistible du freelance qui te donne ses infos. Pas de généralités, pas de principes vagues — chaque section doit être rédigée, chiffrée, et prête à être utilisée.
+
+FRAMEWORK 100M OFFERS COMPLET (à appliquer section par section) :
+
+**1. DREAM OUTCOME**
+Le résultat de rêve formulé du point de vue du client. Pas de ce que tu fais — de ce qu'il OBTIENT. Ultra précis, avec chiffres si possible.
+
+**2. VALUE EQUATION**
+Les 4 variables de Hormozi, scorées /10 et commentées :
+- Dream Outcome (ampleur du résultat voulu) /10
+- Perceived Probability of Achievement (probabilité perçue que ça marche) /10
+- Time Delay (délai avant le résultat — plus court = mieux) /10 (inversé : délai court = score élevé)
+- Effort & Sacrifice (effort requis du client — moins = mieux) /10 (inversé : effort faible = score élevé)
+Score global = (Dream × Probability) / (Time × Effort)
+Commentaire sur les variables les plus faibles et comment les améliorer.
+
+**3. GRAND SLAM OFFER — L'OFFRE CORE**
+Ce que tu vends en 1 paragraphe. Le cœur de l'offre, pas la liste. Ce qui différencie ton offre d'un "je configure un outil".
+
+**4. VALUE STACK**
+Tableau complet de tous les livrables :
+| Livrable | Ce que ça règle | Valeur perçue |
+Chaque livrable face à l'obstacle qu'il résout. Valeur perçue = ce que ça coûterait de le faire acheter ailleurs ou de l'éviter.
+**Valeur totale perçue** : XXX€
+**Ton prix** : XXX€
+**Multiplicateur de valeur** : Xk×
+
+**5. NAMING — FRAMEWORK MAGIC**
+M = Make it short (court, mémorable)
+A = Alliterate (allitération si possible)
+G = Give a result (le résultat dans le nom)
+I = Indicate timeliness (le délai dans le nom)
+C = Challenge (ça sonne comme un défi)
+Propose 3 noms complets pour l'offre avec justification de chaque.
+
+**6. PREMIUM PRICING**
+Prix recommandé (setup + récurrent si pertinent) avec :
+- Ancrage psychologique (comparaison au coût du problème)
+- Justification par le ROI client (délai de payback)
+- Positionnement vs concurrents
+- Technique de présentation du prix (tri-split, down-sell option, etc.)
+
+**7. GARANTIE**
+Type de garantie recommandé parmi :
+- Unconditional (remboursement sans condition)
+- Conditional (résultat ou remboursé)
+- Anti-risk (tu prends tout le risque)
+- Implied (on sait ce qu'on fait)
+Texte exact de la garantie prêt à copier dans les propales.
+Conditions d'éligibilité strictes (pour protéger le prestataire).
+
+**8. BONUS STACK**
+5 bonus minimum, chacun avec :
+- Nom du bonus
+- Objection spécifique qu'il tue
+- Ce que ça vaut séparément
+- Comment ça renforce l'offre principale
+Format : "**[Nom Bonus]** → tue l'objection *[objection exacte]* → Valeur : [X]€"
+
+**9. SCARCITÉ & URGENCE**
+2 leviers concrets (pas bidons) adaptés à ce business.
+Pourquoi ça limite sans paraître fake.
+
+**10. LE PITCH EN 1 PHRASE**
+La phrase de présentation complète. Format :
+"J'aide [CLIENT IDÉAL] à [DREAM OUTCOME] en [DÉLAI], sans [SACRIFICE], ou [GARANTIE]."
+
+---
+
+RÈGLES D'OR :
+- Tout doit être spécifique à ce business — pas de template générique
+- Les chiffres doivent être réalistes et justifiés
+- Le nom de l'offre doit être mémorable, pas générique
+- La garantie doit être audacieuse mais protégée par des conditions claires
+- Le pitch final doit pouvoir être dit en 10 secondes
+
+Formate en Markdown structuré avec les 10 sections numérotées. Commence directement par la Section 1 sans introduction.`;
+
+// ═══════════════════════════════════
+// STATE
+// ═══════════════════════════════════
+let currentPage = 0;
+let apiKey = '';
+let lastResult = '';
+const TOTAL_STEPS = 3;
+
+// ═══════════════════════════════════
+// CURSOR
+// ═══════════════════════════════════
+const cursor = document.getElementById('cursor');
+const cursorDot = document.getElementById('cursorDot');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+  cursorDot.style.left = e.clientX + 'px';
+  cursorDot.style.top  = e.clientY + 'px';
+});
+
+// ═══════════════════════════════════
+// API KEY
+// ═══════════════════════════════════
+function toggleApiVisibility() {
+  const inp = document.getElementById('api-key-input');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function startWithApiKey() {
+  const key = document.getElementById('api-key-input').value.trim();
+  const errEl = document.getElementById('api-error');
+  if (!key || !key.startsWith('sk-ant-')) {
+    errEl.classList.add('show');
+    return;
+  }
+  errEl.classList.remove('show');
+  apiKey = key;
+  localStorage.setItem('hormozi_api_key', key);
+  goTo(1);
+}
+
+// ═══════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════
+function goTo(pageNum) {
+  document.getElementById('page-' + currentPage).classList.remove('active', 'fade-in');
+  currentPage = pageNum;
+  const el = document.getElementById('page-' + pageNum);
+  el.classList.add('active');
+  void el.offsetWidth;
+  el.classList.add('fade-in');
+  updateProgress(pageNum);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(page) {
+  const wrap = document.getElementById('progress-wrap');
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('stepLabel');
+  if (page >= 1 && page <= TOTAL_STEPS) {
+    wrap.style.display = 'block';
+    fill.style.width = ((page - 1) / TOTAL_STEPS * 100) + '%';
+    label.textContent = 'Étape ' + page;
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+// ═══════════════════════════════════
+// VALIDATION
+// ═══════════════════════════════════
+function showErr(errId, condition, inputId) {
+  const errEl = document.getElementById(errId);
+  if (errEl) errEl.classList.toggle('show', !!condition);
+  if (inputId) {
+    const inp = document.getElementById(inputId);
+    if (inp) inp.classList.toggle('error', !!condition);
+  }
+}
+
+const validators = {
+  1: () => {
+    const niche = document.getElementById('f-niche').value.trim();
+    const dream = document.getElementById('f-dream').value.trim();
+    const pain  = document.getElementById('f-pain').value.trim();
+    showErr('err-niche', !niche, 'f-niche');
+    showErr('err-dream', !dream, 'f-dream');
+    showErr('err-pain',  !pain,  'f-pain');
+    return niche && dream && pain;
+  },
+  2: () => {
+    const obs = document.getElementById('f-obstacles').value.trim();
+    const sol = document.getElementById('f-solutions').value.trim();
+    showErr('err-obstacles', !obs, 'f-obstacles');
+    showErr('err-solutions', !sol, 'f-solutions');
+    return obs && sol;
+  },
+  3: () => {
+    const proof = document.getElementById('f-proof').value.trim();
+    const price = document.getElementById('f-price').value.trim();
+    const delay = document.getElementById('f-delay').value.trim();
+    showErr('err-proof', !proof, 'f-proof');
+    showErr('err-price', !price, 'f-price');
+    showErr('err-delay', !delay, 'f-delay');
+    return proof && price && delay;
+  }
+};
+
+async function nextPage(fromPage) {
+  if (!validators[fromPage]()) return;
+  if (fromPage === 3) {
+    goTo(4);
+    await generateOffer();
+  } else {
+    goTo(fromPage + 1);
+  }
+}
+
+// ═══════════════════════════════════
+// BUILD USER MESSAGE
+// ═══════════════════════════════════
+function buildUserMessage() {
+  const niche     = document.getElementById('f-niche').value.trim();
+  const dream     = document.getElementById('f-dream').value.trim();
+  const pain      = document.getElementById('f-pain').value.trim();
+  const obstacles = document.getElementById('f-obstacles').value.trim();
+  const solutions = document.getElementById('f-solutions').value.trim();
+  const proof     = document.getElementById('f-proof').value.trim();
+  const price     = document.getElementById('f-price').value.trim();
+  const delay     = document.getElementById('f-delay').value.trim();
+
+  return `INFOS BUSINESS :
+
+**Client idéal / niche** : ${niche}
+**Dream outcome du client** : ${dream}
+**Douleur principale (chiffrée si possible)** : ${pain}
+**Obstacles secondaires** :
+${obstacles}
+**Livrables / solutions proposées** :
+${solutions}
+**Preuves & résultats clients** : ${proof}
+**Prix actuel + concurrents** : ${price}
+**Délai pour le résultat + différenciateur** : ${delay}
+
+Construis l'offre complète en 10 sections selon le framework 100M Offers. Chaque section doit être spécifique à ce business, rédigée et prête à l'emploi.`;
+}
+
+// ═══════════════════════════════════
+// ANIMATION STEPS
+// ═══════════════════════════════════
+let stepTimer = null;
+function animateGenSteps() {
+  const steps  = ['gstep-1','gstep-2','gstep-3','gstep-4','gstep-5'];
+  const labels = [
+    'Dream outcome + équation de valeur',
+    'Stack de valeur + prix justifiés',
+    'Naming MAGIC de l\'offre',
+    'Garantie + bonus stack',
+    'Pitch + scarcité + urgence'
+  ];
+  let idx = 0;
+  steps.forEach(s => { document.getElementById(s).className = 'gen-step'; });
+  document.getElementById(steps[0]).classList.add('active');
+  document.getElementById('gen-status').textContent = labels[0];
+
+  stepTimer = setInterval(() => {
+    if (idx < steps.length - 1) {
+      document.getElementById(steps[idx]).classList.remove('active');
+      document.getElementById(steps[idx]).classList.add('done');
+      idx++;
+      document.getElementById(steps[idx]).classList.add('active');
+      document.getElementById('gen-status').textContent = labels[idx];
+    }
+  }, 4000);
+}
+
+// ═══════════════════════════════════
+// CALL CLAUDE API
+// ═══════════════════════════════════
+async function generateOffer() {
+  document.getElementById('gen-error').classList.remove('show');
+  document.getElementById('gen-spinner').style.display = 'block';
+  animateGenSteps();
+
+  const userMessage = buildUserMessage();
+
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        apiKey,
+        systemPrompt: SYSTEM_PROMPT,
+        userMessage,
+      })
+    });
+
+    clearInterval(stepTimer);
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData?.error?.message || `HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    const mdText = data.content?.[0]?.text || '';
+    if (!mdText) throw new Error('Réponse vide de Claude');
+
+    lastResult = mdText;
+    displayResults(mdText);
+    goTo(5);
+
+  } catch (err) {
+    clearInterval(stepTimer);
+    document.getElementById('gen-spinner').style.display = 'none';
+    document.getElementById('gen-error-msg').textContent = err.message || 'Erreur inconnue.';
+    document.getElementById('gen-error').classList.add('show');
+    console.error('Claude API error:', err);
+  }
+}
+
+// ═══════════════════════════════════
+// DISPLAY RESULTS
+// ═══════════════════════════════════
+function displayResults(mdText) {
+  const container = document.getElementById('md-output');
+  marked.setOptions({ breaks: true, gfm: true });
+  container.innerHTML = marked.parse(mdText);
+  container.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.removeAttribute('disabled'));
+}
+
+// ═══════════════════════════════════
+// DOWNLOAD
+// ═══════════════════════════════════
+function downloadMD() {
+  if (!lastResult) return;
+  const blob = new Blob([lastResult], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'offre-hormozi-' + new Date().toISOString().slice(0,10) + '.md';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ═══════════════════════════════════
+// COPY ALL
+// ═══════════════════════════════════
+async function copyAll() {
+  if (!lastResult) return;
+  try {
+    await navigator.clipboard.writeText(lastResult);
+    const btn = event.currentTarget;
+    const orig = btn.textContent;
+    btn.textContent = 'Copié ✓';
+    setTimeout(() => btn.textContent = orig, 2000);
+  } catch(e) {
+    alert('Copie manuelle : sélectionne tout le texte du résultat.');
+  }
+}
+
+// ═══════════════════════════════════
+// RESTART
+// ═══════════════════════════════════
+function restart() {
+  lastResult = '';
+  document.getElementById('md-output').innerHTML = '';
+  ['f-niche','f-dream','f-pain','f-obstacles','f-solutions','f-proof','f-price','f-delay'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  goTo(1);
+}
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+(function init() {
+  const saved = localStorage.getItem('hormozi_api_key');
+  if (saved) {
+    document.getElementById('api-key-input').value = saved;
+    apiKey = saved;
+  }
+  updateProgress(0);
+})();
+
+</script>
+</body>
+</html>
