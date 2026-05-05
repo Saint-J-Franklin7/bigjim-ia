@@ -6,6 +6,6 @@
     { "source": "/prompt", "destination": "/prompt.html" },
     { "source": "/agent-hormozi", "destination": "/agent-hormozi/index.html" },
     { "source": "/niche-selector", "destination": "/niche-selector/index.html" },
-    { "source": "/prompts-agents-n8n", "destination": "/prompts-agents-n8n/index.html" }
+    { "source": "/prompts-agents-ia", "destination": "/prompts-agents-ia/index.html" }
   ]
 }
