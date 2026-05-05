@@ -5,6 +5,7 @@
     { "source": "/commandes", "destination": "/commandes.html" },
     { "source": "/prompt", "destination": "/prompt.html" },
     { "source": "/agent-hormozi", "destination": "/agent-hormozi/index.html" },
-    { "source": "/niche-selector", "destination": "/niche-selector/index.html" }
+    { "source": "/niche-selector", "destination": "/niche-selector/index.html" },
+    { "source": "/prompts-agents-n8n", "destination": "/prompts-agents-n8n/index.html" }
   ]
 }
