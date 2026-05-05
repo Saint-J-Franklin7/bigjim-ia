@@ -231,6 +231,7 @@ body {
 
 /* ---- Header nav ---- */
 nav {
+  width: 100%;
   display: flex; align-items: center; justify-content: space-between;
   padding: 18px 24px; border-bottom: 1px solid var(--border);
   position: sticky; top: 0; background: var(--bg); z-index: 100;
@@ -298,7 +299,7 @@ const NICHES = [
     tag: 'Gestion RDV + relances devis automatiques',
     agent: 'Agent réceptionniste + relance devis',
     ticket: [1200, 2000], mrr: [250, 450],
-    cap_payer: 3, facilite: 4, concurrence: 5, urgence: 4, tech: 2,
+    cap_payer: 3, facilite: 4, concurrence_ia: 5, urgence: 4, tech: 2,
     canaux: ['tel', 'physique'], budget: 'minimal', cycle: 'short',
     bg: ['sales', 'general'], reseau: ['artisans'], geo: 'local',
     pourquoi: 'Croulent sous les appels, perdent des devis par manque de relance. ROI immédiatement visible : "avant, je répondais en 2 jours — maintenant en 2 min".',
@@ -310,7 +311,7 @@ const NICHES = [
     tag: 'Réservations 24/7 + réponse avis Google + relances clients',
     agent: 'Agent réservations + avis Google automatisés',
     ticket: [800, 1500], mrr: [200, 400],
-    cap_payer: 2, facilite: 5, concurrence: 4, urgence: 3, tech: 1,
+    cap_payer: 2, facilite: 5, concurrence_ia: 4, urgence: 3, tech: 1,
     canaux: ['physique', 'tel'], budget: 'minimal', cycle: 'short',
     bg: ['sales', 'general'], reseau: ['artisans', 'none'], geo: 'local',
     pourquoi: 'Volume de prospects énorme. Accessibles en physique. Réservations perdues le soir et le week-end = problème évident à résoudre.',
@@ -322,7 +323,7 @@ const NICHES = [
     tag: 'Rappels RDV + qualification nouveaux patients + relances devis',
     agent: 'Agent rappels automatiques + zéro no-shows',
     ticket: [2000, 4000], mrr: [400, 900],
-    cap_payer: 5, facilite: 2, concurrence: 3, urgence: 5, tech: 3,
+    cap_payer: 5, facilite: 2, concurrence_ia: 3, urgence: 5, tech: 3,
     canaux: ['email', 'tel'], budget: 'minimal', cycle: 'medium',
     bg: ['sales', 'marketing'], reseau: ['none', 'corporate'], geo: 'local',
     pourquoi: 'Un no-show = 80–150€ perdus. Un agent qui réduit les no-shows de 30% = ROI immédiat chiffrable. C\'est le meilleur pitch en santé.',
@@ -334,7 +335,7 @@ const NICHES = [
     tag: 'Rappels RDV + liste d\'attente automatique + suivi patient',
     agent: 'Agent relance RDV + gestion liste d\'attente',
     ticket: [1000, 2000], mrr: [200, 500],
-    cap_payer: 3, facilite: 3, concurrence: 3, urgence: 4, tech: 2,
+    cap_payer: 3, facilite: 3, concurrence_ia: 3, urgence: 4, tech: 2,
     canaux: ['email', 'social'], budget: 'minimal', cycle: 'short',
     bg: ['sales', 'general'], reseau: ['none'], geo: 'local',
     pourquoi: 'Les trous de planning = argent perdu. Agent qui remplace les annulations avec la liste d\'attente = valeur immédiate.',
@@ -346,7 +347,7 @@ const NICHES = [
     tag: 'Qualification leads + nurturing + relances membres inactifs',
     agent: 'Agent qualification + relance membres',
     ticket: [800, 1500], mrr: [200, 400],
-    cap_payer: 2, facilite: 4, concurrence: 3, urgence: 3, tech: 2,
+    cap_payer: 2, facilite: 4, concurrence_ia: 3, urgence: 3, tech: 2,
     canaux: ['social', 'physique'], budget: 'minimal', cycle: 'short',
     bg: ['marketing', 'sales', 'general'], reseau: ['none', 'artisans'], geo: 'local',
     pourquoi: 'Instagram est leur terrain principal. Un agent qui répond aux DM 24/7 = leads captés même à 23h. Les membres inactifs = manque à gagner récupérable.',
@@ -358,7 +359,7 @@ const NICHES = [
     tag: 'Qualification leads + booking call stratégie + nurturing email',
     agent: 'Agent qualification + booking call + séquence nurturing',
     ticket: [1500, 3000], mrr: [300, 700],
-    cap_payer: 4, facilite: 4, concurrence: 2, urgence: 4, tech: 2,
+    cap_payer: 4, facilite: 4, concurrence_ia: 2, urgence: 4, tech: 2,
     canaux: ['social', 'email'], budget: 'minimal', cycle: 'short',
     bg: ['marketing', 'sales'], reseau: ['digital', 'none'], geo: 'national',
     pourquoi: 'Comprennent l\'IA, voient la valeur immédiatement. Passent 2h/jour à répondre aux mêmes questions → l\'agent récupère ces 2h.',
@@ -370,7 +371,7 @@ const NICHES = [
     tag: 'FAQ clients automatisée + rappels documents + qualification prospects',
     agent: 'Agent FAQ clients + rappels pièces manquantes',
     ticket: [2000, 4000], mrr: [400, 900],
-    cap_payer: 5, facilite: 2, concurrence: 4, urgence: 4, tech: 3,
+    cap_payer: 5, facilite: 2, concurrence_ia: 4, urgence: 4, tech: 3,
     canaux: ['email', 'tel'], budget: 'minimal', cycle: 'medium',
     bg: ['sales', 'general'], reseau: ['corporate'], geo: 'local',
     pourquoi: 'Reçoivent les mêmes 50 questions en boucle de leurs clients. Un agent FAQ = économise 5h/semaine → ROI direct sur le temps facturable.',
@@ -382,7 +383,7 @@ const NICHES = [
     tag: 'Qualification nouveaux clients + prise de RDV + FAQ juridique de base',
     agent: 'Agent accueil + qualification + booking',
     ticket: [3000, 6000], mrr: [600, 1400],
-    cap_payer: 5, facilite: 1, concurrence: 5, urgence: 3, tech: 3,
+    cap_payer: 5, facilite: 1, concurrence_ia: 5, urgence: 3, tech: 3,
     canaux: ['email', 'tel'], budget: 'minimal', cycle: 'long',
     bg: ['sales'], reseau: ['corporate'], geo: 'local',
     pourquoi: 'Tickets très élevés. Peu concurrentiel. Dur à closer mais 1 deal = 3000–6000€ setup + récurrent solide.',
@@ -394,7 +395,7 @@ const NICHES = [
     tag: 'Qualification acheteurs/vendeurs + prise de RDV visites + relances leads',
     agent: 'Agent qualification leads + booking visites 24/7',
     ticket: [1500, 3000], mrr: [350, 800],
-    cap_payer: 4, facilite: 3, concurrence: 3, urgence: 5, tech: 2,
+    cap_payer: 4, facilite: 3, concurrence_ia: 3, urgence: 5, tech: 2,
     canaux: ['tel', 'email', 'social'], budget: 'minimal', cycle: 'short',
     bg: ['sales', 'marketing'], reseau: ['artisans', 'corporate', 'none'], geo: 'local',
     pourquoi: 'Un lead qui remplit un formulaire à 2h du matin et ne reçoit pas de réponse = deal perdu. L\'agent répond en 2 min = plus de ventes.',
@@ -406,7 +407,7 @@ const NICHES = [
     tag: 'Prise de RDV entretien + devis automatiques + rappels contrôle technique',
     agent: 'Agent RDV + rappels CT + relance devis',
     ticket: [1000, 2000], mrr: [200, 450],
-    cap_payer: 3, facilite: 4, concurrence: 5, urgence: 4, tech: 2,
+    cap_payer: 3, facilite: 4, concurrence_ia: 5, urgence: 4, tech: 2,
     canaux: ['tel', 'physique'], budget: 'minimal', cycle: 'short',
     bg: ['sales', 'general'], reseau: ['artisans'], geo: 'local',
     pourquoi: 'Niche locale énorme et très peu digitalisée. Un agent qui rappelle le contrôle technique = valeur tangible, visible, et immédiate.',
@@ -418,7 +419,7 @@ const NICHES = [
     tag: 'Booking 24/7 + relances clients inactifs + fidélisation automatisée',
     agent: 'Agent réservations + relance fidélisation',
     ticket: [800, 1500], mrr: [200, 380],
-    cap_payer: 2, facilite: 5, concurrence: 3, urgence: 3, tech: 1,
+    cap_payer: 2, facilite: 5, concurrence_ia: 3, urgence: 3, tech: 1,
     canaux: ['social', 'physique'], budget: 'minimal', cycle: 'short',
     bg: ['marketing', 'sales', 'general'], reseau: ['none', 'artisans'], geo: 'local',
     pourquoi: 'Très réceptifs aux DM Instagram. Deal rapide. Agent de booking = libère du temps de manière concrète et visible dès la première semaine.',
@@ -430,7 +431,7 @@ const NICHES = [
     tag: 'SAV automatisé + récupération paniers abandonnés + upsell post-achat',
     agent: 'Agent SAV + relance paniers + upsell',
     ticket: [2000, 5000], mrr: [500, 1500],
-    cap_payer: 4, facilite: 3, concurrence: 2, urgence: 5, tech: 4,
+    cap_payer: 4, facilite: 3, concurrence_ia: 2, urgence: 5, tech: 4,
     canaux: ['email', 'social'], budget: 'moderate', cycle: 'medium',
     bg: ['tech', 'marketing'], reseau: ['digital'], geo: 'national',
     pourquoi: '70% des paniers sont abandonnés. Un agent de relance = ROI mesurable en semaines. C\'est le cas qu\'on a closé en live pendant le tournage.',
@@ -442,7 +443,7 @@ const NICHES = [
     tag: 'Reporting automatisé + qualification prospects + chatbot site web',
     agent: 'Agent lead capture + rapports clients automatisés',
     ticket: [2000, 4500], mrr: [500, 1100],
-    cap_payer: 4, facilite: 3, concurrence: 2, urgence: 4, tech: 4,
+    cap_payer: 4, facilite: 3, concurrence_ia: 2, urgence: 4, tech: 4,
     canaux: ['social', 'email'], budget: 'moderate', cycle: 'medium',
     bg: ['tech', 'marketing'], reseau: ['digital', 'corporate'], geo: 'national',
     pourquoi: 'Comprennent l\'IA et peuvent revendre tes agents à leurs clients = effet levier massif. 1 agence = accès à 10–30 clients potentiels.',
@@ -454,7 +455,7 @@ const NICHES = [
     tag: 'Qualification clients + suivi projets + génération devis automatique',
     agent: 'Agent qualification + devis automatique',
     ticket: [1000, 2500], mrr: [250, 600],
-    cap_payer: 3, facilite: 4, concurrence: 2, urgence: 4, tech: 2,
+    cap_payer: 3, facilite: 4, concurrence_ia: 2, urgence: 4, tech: 2,
     canaux: ['social', 'email'], budget: 'minimal', cycle: 'short',
     bg: ['tech', 'marketing'], reseau: ['digital'], geo: 'national',
     pourquoi: 'Très conscients de l\'IA. Deal entre pairs = confiance rapide. Perdent des leads parce qu\'ils répondent trop lentement quand ils sont en mission.',
@@ -466,7 +467,7 @@ const NICHES = [
     tag: 'Qualification leads + nurturing email + support élèves automatisé',
     agent: 'Agent qualification + chatbot support formation',
     ticket: [1500, 3500], mrr: [300, 800],
-    cap_payer: 4, facilite: 4, concurrence: 2, urgence: 5, tech: 3,
+    cap_payer: 4, facilite: 4, concurrence_ia: 2, urgence: 5, tech: 3,
     canaux: ['social', 'email'], budget: 'minimal', cycle: 'short',
     bg: ['marketing', 'tech'], reseau: ['digital'], geo: 'national',
     pourquoi: 'Passent 2–3h/jour à répondre aux mêmes questions de leurs élèves. Un agent support = ces heures récupérées = plus de contenu, plus de revenus.',
@@ -478,7 +479,7 @@ const NICHES = [
     tag: 'Automatisation prospection + qualification + suivi pipeline',
     agent: 'Agent prospection + qualification leads B2B',
     ticket: [3000, 6000], mrr: [600, 1500],
-    cap_payer: 5, facilite: 2, concurrence: 4, urgence: 4, tech: 4,
+    cap_payer: 5, facilite: 2, concurrence_ia: 4, urgence: 4, tech: 4,
     canaux: ['email', 'social'], budget: 'moderate', cycle: 'long',
     bg: ['tech', 'sales'], reseau: ['corporate'], geo: 'national',
     pourquoi: 'Tickets très élevés. Comprennent le ROI vite. 1 deal = 3000–6000€ setup + récurrent solide. Cycle de vente long mais chaque heure vaut le coup.',
@@ -490,7 +491,7 @@ const NICHES = [
     tag: 'Traitement commandes + FAQ techniciens + suivi livraisons clients',
     agent: 'Agent support technique + traitement commandes',
     ticket: [3000, 7000], mrr: [700, 2000],
-    cap_payer: 5, facilite: 2, concurrence: 5, urgence: 3, tech: 4,
+    cap_payer: 5, facilite: 2, concurrence_ia: 5, urgence: 3, tech: 4,
     canaux: ['tel', 'email'], budget: 'moderate', cycle: 'long',
     bg: ['tech', 'sales'], reseau: ['corporate', 'artisans'], geo: 'local',
     pourquoi: 'Niche quasi inexploitée. Grands budgets. Problèmes concrets et répétitifs = agents à forte valeur perçue. 1 deal bien positionné = récurrent >1000€/mois.',
@@ -502,7 +503,7 @@ const NICHES = [
     tag: 'Qualification clients + gestion devis + relances livraisons',
     agent: 'Agent qualification + devis + relance',
     ticket: [800, 1800], mrr: [200, 400],
-    cap_payer: 3, facilite: 4, concurrence: 3, urgence: 3, tech: 2,
+    cap_payer: 3, facilite: 4, concurrence_ia: 3, urgence: 3, tech: 2,
     canaux: ['social', 'email'], budget: 'minimal', cycle: 'short',
     bg: ['marketing', 'sales', 'general'], reseau: ['digital'], geo: 'local',
     pourquoi: 'Perdent des deals parce qu\'ils répondent trop lentement aux demandes entrantes (souvent le soir, quand ils tournent). Agent = réponse en 2 min.',
@@ -514,7 +515,7 @@ const NICHES = [
     tag: 'RDV multi-praticiens + rappels patients + triage questions',
     agent: 'Agent standard téléphonique IA + gestion RDV',
     ticket: [3000, 6000], mrr: [600, 1400],
-    cap_payer: 5, facilite: 2, concurrence: 4, urgence: 5, tech: 4,
+    cap_payer: 5, facilite: 2, concurrence_ia: 4, urgence: 5, tech: 4,
     canaux: ['email', 'tel'], budget: 'minimal', cycle: 'medium',
     bg: ['tech', 'sales'], reseau: ['corporate', 'none'], geo: 'local',
     pourquoi: 'Standard téléphonique submergé. 50% des appels = questions simples. Agent = réduit les appels entrants de 40% → valeur immédiate et chiffrable.',
@@ -526,7 +527,7 @@ const NICHES = [
     tag: 'FAQ produits + rappels ordonnances + fidélisation clients',
     agent: 'Agent FAQ + rappels renouvellements + conseils produits',
     ticket: [1500, 3000], mrr: [300, 700],
-    cap_payer: 4, facilite: 3, concurrence: 5, urgence: 4, tech: 3,
+    cap_payer: 4, facilite: 3, concurrence_ia: 5, urgence: 4, tech: 3,
     canaux: ['physique', 'email'], budget: 'minimal', cycle: 'medium',
     bg: ['sales', 'general'], reseau: ['artisans', 'none'], geo: 'local',
     pourquoi: 'Niche quasi inexploitée. Énorme volume de questions répétitives. Budget solide. L\'agent répond 24/7 sur les questions produits sans ordonnance.',
@@ -538,7 +539,7 @@ const NICHES = [
     tag: 'Qualification prospects + booking consultation + suivi chantier client',
     agent: 'Agent qualification + booking + FAQ chantier',
     ticket: [1500, 3500], mrr: [300, 800],
-    cap_payer: 4, facilite: 3, concurrence: 3, urgence: 3, tech: 3,
+    cap_payer: 4, facilite: 3, concurrence_ia: 3, urgence: 3, tech: 3,
     canaux: ['social', 'email'], budget: 'minimal', cycle: 'medium',
     bg: ['marketing', 'sales'], reseau: ['digital', 'artisans'], geo: 'local',
     pourquoi: 'Perdent des leads Instagram qui envoient un DM et ne reçoivent pas de réponse rapide. Agent = répond en 2 min avec les bonnes questions de qualification.',
@@ -550,7 +551,7 @@ const NICHES = [
     tag: 'Qualification candidats + FAQ inscription + support pédagogique',
     agent: 'Agent admissions + FAQ inscription + support élèves',
     ticket: [3000, 6000], mrr: [500, 1200],
-    cap_payer: 4, facilite: 3, concurrence: 4, urgence: 4, tech: 3,
+    cap_payer: 4, facilite: 3, concurrence_ia: 4, urgence: 4, tech: 3,
     canaux: ['email', 'social'], budget: 'minimal', cycle: 'medium',
     bg: ['sales', 'marketing'], reseau: ['corporate', 'digital'], geo: 'national',
     pourquoi: 'Période d\'inscription = 200 candidats à qualifier en 2 semaines. Agent = gère le flux sans recruter. Valeur immédiate et chiffrable.',
@@ -562,7 +563,7 @@ const NICHES = [
     tag: 'Qualification prospects + explication produits + booking rendez-vous',
     agent: 'Agent qualification + booking conseil',
     ticket: [1500, 3500], mrr: [400, 900],
-    cap_payer: 4, facilite: 3, concurrence: 3, urgence: 4, tech: 3,
+    cap_payer: 4, facilite: 3, concurrence_ia: 3, urgence: 4, tech: 3,
     canaux: ['tel', 'email'], budget: 'minimal', cycle: 'medium',
     bg: ['sales'], reseau: ['corporate', 'none'], geo: 'local',
     pourquoi: 'Chaque lead coûte cher. Un agent qui pré-qualifie = économie directe sur le coût d\'acquisition. ROI chiffrable en nombre d\'appels évités.',
@@ -574,7 +575,7 @@ const NICHES = [
     tag: 'Tri CVs + pré-qualification candidats + scheduling entretiens',
     agent: 'Agent pré-qualification candidats + booking entretien',
     ticket: [2000, 5000], mrr: [500, 1200],
-    cap_payer: 4, facilite: 3, concurrence: 3, urgence: 5, tech: 4,
+    cap_payer: 4, facilite: 3, concurrence_ia: 3, urgence: 5, tech: 4,
     canaux: ['email', 'social'], budget: 'minimal', cycle: 'medium',
     bg: ['tech', 'sales'], reseau: ['corporate'], geo: 'national',
     pourquoi: 'Passent 60% de leur temps sur des tâches répétitives : trier CVs, envoyer des emails de relance. Agent = libère du temps directement facturable.',
@@ -586,7 +587,7 @@ const NICHES = [
     tag: 'Onboarding automatisé + support utilisateurs + activation trials',
     agent: 'Agent onboarding + support + réactivation trials',
     ticket: [3000, 8000], mrr: [700, 2500],
-    cap_payer: 5, facilite: 3, concurrence: 1, urgence: 5, tech: 5,
+    cap_payer: 5, facilite: 3, concurrence_ia: 1, urgence: 5, tech: 5,
     canaux: ['email', 'social'], budget: 'comfortable', cycle: 'medium',
     bg: ['tech'], reseau: ['digital'], geo: 'national',
     pourquoi: 'Comprennent l\'IA, mesurent le ROI en temps réel. Tickets les plus élevés. Récurrent très solide. 1 deal bien posé = >1000€/mois pendant 12 mois.',
@@ -598,7 +599,7 @@ const NICHES = [
     tag: 'Agent standardisé déployé sur tous les points de vente du réseau',
     agent: 'Agent unifié pour tout le réseau',
     ticket: [5000, 15000], mrr: [1000, 4000],
-    cap_payer: 5, facilite: 2, concurrence: 5, urgence: 4, tech: 5,
+    cap_payer: 5, facilite: 2, concurrence_ia: 5, urgence: 4, tech: 5,
     canaux: ['email', 'tel'], budget: 'comfortable', cycle: 'long',
     bg: ['tech', 'sales'], reseau: ['corporate'], geo: 'national',
     pourquoi: '1 deal = agent multiplié par le nombre de franchisés. MRR explosif si tu clostes la tête de réseau. Rare mais extrêmement rentable.',
@@ -610,7 +611,7 @@ const NICHES = [
     tag: 'Qualification demandes événements + devis automatiques + suivi',
     agent: 'Agent qualification + brief événement + devis',
     ticket: [1000, 2500], mrr: [250, 550],
-    cap_payer: 3, facilite: 4, concurrence: 4, urgence: 3, tech: 2,
+    cap_payer: 3, facilite: 4, concurrence_ia: 4, urgence: 3, tech: 2,
     canaux: ['email', 'social', 'physique'], budget: 'minimal', cycle: 'short',
     bg: ['sales', 'marketing', 'general'], reseau: ['none', 'artisans'], geo: 'local',
     pourquoi: 'Croulent sous les demandes de devis non-qualifiés. Agent qui collecte le brief en amont = ils traitent uniquement des prospects avec budget et date définis.',
@@ -622,7 +623,7 @@ const NICHES = [
     tag: 'Suivi livraisons client + gestion réclamations + devis automatiques',
     agent: 'Agent suivi colis + réclamations + devis',
     ticket: [2000, 4500], mrr: [400, 1000],
-    cap_payer: 3, facilite: 3, concurrence: 5, urgence: 4, tech: 3,
+    cap_payer: 3, facilite: 3, concurrence_ia: 5, urgence: 4, tech: 3,
     canaux: ['tel', 'email'], budget: 'minimal', cycle: 'medium',
     bg: ['tech', 'sales'], reseau: ['corporate', 'artisans'], geo: 'local',
     pourquoi: 'Niche peu touchée. Énorme volume de questions répétitives sur les livraisons. Agent = réduction des appels entrants de 50% dès le premier mois.',
@@ -634,7 +635,7 @@ const NICHES = [
     tag: 'Qualification voyageurs + devis automatiques + support 24/7',
     agent: 'Agent devis voyage + qualification + support',
     ticket: [1500, 3500], mrr: [300, 800],
-    cap_payer: 4, facilite: 3, concurrence: 4, urgence: 4, tech: 3,
+    cap_payer: 4, facilite: 3, concurrence_ia: 4, urgence: 4, tech: 3,
     canaux: ['social', 'email'], budget: 'minimal', cycle: 'short',
     bg: ['sales', 'marketing'], reseau: ['digital', 'none'], geo: 'national',
     pourquoi: 'Les demandes arrivent le soir et le week-end. Agent = répond à toute heure = deals captés même quand l\'agence est fermée.',
@@ -646,11 +647,83 @@ const NICHES = [
     tag: 'Prise de RDV intelligente + triage questions + FAQ patients',
     agent: 'Agent accueil + triage + RDV automatisé',
     ticket: [2000, 4500], mrr: [400, 1000],
-    cap_payer: 5, facilite: 2, concurrence: 4, urgence: 5, tech: 3,
+    cap_payer: 5, facilite: 2, concurrence_ia: 4, urgence: 5, tech: 3,
     canaux: ['tel', 'email'], budget: 'minimal', cycle: 'medium',
     bg: ['sales', 'tech'], reseau: ['none', 'corporate'], geo: 'local',
     pourquoi: 'Standard téléphonique = cauchemar. 50% des appels = questions simples (horaires, renouvellement ordonnance). Agent = secrétaire libérée pour les urgences vraies.',
     objection: '"Données médicales sensibles." → L\'agent ne stocke rien. RGPD natif. Zéro donnée médicale traitée.'
+  },
+  {
+    id: 'hotel',
+    nom: 'Hôtel / Hébergement',
+    tag: 'Conciergerie IA + réservations + avis guests automatisés',
+    agent: 'Agent conciergerie + réservations + réponse avis',
+    ticket: [2000, 5000], mrr: [500, 1200],
+    cap_payer: 4, facilite: 3, concurrence_ia: 5, urgence: 4, tech: 3,
+    canaux: ['email', 'tel'], budget: 'minimal', cycle: 'medium',
+    bg: ['sales', 'marketing'], reseau: ['artisans', 'corporate'], geo: 'local',
+    pourquoi: 'Demandes de réservation et questions répétitives 24/7. Un agent conciergerie = meilleure expérience guest + réduction de la charge à la réception.',
+    objection: '"On utilise Booking." → Booking gère les réservations, pas la relation client. L\'agent répond aux questions avant et pendant le séjour.'
+  },
+  {
+    id: 'auto-ecole',
+    nom: 'Auto-École',
+    tag: 'Qualification prospects + planning leçons + rappels examens',
+    agent: 'Agent inscription + planning + rappels code/conduite',
+    ticket: [800, 1500], mrr: [200, 400],
+    cap_payer: 2, facilite: 4, concurrence_ia: 5, urgence: 3, tech: 2,
+    canaux: ['tel', 'social'], budget: 'minimal', cycle: 'short',
+    bg: ['sales', 'general'], reseau: ['artisans', 'none'], geo: 'local',
+    pourquoi: 'Volume énorme de questions répétitives (tarifs, disponibilités, résultats). Agent = secrétariat automatisé pour structures souvent sous-staffées.',
+    objection: '"On a pas beaucoup de budget." → Package entrée à 800€. ROI sur 2-3 inscriptions supplémentaires par mois.'
+  },
+  {
+    id: 'veterinaire',
+    nom: 'Vétérinaire / Clinique Vétérinaire',
+    tag: 'Gestion RDV + rappels vaccins + triage urgences',
+    agent: 'Agent RDV + rappels vaccins + FAQ urgences',
+    ticket: [1500, 3000], mrr: [300, 700],
+    cap_payer: 4, facilite: 3, concurrence_ia: 5, urgence: 4, tech: 2,
+    canaux: ['tel', 'email'], budget: 'minimal', cycle: 'short',
+    bg: ['sales', 'general'], reseau: ['none'], geo: 'local',
+    pourquoi: 'Standard submergé, rappels vaccins oubliés. Un agent rappel = fidélisation automatique + réduction des appels entrants de 40%.',
+    objection: '"Mes clients veulent parler à quelqu\'un." → L\'agent trie. Les urgences vraies passent direct à l\'humain immédiatement.'
+  },
+  {
+    id: 'syndic',
+    nom: 'Syndic de Copropriété',
+    tag: 'FAQ copropriétaires + gestion tickets + rappels assemblées générales',
+    agent: 'Agent FAQ + gestion demandes + rappels AG',
+    ticket: [2000, 4000], mrr: [400, 900],
+    cap_payer: 3, facilite: 2, concurrence_ia: 5, urgence: 4, tech: 3,
+    canaux: ['email', 'tel'], budget: 'minimal', cycle: 'medium',
+    bg: ['sales', 'tech'], reseau: ['corporate'], geo: 'local',
+    pourquoi: 'Croulent sous les demandes répétitives des copropriétaires. Agent FAQ = gestionnaires libérés pour les vraies décisions et la gestion des incidents.',
+    objection: '"Données de copropriété sensibles." → L\'agent répond aux questions générales. Les données sensibles restent dans le logiciel de gestion.'
+  },
+  {
+    id: 'concessionnaire',
+    nom: 'Concessionnaire Automobile',
+    tag: 'Qualification acheteurs + booking essais + relances leads entrants',
+    agent: 'Agent qualification + booking essai + relance automatique',
+    ticket: [2000, 4500], mrr: [400, 1000],
+    cap_payer: 4, facilite: 3, concurrence_ia: 4, urgence: 4, tech: 3,
+    canaux: ['email', 'tel', 'social'], budget: 'minimal', cycle: 'medium',
+    bg: ['sales', 'marketing'], reseau: ['artisans', 'corporate'], geo: 'local',
+    pourquoi: 'Leads entrants non-relancés dans les 2h = deals perdus. Agent = relance automatique + qualification avant le vrai appel commercial.',
+    objection: '"On a des commerciaux pour ça." → Tes commerciaux traitent les prospects qualifiés. L\'agent s\'occupe des leads froids à toute heure.'
+  },
+  {
+    id: 'commerce-local',
+    nom: 'Épicerie / Commerce Local',
+    tag: 'Commandes WhatsApp automatisées + fidélisation + promos ciblées',
+    agent: 'Agent commandes WhatsApp + programme fidélité',
+    ticket: [600, 1200], mrr: [150, 300],
+    cap_payer: 1, facilite: 5, concurrence_ia: 5, urgence: 3, tech: 1,
+    canaux: ['physique', 'social'], budget: 'minimal', cycle: 'short',
+    bg: ['sales', 'general'], reseau: ['artisans', 'none'], geo: 'local',
+    pourquoi: 'Nombreux commerces qui reçoivent des commandes par WhatsApp mais les gèrent manuellement. Agent = automatisation simple, visible immédiatement.',
+    objection: '"Mes clients sont pas tech." → L\'agent fonctionne sur WhatsApp qu\'ils utilisent déjà tous les jours.'
   }
 ];
 
@@ -790,7 +863,7 @@ function score(niche, a) {
   s += (a.geo === 'both' || niche.geo === 'both' || a.geo === niche.geo) ? 10 : 3;
 
   // Inherent quality bonus — 10 pts
-  s += ((niche.cap_payer * 0.35 + niche.facilite * 0.35 + niche.concurrence * 0.3) / 5) * 10;
+  s += ((niche.cap_payer * 0.35 + niche.facilite * 0.35 + niche.concurrence_ia * 0.3) / 5) * 10;
 
   // Time / cycle penalty
   if (a.temps === 'low' && niche.cycle === 'long') s -= 6;
@@ -936,6 +1009,10 @@ function renderResults() {
           <div class="metric">
             <div class="metric-lbl">Difficulté tech</div>
             <div class="metric-val">${dots(n.tech, 5)}</div>
+          </div>
+          <div class="metric">
+            <div class="metric-lbl">Concurrence IA</div>
+            <div class="metric-val">${dots(n.concurrence_ia, 5)}</div>
           </div>
         </div>
 
