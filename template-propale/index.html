@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template Propale — BONUS #09 · Closer IA</title>
+  <link rel="icon" type="image/png" href="../BigJim.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --noir: #0D0D0D; --grey: #161616; --orange: #E8612C; --teal: #0ABAB5; --white: #F0F0EB; --muted: #555; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--noir); color: var(--white); font-family: 'Courier Prime', monospace; min-height: 100vh; overflow-x: hidden; }
+    nav { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 1px solid #222; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); font-weight: 700; font-size: 15px; }
+    .nav-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); padding: 5px 12px; border: 1px solid var(--teal); }
+    .container { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+    .hero { text-align: center; margin-bottom: 60px; }
+    .badge { display: inline-block; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 6px 14px; margin-bottom: 24px; }
+    h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 700; line-height: 1.1; margin-bottom: 20px; }
+    h1 em { color: var(--orange); font-style: normal; }
+    .hero p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .tabs { display: flex; gap: 0; border-bottom: 1px solid #222; margin-bottom: 40px; }
+    .tab { padding: 12px 24px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; transition: all .2s; }
+    .tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .section-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .section-why { font-size: 12px; color: var(--muted); margin-bottom: 20px; line-height: 1.7; }
+    .template-block { background: #0a0a0a; border: 1px solid #2a2a2a; padding: 24px; margin-bottom: 8px; position: relative; }
+    .template-text { font-size: 13px; line-height: 1.9; color: #ccc; white-space: pre-wrap; }
+    .placeholder { color: var(--orange); font-weight: 700; }
+    .copy-btn { position: absolute; top: 12px; right: 12px; background: none; border: 1px solid #333; color: var(--muted); font-family: 'Courier Prime', monospace; font-size: 10px; letter-spacing: 2px; padding: 5px 10px; cursor: pointer; transition: all .2s; text-transform: uppercase; }
+    .copy-btn:hover { border-color: var(--orange); color: var(--orange); }
+    .copy-btn.copied { border-color: var(--teal); color: var(--teal); }
+    .tip-block { background: #0a1400; border: 1px solid #1a3000; padding: 14px 18px; margin-bottom: 20px; font-size: 12px; color: #86efac; line-height: 1.7; }
+    .separator { border: none; border-top: 1px solid #1a1a1a; margin: 30px 0; }
+    .rules { background: var(--grey); border: 1px solid #222; padding: 30px; margin-bottom: 40px; }
+    .rules h3 { font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+    .rule-item { display: flex; gap: 14px; margin-bottom: 14px; font-size: 13px; line-height: 1.6; }
+    .rule-num { color: var(--orange); font-weight: 700; flex-shrink: 0; }
+    .rule-text { color: #999; }
+    .rule-text strong { color: var(--white); }
+    .next-bonus { background: var(--grey); border: 1px solid #333; padding: 40px; text-align: center; margin-top: 80px; }
+    .next-bonus h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .next-bonus p { color: var(--muted); font-size: 13px; margin-bottom: 24px; line-height: 1.7; }
+    .btn-next { background: var(--orange); color: var(--noir); font-family: 'Courier Prime', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 14px 28px; font-weight: 700; text-decoration: none; display: inline-block; transition: opacity .2s; }
+    .btn-next:hover { opacity: .85; }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/BigJim.png" alt="BigJim" style="width:34px;height:34px;object-fit:contain" />
+    <span>BigJim</span>
+  </a>
+  <div class="nav-tag">Closer IA — Template Propale</div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="badge">Closer IA — BONUS #09</div>
+    <h1>TEMPLATE<br><em>PROPALE</em></h1>
+    <p>Le document de proposition commerciale qui fait signer.<br>Remplis les [CROCHETS] — envoie — close.</p>
+  </div>
+
+  <div class="rules">
+    <h3>Les 5 règles d'une propale qui signe</h3>
+    <div class="rule-item"><span class="rule-num">01</span><span class="rule-text"><strong>1 page max pour le décideur.</strong> La propale complète peut faire 3-4 pages — mais le résumé exécutif doit tenir en 5 lignes. C'est lui qu'on lit en premier.</span></div>
+    <div class="rule-item"><span class="rule-num">02</span><span class="rule-text"><strong>Commence par leur problème — pas par qui tu es.</strong> Ils savent qui tu es. Montre que tu sais qui ils sont.</span></div>
+    <div class="rule-item"><span class="rule-num">03</span><span class="rule-text"><strong>Le prix s'annonce après la valeur — jamais avant.</strong> Présente le ROI avant le tarif. La séquence crée la perception.</span></div>
+    <div class="rule-item"><span class="rule-num">04</span><span class="rule-text"><strong>1 CTA clair, pas 3.</strong> "Signez ici" ou "Confirmez par email" — pas "appelez-nous, répondez à cet email, ou allez sur notre site".</span></div>
+    <div class="rule-item"><span class="rule-num">05</span><span class="rule-text"><strong>Envoie-la dans l'heure qui suit l'appel.</strong> La chaleur de la conversation est ton plus grand asset. Après 24h, le deal refroidit.</span></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="full">Propale complète</div>
+    <div class="tab" data-tab="email">Email d'envoi</div>
+    <div class="tab" data-tab="mini">Version courte</div>
+  </div>
+
+  <div class="tab-content active" id="tab-full">
+
+    <div class="section-label">Section 01</div>
+    <div class="section-title">En-tête et résumé exécutif</div>
+    <div class="section-why">La première chose lue. Doit répondre à "pourquoi je lis ça ?" en 30 secondes.</div>
+    <div class="template-block">
+      <button class="copy-btn" onclick="copyBlock(this)">Copier</button>
+      <div class="template-text">PROPOSITION COMMERCIALE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Préparé pour : <span class="placeholder">[NOM DU CLIENT / ENTREPRISE]</span>
+Par : <span class="placeholder">[TON PRÉNOM + NOM]</span>
+Date : <span class="placeholder">[DATE]</span>
+Valable jusqu'au : <span class="placeholder">[DATE + 15 JOURS]</span>
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RÉSUMÉ EXÉCUTIF
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<span class="placeholder">[PRÉNOM DU CLIENT]</span>, vous m'avez parlé de <span class="placeholder">[PROBLÈME DANS LEURS MOTS EXACTS]</span>.
+Ce que ça vous coûte aujourd'hui : <span class="placeholder">[ESTIMATION EN TEMPS OU €]</span> par mois.
+
+Ce que je vous propose règle ce problème en <span class="placeholder">[DÉLAI]</span>.
+Résultat attendu : <span class="placeholder">[RÉSULTAT CONCRET ET MESURABLE]</span>.
+Investissement : <span class="placeholder">[PRIX SETUP]</span> en one-shot + <span class="placeholder">[RETAINER]</span>/mois (optionnel).
+      </div>
+    </div>
+
+    <hr class="separator" />
+
+    <div class="section-label">Section 02</div>
+    <div class="section-title">Le problème (leur situation actuelle)</div>
+    <div class="section-why">Montrer que tu as vraiment compris. Utilise leurs mots, pas le tien jargon. Si ils se reconnaissent dans cette section, la vente est à moitié faite.</div>
+    <div class="template-block">
+      <button class="copy-btn" onclick="copyBlock(this)">Copier</button>
+      <div class="template-text">LA SITUATION ACTUELLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Aujourd'hui, votre équipe passe <span class="placeholder">[X heures/semaine]</span> à <span class="placeholder">[TÂCHE SPÉCIFIQUE]</span> manuellement.
+
+Ce processus crée 3 problèmes :
+
+→ <span class="placeholder">[PROBLÈME 1 — ex: délai de réponse trop long aux clients]</span>
+→ <span class="placeholder">[PROBLÈME 2 — ex: erreurs humaines dans les données]</span>
+→ <span class="placeholder">[PROBLÈME 3 — ex: temps volé à des tâches à plus haute valeur]</span>
+
+À <span class="placeholder">[COÛT HORAIRE]</span>€/h de coût horaire moyen, ça représente <span class="placeholder">[CALCUL]</span>€/mois
+investis dans une tâche que l'automatisation peut prendre en charge.
+      </div>
+    </div>
+
+    <hr class="separator" />
+
+    <div class="section-label">Section 03</div>
+    <div class="section-title">La solution proposée</div>
+    <div class="section-why">Ce que tu livres exactement. Sois précis — chaque point vague est une objection potentielle.</div>
+    <div class="template-block">
+      <button class="copy-btn" onclick="copyBlock(this)">Copier</button>
+      <div class="template-text">CE QUE JE VOUS LIVRE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Je construis un agent IA sur mesure qui <span class="placeholder">[DESCRIPTION SIMPLE EN 1 PHRASE]</span>.
+
+Concrètement, l'agent :
+✓ <span class="placeholder">[FONCTION 1 — ex: reçoit automatiquement les demandes entrantes]</span>
+✓ <span class="placeholder">[FONCTION 2 — ex: analyse et catégorise chaque demande]</span>
+✓ <span class="placeholder">[FONCTION 3 — ex: génère une réponse personnalisée et l'envoie]</span>
+✓ <span class="placeholder">[FONCTION 4 — ex: escalade à un humain si la demande est complexe]</span>
+
+Ce qui est inclus dans la mission :
+• Conception et développement de l'agent
+• Tests sur vos données réelles (pas des données génériques)
+• Déploiement dans votre environnement (<span class="placeholder">[OUTILS : n8n / Zapier / autre]</span>)
+• Formation de <span class="placeholder">[X]</span> personne(s) à l'utilisation
+• Documentation complète (vous gardez la main)
+• Support technique pendant <span class="placeholder">[DURÉE]</span> après livraison
+
+Ce qui N'est PAS inclus :
+• <span class="placeholder">[EXCLUSION 1 — ex: maintenance mensuelle — voir option retainer]</span>
+• <span class="placeholder">[EXCLUSION 2 — ex: développement de fonctionnalités supplémentaires]</span>
+      </div>
+    </div>
+
+    <hr class="separator" />
+
+    <div class="section-label">Section 04</div>
+    <div class="section-title">Planning et jalons</div>
+    <div class="section-why">Le client veut savoir quand il aura son résultat. Un planning clair réduit l'anxiété et crée des points de validation naturels.</div>
+    <div class="template-block">
+      <button class="copy-btn" onclick="copyBlock(this)">Copier</button>
+      <div class="template-text">PLANNING DE LA MISSION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Semaine 1 — Kick-off et configuration
+  • Appel de briefing (1h) — <span class="placeholder">[DATE PROPOSÉE]</span>
+  • Collecte des accès et informations nécessaires
+  • Validation de l'architecture avant développement
+
+Semaine 2-3 — Développement
+  • Construction de l'agent
+  • Tests internes sur vos cas d'usage
+
+Semaine <span class="placeholder">[X]</span> — Validation client
+  • Présentation de l'agent en démo
+  • Ajustements selon vos retours (inclus)
+  • Validation finale
+
+Semaine <span class="placeholder">[X+1]</span> — Livraison et formation
+  • Déploiement en production
+  • Formation de votre équipe
+  • Remise de la documentation
+
+Livraison garantie avant le <span class="placeholder">[DATE]</span>.
+      </div>
+    </div>
+
+    <hr class="separator" />
+
+    <div class="section-label">Section 05</div>
+    <div class="section-title">Investissement et retour sur investissement</div>
+    <div class="section-why">Présente le prix APRÈS avoir montré la valeur. Le contexte ROI rend le prix rationnel.</div>
+    <div class="template-block">
+      <button class="copy-btn" onclick="copyBlock(this)">Copier</button>
+      <div class="template-text">INVESTISSEMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Développement et livraison (one-shot)
+→ <span class="placeholder">[PRIX SETUP]</span>€ HT — paiement à la commande
+
+Option : Maintenance et optimisation mensuelle
+→ <span class="placeholder">[RETAINER]</span>€ HT/mois (sans engagement minimum, résiliable à 30 jours)
+  Inclus : monitoring, corrections de bugs, 1 amélioration/mois, support prioritaire
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RETOUR SUR INVESTISSEMENT (estimation conservative)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Coût actuel mensuel de <span class="placeholder">[TÂCHE]</span> : <span class="placeholder">[€]</span>/mois
+Économies après déploiement : <span class="placeholder">[€]</span>/mois (estimation à -<span class="placeholder">[%]</span>)
+Break-even point : <span class="placeholder">[X]</span> mois
+ROI sur 12 mois : <span class="placeholder">[€]</span> d'économies nettes
+      </div>
+    </div>
+
+    <hr class="separator" />
+
+    <div class="section-label">Section 06</div>
+    <div class="section-title">Garantie et prochaine étape</div>
+    <div class="section-why">La garantie retire le risque perçu. Le CTA doit être une action simple et immédiate.</div>
+    <div class="template-block">
+      <button class="copy-btn" onclick="copyBlock(this)">Copier</button>
+      <div class="template-text">GARANTIE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Si l'agent livré ne remplit pas les fonctions décrites dans cette proposition,
+je corrige sans frais supplémentaires jusqu'à ce que ce soit le cas.
+Votre satisfaction sur les livrables est garantie.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PROCHAINE ÉTAPE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pour confirmer votre accord et démarrer la mission :
+
+→ Répondez à cet email avec "OK je démarre"
+→ Je vous envoie le contrat et la facture d'acompte (50%)
+→ On cale le call de kick-off dans les 48h suivantes
+
+Cette proposition est valable jusqu'au <span class="placeholder">[DATE]</span>.
+
+Des questions ? Je suis joignable sur <span class="placeholder">[EMAIL]</span> ou <span class="placeholder">[TEL/WA]</span>.
+
+<span class="placeholder">[TON PRÉNOM]</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tab-content" id="tab-email">
+    <div class="tip-block">💡 Envoie cet email dans l'heure qui suit votre appel. La chaleur de la conversation est ton meilleur allié.</div>
+
+    <div class="section-label">Email d'envoi de la propale</div>
+    <div class="section-title">Objet + corps d'email</div>
+    <div class="template-block">
+      <button class="copy-btn" onclick="copyBlock(this)">Copier</button>
+      <div class="template-text">OBJET : Proposition — Agent IA <span class="placeholder">[FONCTION]</span> pour <span class="placeholder">[ENTREPRISE]</span>
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<span class="placeholder">[PRÉNOM]</span>,
+
+Comme convenu — voici la proposition suite à notre échange.
+
+En résumé ce que j'y ai mis :
+→ La solution exacte pour <span class="placeholder">[PROBLÈME DISCUTÉ]</span>
+→ Planning de livraison sur <span class="placeholder">[DURÉE]</span>
+→ Le calcul ROI conservateur qu'on a évoqué
+
+Le document est en pièce jointe / ci-dessous.
+
+Si quelque chose n'est pas clair ou si vous souhaitez ajuster le périmètre,
+dites-le moi — c'est fait pour être adapté.
+
+Pour confirmer : répondez juste "OK je démarre" et je m'occupe du reste.
+
+<span class="placeholder">[TON PRÉNOM]</span>
+<span class="placeholder">[TEL/WA pour les questions rapides]</span>
+      </div>
+    </div>
+
+    <hr class="separator" />
+    <div class="section-label">Relance J+3 si pas de réponse</div>
+    <div class="template-block">
+      <button class="copy-btn" onclick="copyBlock(this)">Copier</button>
+      <div class="template-text">OBJET : Re: Proposition — <span class="placeholder">[ENTREPRISE]</span>
+
+<span class="placeholder">[PRÉNOM]</span>, je reviens vers vous — avez-vous eu le temps de regarder la proposition ?
+
+Si quelque chose bloque votre décision, je préfère qu'on en parle directement plutôt que d'attendre.
+15 minutes suffisent — vous avez de la dispo cette semaine ?
+
+<span class="placeholder">[TON PRÉNOM]</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-mini">
+    <div class="tip-block">💡 Version à utiliser pour les petits projets (&lt; 1500€) ou quand le prospect veut quelque chose de rapide. Tout tient en 1 page.</div>
+
+    <div class="section-label">Propale courte — 1 page</div>
+    <div class="template-block">
+      <button class="copy-btn" onclick="copyBlock(this)">Copier</button>
+      <div class="template-text">PROPOSITION — <span class="placeholder">[ENTREPRISE]</span>
+<span class="placeholder">[DATE]</span> · Valable <span class="placeholder">[X]</span> jours
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LE PROBLÈME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+<span class="placeholder">[PROBLÈME EN 2 LIGNES DANS LEURS MOTS]</span>
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CE QUE JE LIVRE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ <span class="placeholder">[LIVRABLE 1]</span>
+✓ <span class="placeholder">[LIVRABLE 2]</span>
+✓ <span class="placeholder">[LIVRABLE 3]</span>
+✓ Formation + documentation incluses
+
+Livraison : <span class="placeholder">[DÉLAI]</span> à partir du démarrage.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INVESTISSEMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+<span class="placeholder">[PRIX]</span>€ HT — acompte 50% à la commande, solde à la livraison.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+POUR DÉMARRER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Répondez "OK" à cet email — je vous envoie le contrat et la facture sous 2h.
+
+<span class="placeholder">[TON PRÉNOM]</span> · <span class="placeholder">[EMAIL]</span> · <span class="placeholder">[TEL]</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="next-bonus">
+    <h3>Propale signée. Maintenant protège-toi légalement.</h3>
+    <p>BONUS #10 — Pack Juridique : contrat de prestation, CGV et modèle de facture conformes — copy-paste et c'est bon.</p>
+    <a href="/pack-juridique" class="btn-next">Accéder au BONUS #10 →</a>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+function copyBlock(btn) {
+  const text = btn.nextElementSibling.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copié ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copier'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>

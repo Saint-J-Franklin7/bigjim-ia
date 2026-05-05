@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo Framework — BONUS #07 · Closer IA</title>
+  <link rel="icon" type="image/png" href="../BigJim.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --noir: #0D0D0D; --grey: #161616; --orange: #E8612C; --teal: #0ABAB5; --white: #F0F0EB; --muted: #555; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--noir); color: var(--white); font-family: 'Courier Prime', monospace; min-height: 100vh; overflow-x: hidden; }
+    nav { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 1px solid #222; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); font-weight: 700; font-size: 15px; }
+    .nav-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); padding: 5px 12px; border: 1px solid var(--teal); }
+    .container { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+    .hero { text-align: center; margin-bottom: 70px; }
+    .badge { display: inline-block; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 6px 14px; margin-bottom: 24px; }
+    h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 700; line-height: 1.1; margin-bottom: 20px; }
+    h1 em { color: var(--orange); font-style: normal; }
+    .hero p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .timeline { position: relative; margin-bottom: 60px; }
+    .timeline::before { content: ''; position: absolute; left: 60px; top: 0; bottom: 0; width: 1px; background: #222; }
+    .phase { position: relative; display: flex; gap: 30px; margin-bottom: 40px; }
+    .phase-time { min-width: 120px; text-align: right; padding-top: 4px; }
+    .phase-clock { font-size: 13px; color: var(--orange); font-weight: 700; }
+    .phase-dur { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+    .phase-dot { position: absolute; left: 52px; top: 6px; width: 16px; height: 16px; border: 2px solid var(--orange); border-radius: 50%; background: var(--noir); z-index: 1; transition: background .2s; }
+    .phase.active .phase-dot { background: var(--orange); }
+    .phase-content { flex: 1; background: var(--grey); border: 1px solid #222; padding: 24px; transition: border-color .2s; }
+    .phase.active .phase-content { border-color: var(--orange); }
+    .phase-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .phase-goal { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+    .phase-body { font-size: 13px; color: #999; line-height: 1.8; }
+    .phase-body strong { color: var(--white); }
+    .script-block { background: #0a0a0a; border-left: 3px solid var(--orange); padding: 14px 18px; margin: 14px 0; font-size: 12px; color: #ccc; line-height: 1.8; font-style: italic; }
+    .tips-section { margin: 60px 0; }
+    .tips-section h2 { font-size: 20px; font-weight: 700; margin-bottom: 30px; }
+    .tip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .tip-card { background: var(--grey); border: 1px solid #222; padding: 20px; }
+    .tip-num { color: var(--orange); font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+    .tip-text { font-size: 13px; color: #999; line-height: 1.7; }
+    .tip-text strong { color: var(--white); }
+    .checklist { margin: 60px 0; }
+    .checklist h2 { font-size: 20px; font-weight: 700; margin-bottom: 30px; }
+    .check-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid #1a1a1a; cursor: pointer; }
+    .check-item:last-child { border-bottom: none; }
+    .check-box { width: 20px; height: 20px; border: 1.5px solid #444; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+    .check-item.done .check-box { background: var(--teal); border-color: var(--teal); }
+    .check-item.done .check-box::after { content: '✓'; color: var(--noir); font-size: 12px; font-weight: 700; }
+    .check-item.done .check-label { color: var(--muted); text-decoration: line-through; }
+    .check-label { font-size: 13px; line-height: 1.6; }
+    .check-label strong { color: var(--orange); }
+    .next-bonus { background: var(--grey); border: 1px solid #333; padding: 40px; text-align: center; margin-top: 80px; }
+    .next-bonus h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .next-bonus p { color: var(--muted); font-size: 13px; margin-bottom: 24px; line-height: 1.7; }
+    .btn-next { background: var(--orange); color: var(--noir); font-family: 'Courier Prime', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 14px 28px; font-weight: 700; text-decoration: none; display: inline-block; transition: opacity .2s; }
+    .btn-next:hover { opacity: .85; }
+    @media (max-width: 600px) {
+      .timeline::before { left: 0; display: none; }
+      .phase { flex-direction: column; gap: 10px; }
+      .phase-time { text-align: left; min-width: unset; }
+      .phase-dot { display: none; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/BigJim.png" alt="BigJim" style="width:34px;height:34px;object-fit:contain" />
+    <span>BigJim</span>
+  </a>
+  <div class="nav-tag">Closer IA — Demo Framework</div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="badge">Closer IA — BONUS #07</div>
+    <h1>DEMO<br><em>FRAMEWORK</em></h1>
+    <p>7 minutes. 6 phases. Une structure qui close.<br>Ce framework transforme une démo technique en décision d'achat.</p>
+  </div>
+
+  <div class="timeline" id="timeline">
+    <div class="phase" data-phase="0">
+      <div class="phase-time">
+        <div class="phase-clock">0:00</div>
+        <div class="phase-dur">45 sec</div>
+      </div>
+      <div class="phase-dot"></div>
+      <div class="phase-content">
+        <div class="phase-goal">Phase 01 — Agiter le problème</div>
+        <div class="phase-title">Commence par leur douleur, pas par toi</div>
+        <div class="phase-body">
+          <p>La règle d'or : <strong>ne parle pas de toi pendant les 45 premières secondes.</strong> Ouvre sur leur réalité — le problème qu'ils vivent quotidiennement. Ils doivent penser "il me comprend" avant de penser "il me vend quelque chose".</p>
+          <div class="script-block">"Avant de vous montrer quoi que ce soit — est-ce que [PROBLÈME SPÉCIFIQUE] vous parle ? Parce que 80% des [TYPE DE BUSINESS] que je vois passent [X heures/semaine] sur [TÂCHE] alors qu'ils pourraient passer ce temps sur [CE QUI COMPTE VRAIMENT]."</div>
+          <p><strong>Attends leur réponse.</strong> S'ils disent oui — tu continues. S'ils nuancent — adapte ton angle avant d'aller plus loin.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase" data-phase="1">
+      <div class="phase-time">
+        <div class="phase-clock">0:45</div>
+        <div class="phase-dur">45 sec</div>
+      </div>
+      <div class="phase-dot"></div>
+      <div class="phase-content">
+        <div class="phase-goal">Phase 02 — Annoncer la solution</div>
+        <div class="phase-title">Tease sans tout montrer</div>
+        <div class="phase-body">
+          <p>Annonce ce que tu vas montrer. Crée de l'anticipation. <strong>Ne montre rien encore.</strong> La curiosité prépare l'attention — une démo vue sans contexte n'impressionne pas, même si elle est excellente.</p>
+          <div class="script-block">"Ce que je vais vous montrer dans les 5 prochaines minutes, c'est exactement le système que j'ai construit pour [CLIENT SIMILAIRE] — et depuis, [RÉSULTAT CONCRET]. Ce n'est pas de la magie, c'est un agent IA. Regardez."</div>
+          <p>Nomme le résultat avant la démo. Leur cerveau sera orienté vers ce résultat pendant qu'ils regardent.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase" data-phase="2">
+      <div class="phase-time">
+        <div class="phase-clock">1:30</div>
+        <div class="phase-dur">3 min 30</div>
+      </div>
+      <div class="phase-dot"></div>
+      <div class="phase-content">
+        <div class="phase-goal">Phase 03 — Démo live</div>
+        <div class="phase-title">Montre, ne décris pas</div>
+        <div class="phase-body">
+          <p>C'est le cœur de la démo. <strong>Ne parle pas pendant que ça charge.</strong> Commente l'action, pas la technique. Utilise LEUR vocabulaire métier — pas "API" ou "webhook", mais "il reçoit la demande automatiquement" ou "il répond comme un humain".</p>
+          <p style="margin-top:12px"><strong>Structure de la démo live :</strong></p>
+          <ul style="margin-top:10px;padding-left:20px;color:#999;font-size:13px;line-height:2">
+            <li>Montre l'input (ce que le client ou l'employé envoie)</li>
+            <li>Pause — laisse l'agent travailler — commente ce qu'il fait <em>pendant</em> le chargement</li>
+            <li>Montre l'output — lis-le avec eux, ne le survole pas</li>
+            <li>Montre 1 cas classique + 1 cas un peu complexe</li>
+            <li>Demande : "c'est le genre de situation que vous avez ?"</li>
+          </ul>
+          <div class="script-block" style="margin-top:16px">"Regardez — je lui envoie exactement ce qu'un client vous enverrait... [PAUSE] ...il analyse, il cherche dans vos données... et là il répond. Lisez ça — c'est mot pour mot ce que ferait un bon commercial. En 8 secondes."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase" data-phase="3">
+      <div class="phase-time">
+        <div class="phase-clock">5:00</div>
+        <div class="phase-dur">45 sec</div>
+      </div>
+      <div class="phase-dot"></div>
+      <div class="phase-content">
+        <div class="phase-goal">Phase 04 — Résultats et ROI</div>
+        <div class="phase-title">Des chiffres, pas des promesses</div>
+        <div class="phase-body">
+          <p>Maintenant que tu as leur attention, ancre la valeur avec des chiffres. <strong>Pas d'estimation vague.</strong> Un chiffre conservateur et réel vaut mieux qu'un chiffre optimiste qui sonne faux.</p>
+          <div class="script-block">"Pour [CLIENT SIMILAIRE], cet agent gère maintenant [X] [TYPE D'ACTIONS] par semaine. Avant : [X heures] de travail manuel. Maintenant : 0. À [COÛT HORAIRE MOYEN], c'est [€/mois] économisés — mon tarif, c'est [TARIF]. Le calcul est rapide."</div>
+          <p style="margin-top:12px">Si tu n'as pas encore de client : utilise une estimation conservatrice et dis-le — l'honnêteté renforce la crédibilité.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase" data-phase="4">
+      <div class="phase-time">
+        <div class="phase-clock">5:45</div>
+        <div class="phase-dur">45 sec</div>
+      </div>
+      <div class="phase-dot"></div>
+      <div class="phase-content">
+        <div class="phase-goal">Phase 05 — Objections anticipées</div>
+        <div class="phase-title">Soulève les objections avant eux</div>
+        <div class="phase-body">
+          <p>Soulever les objections toi-même = tu contrôles le cadre. Attendre qu'ils les soulèvent = tu es en position défensive. <strong>Traite 1 à 2 objections proactivement.</strong></p>
+          <div class="script-block">"Vous vous demandez sûrement si c'est difficile à mettre en place — non. De votre côté : 1 heure pour me donner accès et me briefer. Je m'occupe du reste. Et si ça ne marche pas comme prévu dans les 2 premières semaines, on ajuste jusqu'à ce que ça soit parfait."</div>
+          <p style="margin-top:12px">Les 2 objections les plus fréquentes à traiter proactivement : <strong>le temps de mise en place</strong> et <strong>la peur que ça ne marche pas</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase" data-phase="5">
+      <div class="phase-time">
+        <div class="phase-clock">6:30</div>
+        <div class="phase-dur">30 sec</div>
+      </div>
+      <div class="phase-dot"></div>
+      <div class="phase-content">
+        <div class="phase-goal">Phase 06 — Call to action</div>
+        <div class="phase-title">Assume la prochaine étape</div>
+        <div class="phase-body">
+          <p>Ne demande pas si ils veulent aller de l'avant — <strong>propose la prochaine étape concrète.</strong> La formulation "est-ce que vous seriez intéressé ?" laisse trop de place au "je vais réfléchir". Assume.</p>
+          <div class="script-block">"Voilà ce que je vous propose : on définit ensemble exactement ce que l'agent doit faire pour votre business — ça prend 30 minutes. Si ça vous convient, je vous envoie une propale dans la journée et on démarre la semaine prochaine. Vous avez de la disponibilité mardi ou mercredi ?"</div>
+          <p style="margin-top:12px"><strong>Silence après cette question.</strong> Résiste à l'envie de remplir le silence. Celui qui parle en premier perd l'avantage.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tips-section">
+    <h2>Les règles qui font la différence</h2>
+    <div class="tip-grid">
+      <div class="tip-card">
+        <div class="tip-num">01</div>
+        <div class="tip-text"><strong>Répète 5 fois seul avant.</strong> La fluidité rassure. Un vendeur qui bafouille pendant sa démo inspire l'inquiétude — même si le produit est excellent.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">02</div>
+        <div class="tip-text"><strong>Enregistre chaque démo.</strong> Reregarde dans les 2h. Identifie le moment où tu as perdu leur attention. Corrige ce point avant la prochaine.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">03</div>
+        <div class="tip-text"><strong>Ne déborde jamais 10 minutes.</strong> Une démo qui traîne = manque de préparation. Si tu as trop à montrer, coupe — tu montreras le reste sur la prochaine session.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">04</div>
+        <div class="tip-text"><strong>Utilise leur vocabulaire.</strong> Écoute comment ils décrivent leur problème. Réutilise leurs mots exacts pendant la démo. Effet miroir = sentiment de compréhension totale.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">05</div>
+        <div class="tip-text"><strong>Si ça bug en live, souris.</strong> "C'est parfait — je vous montre comment gérer une erreur." Transformer un bug en feature démontre ta maîtrise.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">06</div>
+        <div class="tip-text"><strong>Ferme sur une date, jamais sur une propale.</strong> "Je vous envoie quelque chose" = deal mort dans 72h. Une date dans le calendrier = deal vivant.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="checklist">
+    <h2>Checklist pré-démo</h2>
+    <div id="checklist"></div>
+  </div>
+
+  <div class="next-bonus">
+    <h3>La démo est parfaite. Maintenant gère les objections.</h3>
+    <p>BONUS #08 — Objection Bible : 20 objections réelles + réponses scriptées pour ne plus jamais bafouiller en call.</p>
+    <a href="/objection-bible" class="btn-next">Accéder au BONUS #08 →</a>
+  </div>
+</div>
+
+<script>
+const checks = [
+  { label: "<strong>Environnement testé</strong> — l'agent a tourné au moins 3 fois avant la démo, sans bug", done: false },
+  { label: "<strong>Internet de secours</strong> — partage de connexion prêt si le wifi flanche", done: false },
+  { label: "<strong>Données de démo réalistes</strong> — utilise des données qui ressemblent à leur activité, pas des placeholders", done: false },
+  { label: "<strong>Navigateur propre</strong> — pas d'onglets parasites, historique effacé, mode plein écran prêt", done: false },
+  { label: "<strong>Écran partagé testé</strong> — tu sais quelle fenêtre partager, son activé côté prospect", done: false },
+  { label: "<strong>Nom du prospect noté</strong> — son prénom, son secteur, son problème principal à portée de main", done: false },
+  { label: "<strong>Résultat chiffré préparé</strong> — au moins 1 chiffre concret à annoncer en Phase 4", done: false },
+  { label: "<strong>Question de closing prête</strong> — tu sais exactement quelle date proposer", done: false },
+  { label: "<strong>Téléphone en silencieux</strong> — et notifications coupées sur l'ordinateur", done: false },
+  { label: "<strong>Timer visible</strong> — garde un œil sur le temps sans que ça se voie", done: false }
+];
+
+function renderChecklist() {
+  document.getElementById('checklist').innerHTML = checks.map((c, i) => `
+    <div class="check-item ${c.done ? 'done' : ''}" onclick="toggleCheck(${i})">
+      <div class="check-box"></div>
+      <div class="check-label">${c.label}</div>
+    </div>
+  `).join('');
+}
+
+function toggleCheck(i) {
+  checks[i].done = !checks[i].done;
+  renderChecklist();
+}
+
+// Phase click interaction
+document.querySelectorAll('.phase').forEach((el, i) => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+  });
+});
+
+renderChecklist();
+</script>
+</body>
+</html>

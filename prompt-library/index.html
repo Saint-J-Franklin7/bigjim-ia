@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt Library — BONUS #05 · Closer IA</title>
+  <link rel="icon" type="image/png" href="../BigJim.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --noir: #0D0D0D; --grey: #161616; --orange: #E8612C;
+      --teal: #0ABAB5; --white: #F0F0EB; --muted: #555;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--noir); color: var(--white); font-family: 'Courier Prime', monospace; min-height: 100vh; overflow-x: hidden; }
+    nav { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 1px solid #222; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); font-weight: 700; font-size: 15px; }
+    .nav-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); padding: 5px 12px; border: 1px solid var(--teal); }
+    .container { max-width: 1100px; margin: 0 auto; padding: 60px 24px; }
+    .hero { text-align: center; margin-bottom: 60px; }
+    .badge { display: inline-block; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 6px 14px; margin-bottom: 24px; }
+    h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 700; line-height: 1.1; margin-bottom: 20px; }
+    h1 em { color: var(--orange); font-style: normal; }
+    .hero p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .search-bar { width: 100%; max-width: 600px; margin: 0 auto 40px; display: block; background: var(--grey); border: 1px solid #333; color: var(--white); font-family: 'Courier Prime', monospace; font-size: 14px; padding: 14px 20px; outline: none; }
+    .search-bar::placeholder { color: var(--muted); }
+    .search-bar:focus { border-color: var(--teal); }
+    .filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; justify-content: center; }
+    .filter-btn { background: none; border: 1px solid #333; color: var(--muted); font-family: 'Courier Prime', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; cursor: pointer; transition: all .2s; }
+    .filter-btn:hover, .filter-btn.active { border-color: var(--orange); color: var(--orange); }
+    .count { text-align: center; color: var(--muted); font-size: 12px; letter-spacing: 2px; margin-bottom: 30px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+    .card { background: var(--grey); border: 1px solid #222; padding: 24px; cursor: pointer; transition: border-color .2s; }
+    .card:hover { border-color: #444; }
+    .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .card-num { font-size: 11px; color: var(--muted); letter-spacing: 2px; flex-shrink: 0; }
+    .card-cat { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 3px 8px; border: 1px solid; flex-shrink: 0; }
+    .cat-prospection { color: var(--teal); border-color: var(--teal); }
+    .cat-offre { color: var(--orange); border-color: var(--orange); }
+    .cat-demo { color: #a78bfa; border-color: #a78bfa; }
+    .cat-delivery { color: #34d399; border-color: #34d399; }
+    .cat-agents { color: #fbbf24; border-color: #fbbf24; }
+    .cat-business { color: #f472b6; border-color: #f472b6; }
+    .card-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; line-height: 1.4; }
+    .card-preview { font-size: 12px; color: var(--muted); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-body { display: none; margin-top: 16px; border-top: 1px solid #2a2a2a; padding-top: 16px; }
+    .card.open .card-body { display: block; }
+    .card.open .card-preview { display: none; }
+    .prompt-text { background: #0a0a0a; border: 1px solid #2a2a2a; padding: 16px; font-size: 12px; line-height: 1.8; color: #ccc; white-space: pre-wrap; margin-bottom: 12px; }
+    .copy-btn { background: var(--orange); color: var(--noir); border: none; font-family: 'Courier Prime', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 8px 16px; cursor: pointer; font-weight: 700; transition: opacity .2s; }
+    .copy-btn:hover { opacity: .85; }
+    .copy-btn.copied { background: var(--teal); }
+    .tip { font-size: 11px; color: var(--muted); line-height: 1.6; margin-top: 10px; border-left: 2px solid var(--teal); padding-left: 10px; }
+    .next-bonus { background: var(--grey); border: 1px solid #333; padding: 40px; text-align: center; margin-top: 80px; }
+    .next-bonus h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .next-bonus p { color: var(--muted); font-size: 13px; margin-bottom: 24px; line-height: 1.7; }
+    .btn-next { background: var(--orange); color: var(--noir); font-family: 'Courier Prime', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 14px 28px; font-weight: 700; text-decoration: none; display: inline-block; transition: opacity .2s; }
+    .btn-next:hover { opacity: .85; }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/BigJim.png" alt="BigJim" style="width:34px;height:34px;object-fit:contain" />
+    <span>BigJim</span>
+  </a>
+  <div class="nav-tag">Closer IA — Prompt Library</div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="badge">Closer IA — BONUS #05</div>
+    <h1>PROMPT<br><em>LIBRARY</em></h1>
+    <p>50 prompts Claude testés en conditions réelles.<br>Copy-paste direct dans Claude — résultat en 30 secondes.</p>
+  </div>
+
+  <input class="search-bar" type="text" id="search" placeholder="Recherche un prompt..." />
+
+  <div class="filters">
+    <button class="filter-btn active" data-cat="all">Tous (50)</button>
+    <button class="filter-btn" data-cat="prospection">Prospection</button>
+    <button class="filter-btn" data-cat="offre">Offre & Pricing</button>
+    <button class="filter-btn" data-cat="demo">Démo & Closing</button>
+    <button class="filter-btn" data-cat="delivery">Delivery</button>
+    <button class="filter-btn" data-cat="agents">Agents IA</button>
+    <button class="filter-btn" data-cat="business">Business</button>
+  </div>
+
+  <div class="count" id="count">50 prompts</div>
+  <div class="grid" id="grid"></div>
+
+  <div class="next-bonus">
+    <h3>Tu as tes prompts. Maintenant trouve tes prospects.</h3>
+    <p>BONUS #06 — 10 méthodes gratuites pour sourcer 100 prospects par jour dans n'importe quelle niche.</p>
+    <a href="/lead-sourcing" class="btn-next">Accéder au BONUS #06 →</a>
+  </div>
+</div>
+
+<script>
+const prompts = [
+  // PROSPECTION
+  {
+    id: 1, cat: "prospection", title: "Analyser un prospect avant l'appel",
+    preview: "Génère une fiche de veille complète sur un prospect pour arriver préparé.",
+    prompt: `Tu es un assistant de recherche commerciale. Analyse cette entreprise et génère une fiche de préparation d'appel.
+
+Entreprise : [NOM]
+Site web : [URL]
+Secteur : [SECTEUR]
+
+Génère :
+1. **Résumé en 3 lignes** — ce qu'ils font, leur marché, leur taille estimée
+2. **Problèmes IA potentiels** — 3 processus chronophages que l'IA pourrait automatiser chez eux
+3. **Angle d'attaque** — le problème le plus douloureux à mentionner en premier
+4. **Questions de découverte** — 5 questions pour qualifier lors de l'appel
+5. **Signaux d'achat** — indices sur leur site/réseaux qui montrent qu'ils sont ouverts à l'IA
+6. **Objection anticipée** — la principale résistance qu'ils vont avoir et comment y répondre
+
+Sois direct, pas de blabla. Format : titres en gras + bullet points.`,
+    tip: "Colle l'URL de leur site + leur page LinkedIn dans le prompt pour une analyse encore plus précise."
+  },
+  {
+    id: 2, cat: "prospection", title: "Cold email premier contact PME locale",
+    preview: "Email de prospection froid pour une PME locale, angle ROI concret.",
+    prompt: `Écris un cold email de prospection pour une [TYPE D'ENTREPRISE] locale.
+
+Contexte :
+- Je vends des agents IA qui automatisent [PROCESSUS SPÉCIFIQUE]
+- Le prospect : [NOM DU GÉRANT si connu], dirigeant d'une [ACTIVITÉ] à [VILLE]
+- Angle : ils perdent du temps sur [TÂCHE SPÉCIFIQUE]
+
+Contraintes :
+- Maximum 80 mots
+- Objet de l'email : accrocheur, pas "clickbait", personnalisé
+- Ton : direct, humain, pas corporate
+- 1 seul call-to-action : un appel de 15 minutes
+- Pas de "j'espère que vous allez bien"
+- Commencer par une observation sur leur business (pas sur moi)
+
+Format : Objet / Corps / PS (optionnel mais percutant)`,
+    tip: "Teste 3 objets différents sur le même batch de 30 emails pour identifier celui qui performe le mieux."
+  },
+  {
+    id: 3, cat: "prospection", title: "Séquence de relance en 3 emails",
+    preview: "Séquence complète J+0, J+3, J+7 pour ne pas laisser un prospect refroidir.",
+    prompt: `Écris une séquence de 3 emails de relance pour un prospect qui n'a pas répondu à mon premier email.
+
+Mon activité : je crée des agents IA sur mesure pour [NICHE]
+Premier email envoyé : [COLLE TON EMAIL ICI]
+
+Email 1 (J+3) : Relance douce, angle différent, apporte de la valeur (stat, insight métier)
+Email 2 (J+7) : Social proof — mentionne un résultat concret obtenu pour un client similaire
+Email 3 (J+14) : "Breakup email" — court, direct, dernier contact
+
+Règles :
+- Chaque email < 60 mots
+- Référence subtilement l'email précédent sans le paraphraser
+- Chaque email a un angle différent (valeur, preuve, départ)
+- Ton humain, pas automatisé`,
+    tip: "Le 'breakup email' J+14 génère souvent le meilleur taux de réponse. Ne le supprime pas."
+  },
+  {
+    id: 4, cat: "prospection", title: "Message d'accroche LinkedIn",
+    preview: "Note de connexion + message de suivi LinkedIn pour démarrer une conversation.",
+    prompt: `Écris 2 messages LinkedIn pour prospecter un [POSTE] dans le secteur [SECTEUR].
+
+Message 1 — Note de connexion (max 300 caractères) :
+- Personnalisé à leur profil/poste
+- Pas de pitch immédiat
+- Ouvre une conversation
+
+Message 2 — Suivi 48h après acceptation :
+- Max 120 mots
+- Mentionne un de leurs posts ou une info de leur profil
+- Pose une question ouverte sur un problème business
+- Ne pitch pas encore
+
+Contexte : je construis des agents IA qui [RÉSULTAT CONCRET] pour les [NICHE].
+Ton : naturel, entre deux professionnels, pas commercial.`,
+    tip: "Attends qu'ils répondent au Message 2 avant de parler de ton offre. La pression tue la conversation."
+  },
+  {
+    id: 5, cat: "prospection", title: "DM Instagram fondateur DTC",
+    preview: "Message direct Instagram pour un fondateur de marque e-commerce.",
+    prompt: `Écris un DM Instagram pour contacter un fondateur de marque DTC (e-commerce).
+
+Profil du prospect : fondateur de [MARQUE], vend [PRODUIT], [NB] abonnés Instagram
+Problème que je résous : [ex: automatiser le support client / personnaliser les emails post-achat / analyser les reviews]
+
+Message (max 150 mots) :
+- Ouvre sur une observation sincère sur leur marque (pas un compliment générique)
+- Identifie un problème spécifique visible sur leur compte/site
+- Mentionne que tu as fait pareil pour [TYPE DE MARQUE SIMILAIRE]
+- CTA léger : une question, pas un appel direct
+
+Ton : décontracté, entre entrepreneurs, respectueux de leur temps.`,
+    tip: "Commente 2-3 de leurs posts avant d'envoyer le DM — ils reconnaîtront ton profil."
+  },
+  {
+    id: 6, cat: "prospection", title: "Analyser les besoins IA depuis un site web",
+    preview: "Identifie les opportunités d'automatisation IA en analysant le site d'un prospect.",
+    prompt: `Analyse ce site web et identifie les 5 meilleures opportunités d'agents IA pour cette entreprise.
+
+Site : [URL ou description de l'activité]
+Secteur : [SECTEUR]
+
+Pour chaque opportunité :
+1. Le processus actuel (ce qu'ils font probablement manuellement)
+2. Ce que l'agent IA ferait à la place
+3. Le gain estimé (temps / argent / satisfaction client)
+4. La difficulté technique (simple / moyenne / complexe)
+5. L'argument pour les convaincre en une phrase
+
+Classe les 5 par ordre de priorité (quick win en premier).
+Sois précis — pas "automatiser leurs emails" mais "agent qui répond aux 20 types de questions SAV récurrentes avec personnalisation par historique d'achat".`,
+    tip: "Le résultat de ce prompt devient ton script d'appel. Tu arrives avec leurs problèmes — pas les tiens."
+  },
+  {
+    id: 7, cat: "prospection", title: "Personnaliser 10 cold emails en lot",
+    preview: "Génère 10 versions personnalisées d'un même email depuis une liste de prospects.",
+    prompt: `Tu es un copywriter spécialisé en prospection B2B. Personnalise cet email template pour 10 prospects différents.
+
+Template de base : [COLLE TON EMAIL TEMPLATE]
+
+Liste des prospects (une ligne par prospect) :
+[Prospect 1 : Nom, Entreprise, Secteur, 1 info spécifique]
+[Prospect 2 : ...]
+...
+
+Pour chaque prospect :
+- Personnalise les 2 premières phrases uniquement
+- Garde le reste du template intact
+- La personnalisation doit sembler écrite manuellement
+- Utilise l'info spécifique pour créer une connexion réelle
+
+Output : 10 emails numérotés, prêts à copier-coller.`,
+    tip: "L'info spécifique peut venir de leur LinkedIn (post récent, changement de poste, levée de fonds)."
+  },
+  {
+    id: 8, cat: "prospection", title: "Script de cold call — 60 secondes",
+    preview: "Script téléphonique pour les 60 premières secondes d'un cold call.",
+    prompt: `Écris un script de cold call pour les 60 premières secondes.
+
+Je vends : [SERVICE IA SPÉCIFIQUE]
+Je contacte : [POSTE/TYPE DE DÉCIDEUR] dans [SECTEUR]
+Problème résolu : [PROBLÈME SPÉCIFIQUE]
+Résultat obtenu pour un client similaire : [RÉSULTAT CONCRET]
+
+Le script doit inclure :
+1. Ouverture directe (pas "est-ce que je vous dérange ?")
+2. Raison de l'appel en 1 phrase (avec résultat concret)
+3. Permission de continuer (question ouverte)
+4. Transition vers la découverte si OUI
+5. Réponse si "j'ai pas le temps" ou "pas intéressé"
+
+Ton : confiant, humain, respectueux. Pas de lecture robotique.`,
+    tip: "Enregistre-toi en lisant ce script à voix haute. Retravaille jusqu'à ce que ça sonne naturel."
+  },
+  {
+    id: 9, cat: "prospection", title: "Qualifier un prospect en 5 questions",
+    preview: "Séquence de qualification BANT adaptée à la vente de services IA.",
+    prompt: `Génère 5 questions de qualification pour un appel de découverte avec un prospect intéressé par mes services IA.
+
+Mon service : [DESCRIPTION]
+Ce que je cherche à qualifier :
+- Budget disponible et décision d'achat
+- Urgence et timing du projet
+- Problème réel vs curiosité
+- Ouverture à l'IA dans leur organisation
+- Fit avec mon profil de client idéal
+
+Règles :
+- Questions ouvertes uniquement
+- Ordonnées du général au spécifique
+- Chaque question a un objectif précis (note-le entre parenthèses)
+- Inclus les questions de suivi si la réponse est évasive
+
+Bonus : ajoute les signaux "go" et "no-go" à écouter dans leurs réponses.`,
+    tip: "Ne pose jamais le prix avant d'avoir posé ces 5 questions. Le contexte justifie le tarif."
+  },
+  {
+    id: 10, cat: "prospection", title: "Analyser ses résultats de prospection",
+    preview: "Analyse tes métriques de prospection et identifie les points de blocage.",
+    prompt: `Analyse mes résultats de prospection de la semaine et dis-moi quoi améliorer.
+
+Mes chiffres :
+- Emails envoyés : [N]
+- Taux d'ouverture : [%]
+- Réponses reçues : [N]
+- Appels bookés : [N]
+- Appels effectués : [N]
+- Propositions envoyées : [N]
+- Deals closés : [N]
+
+Mon email / script actuel : [COLLE ICI]
+
+Analyse :
+1. Quel est mon principal point de fuite dans ce funnel ?
+2. Pourquoi (hypothèses sur les causes réelles)
+3. Les 2 changements les plus impactants à tester cette semaine
+4. Benchmark : à quoi ressemblent de bons chiffres à mon stade ?
+5. Action prioritaire pour la semaine prochaine
+
+Sois direct, pas de fausse encouragement.`,
+    tip: "Fais cette analyse chaque vendredi. Amélioration de 10% par semaine = x2,6 en 10 semaines."
+  },
+
+  // OFFRE & PRICING
+  {
+    id: 11, cat: "offre", title: "Structurer une offre IA (framework Hormozi)",
+    preview: "Crée le stack de valeur complet de ton offre IA selon 100M Offers.",
+    prompt: `Aide-moi à structurer mon offre IA selon le framework 100M Offers d'Alex Hormozi.
+
+Mon service de base : [DESCRIPTION]
+Client cible : [TYPE DE CLIENT]
+Problème principal résolu : [PROBLÈME]
+Résultat livré : [RÉSULTAT CONCRET + DÉLAI]
+
+Génère :
+1. **Dream Outcome** — la transformation en 1 phrase émotionnelle
+2. **Stack de valeur** — liste de tout ce qu'ils reçoivent (service + bonuses + garanties)
+3. **Nom MAGIC** (Meaningful, Actionable, Goals-driven, Identifiable, Callback) pour l'offre
+4. **Prix ancré** — prix barré psychologique + ton vrai prix
+5. **Garantie avec conditions** — garantie audacieuse mais protégée par des conditions d'éligibilité
+6. **Objection killer** — la principale raison de ne pas acheter + comment la neutraliser dans l'offre
+
+Format : tableau de valeur perçue (ce qu'ils reçoivent / valeur unitaire estimée)`,
+    tip: "Le stack de valeur doit faire que ton prix semble ridiculement bas comparé à la valeur totale."
+  },
+  {
+    id: 12, cat: "offre", title: "Calculer le ROI d'un agent IA",
+    preview: "Calcule et présente le retour sur investissement concret pour un prospect.",
+    prompt: `Calcule le ROI de mon agent IA pour ce client et présente-le de manière convaincante.
+
+Informations client :
+- Secteur : [SECTEUR]
+- Taille : [NB EMPLOYÉS ou CA estimé]
+- Tâche automatisée : [TÂCHE]
+- Temps actuel passé sur cette tâche : [H/semaine]
+- Coût horaire moyen d'un employé : [€/h] (défaut : 25€)
+
+Mon tarif : [SETUP €] + [RETAINER €/mois]
+
+Calcule :
+1. Coût actuel annuel de cette tâche (temps × coût horaire)
+2. Temps économisé avec l'agent (estimation réaliste, pas optimiste)
+3. ROI en mois (break even point)
+4. ROI sur 12 mois (économies - mon tarif)
+5. Version "conservative" et "optimiste" du calcul
+
+Format final : tableau simple que je peux montrer en démo ou envoyer en propale.`,
+    tip: "Montre le calcul 'conservative'. S'ils le trouvent convaincant dans le pire cas, ils signent."
+  },
+  {
+    id: 13, cat: "offre", title: "Pricer un projet one-shot",
+    preview: "Détermine le prix juste pour une mission ponctuelle de création d'agent IA.",
+    prompt: `Aide-moi à pricer ce projet one-shot correctement.
+
+Projet : [DESCRIPTION DE L'AGENT À CRÉER]
+Client : [TYPE + TAILLE]
+Délai souhaité : [SEMAINES]
+Ma vitesse estimée : [H de travail]
+
+Calcule le prix depuis 3 angles :
+
+1. **Angle coût** : temps estimé × mon TJM ([€/h ou €/jour])
+2. **Angle valeur** : combien ce projet vaut pour eux (économies / CA généré)
+3. **Angle marché** : fourchette de prix pour ce type de mission (donne le range)
+
+Recommande :
+- Le prix à annoncer en premier
+- Le prix plancher en dessous duquel refuser
+- Comment présenter ce prix pour le rendre évident
+- Les éléments du scope à retirer si le budget est serré
+
+Ne me donne pas juste un chiffre — donne-moi la logique pour défendre ce prix.`,
+    tip: "Annonce toujours la version haute d'abord. Descendre est possible. Monter ne l'est pas."
+  },
+  {
+    id: 14, cat: "offre", title: "Pricer un retainer mensuel",
+    preview: "Structure un abonnement mensuel qui tient la route face aux objections.",
+    prompt: `Aide-moi à structurer et pricer un retainer mensuel pour ce client.
+
+Client : [TYPE D'ENTREPRISE]
+Ce que je fournis chaque mois : [LISTE DES LIVRABLES / MAINTENANCES]
+Temps mensuel estimé : [H/mois]
+Valeur mensuelle générée pour eux : [ESTIMATION]
+
+Structure le retainer :
+
+1. **Ce qui est inclus** (sois précis — évite les malentendus)
+2. **Ce qui n'est PAS inclus** (pour éviter le scope creep)
+3. **Prix recommandé** avec justification
+4. **Conditions** (durée minimum, préavis, révisions)
+5. **Déclencheurs d'upsell** — signaux qui indiquent qu'il faut augmenter le tarif
+
+Bonus : rédige la phrase d'annonce du prix en call ("Pour maintenir et optimiser l'agent chaque mois, c'est X€...")`,
+    tip: "Le retainer se vend après que le one-shot a prouvé sa valeur. Ne propose jamais le retainer avant."
+  },
+  {
+    id: 15, cat: "offre", title: "Elevator pitch de 30 secondes",
+    preview: "Un pitch court et mémorable pour présenter ton activité à n'importe qui.",
+    prompt: `Écris 3 versions d'un elevator pitch de 30 secondes pour mon activité.
+
+Mon activité : je crée des agents IA pour [NICHE]
+Le problème que je résous : [PROBLÈME CONCRET]
+Le résultat que j'obtiens : [RÉSULTAT MESURABLE]
+Client type : [PROFIL]
+
+Version 1 — Networking professionnel (soirée business, LinkedIn)
+Version 2 — Social casual (quand quelqu'un demande "tu fais quoi dans la vie ?")
+Version 3 — Cold call (les 10 premières secondes)
+
+Chaque version :
+- Max 60 mots
+- Inclut une phrase d'accroche basée sur le problème (pas sur moi)
+- Se termine par une question ouverte pour continuer la conversation
+- Ton adapté au contexte`,
+    tip: "Mémorise la Version 2. C'est celle que tu diras le plus souvent — et elle amène des clients inattendus."
+  },
+  {
+    id: 16, cat: "offre", title: "Nom MAGIC pour une offre IA",
+    preview: "Génère 10 noms d'offre mémorables selon le framework MAGIC d'Hormozi.",
+    prompt: `Génère 10 noms d'offre selon le framework MAGIC (Meaningful, Actionable, Goals-driven, Identifiable, Callback).
+
+Mon offre : [DESCRIPTION EN 2 PHRASES]
+Client cible : [TYPE DE CLIENT]
+Résultat principal : [RÉSULTAT]
+Délai de livraison du résultat : [DÉLAI]
+
+Pour chaque nom :
+- Le nom complet (ex: "Le Système [X]", "La Méthode [Y]", "Agent [Z]")
+- Pourquoi il respecte les critères MAGIC
+- Le sous-titre qui complète le nom (résultat + délai)
+
+Parmi les 10, indique ton top 3 avec explication.
+Évite les noms trop génériques ("La Formation IA") et les anglicismes forcés.`,
+    tip: "Le meilleur nom est celui que tes clients utilisent pour le décrire à leurs amis."
+  },
+  {
+    id: 17, cat: "offre", title: "Justifier le prix face à l'objection",
+    preview: "Script pour défendre ton tarif sans baisser le prix ni perdre le deal.",
+    prompt: `Écris le script pour répondre à l'objection prix en call.
+
+Mon tarif : [PRIX]
+L'objection reçue : [EX: "c'est trop cher", "j'avais budgété X€", "un freelance le fait pour moitié prix"]
+Contexte : [STADE DU CALL — découverte / démo / closing]
+
+Le script doit :
+1. Accuser réception sans s'excuser du prix
+2. Recadrer sur la valeur (pas sur le coût)
+3. Proposer une comparaison qui rend le prix évident
+4. Offrir une alternative si le budget est réellement bloquant (pas de discount)
+5. Fermer sur une question, pas sur une affirmation
+
+Inclus aussi : les 3 phrases à ne JAMAIS dire quand le prospect dit que c'est cher.`,
+    tip: "Si tu baisses le prix sans raison, tu dévalues l'offre ET tu perds leur confiance."
+  },
+  {
+    id: 18, cat: "offre", title: "Comparer ton offre vs solution interne",
+    preview: "Argument pour les prospects qui veulent recruter ou former en interne.",
+    prompt: `Construis l'argument comparatif quand un prospect dit "on va former quelqu'un en interne plutôt".
+
+Mon offre : [SERVICE + PRIX]
+Secteur du prospect : [SECTEUR]
+Taille : [NB EMPLOYÉS]
+
+Crée un tableau comparatif honnête :
+- Colonne 1 : Faire avec moi
+- Colonne 2 : Recruter / Former en interne
+- Lignes : délai, coût réel (inclure charges sociales, temps de formation), résultat, risque, flexibilité
+
+Ensuite : rédige le script de 90 secondes pour présenter cette comparaison en call sans paraître défensif.
+
+Inclus les 2 cas où la solution interne est réellement meilleure (honnêteté = crédibilité).`,
+    tip: "Proposer toi-même les cas où tu n'es pas le meilleur choix renforce massivement ta crédibilité."
+  },
+
+  // DÉMO & CLOSING
+  {
+    id: 19, cat: "demo", title: "Script démo en 7 minutes",
+    preview: "Structure complète pour une démonstration agent IA qui conclut.",
+    prompt: `Génère le script complet d'une démonstration de 7 minutes pour mon agent IA.
+
+Agent à démontrer : [DESCRIPTION DE L'AGENT]
+Problème qu'il résout : [PROBLÈME]
+Client cible : [TYPE]
+Résultat en live pendant la démo : [CE QUE JE VAIS MONTRER]
+
+Structure les 7 minutes :
+- 0:00–0:45 : Agiter le problème (leur douleur actuelle)
+- 0:45–1:30 : Annoncer la solution (sans la montrer encore)
+- 1:30–5:00 : Démo live step-by-step (inclus les phrases à dire pendant les chargements)
+- 5:00–5:45 : Résultats et ROI (chiffres concrets)
+- 5:45–6:30 : Objections anticipées (traite-en 1-2 proactivement)
+- 6:30–7:00 : CTA clair et assumé
+
+Inclus les transitions verbales entre chaque section.`,
+    tip: "Répète la démo seul 5 fois avant de la faire avec un prospect. La fluidité rassure."
+  },
+  {
+    id: 20, cat: "demo", title: "Questions de découverte pour l'appel",
+    preview: "10 questions stratégiques pour un appel de découverte efficace.",
+    prompt: `Génère 10 questions de découverte pour un appel avec un [POSTE/TYPE DE DÉCIDEUR] dans [SECTEUR].
+
+Mon objectif : comprendre leurs problèmes actuels, mesurer leur douleur, qualifier leur budget et timing.
+
+Les questions doivent :
+- Progresser du général (contexte) au spécifique (douleur) au financier (budget/timing)
+- Être ouvertes (pas de réponse oui/non)
+- Chaque question avoir un objectif précis (note entre parenthèses)
+- Inclure des "peeling questions" — si la réponse est superficielle, comment creuser
+
+Bonus : identifie les 3 réponses qui signifient "deal probable" et les 2 qui signifient "pas qualifié".`,
+    tip: "Note les réponses mot pour mot. Ces mots deviennent le vocabulaire de ta propale."
+  },
+  {
+    id: 21, cat: "demo", title: "Anticiper les objections d'un prospect",
+    preview: "Prépare les réponses aux 5 objections les plus probables avant l'appel.",
+    prompt: `Anticipe les 5 objections les plus probables pour ce prospect et prépare mes réponses.
+
+Profil du prospect : [POSTE, SECTEUR, TAILLE D'ENTREPRISE]
+Ce que je vends : [SERVICE + PRIX]
+Ce que je sais de lui : [INFOS COLLECTÉES EN AMONT]
+
+Pour chaque objection :
+1. Formulation exacte de l'objection (telle qu'elle sera dite)
+2. Ce qu'elle signifie vraiment (la peur sous-jacente)
+3. Ma réponse (30-45 secondes max, conversationnelle)
+4. La question de suivi pour vérifier que l'objection est levée
+
+Classe les objections du plus probable au moins probable.
+Ton : calme, pas défensif, orienté solution.`,
+    tip: "Écrire les réponses en avance t'évite de bafouiller sous pression — même si tu ne les lis pas."
+  },
+  {
+    id: 22, cat: "demo", title: "Follow-up après une démo",
+    preview: "Email de suivi post-démo qui maintient l'élan sans relancer de façon agressive.",
+    prompt: `Écris l'email de follow-up à envoyer dans les 2h après une démo.
+
+Résumé de la démo :
+- Ce qui s'est bien passé : [POINTS POSITIFS]
+- Objections soulevées : [OBJECTIONS MENTIONNÉES]
+- Prochaine étape convenue : [CE QUI A ÉTÉ DIT]
+- Timing évoqué : [DÉLAI MENTIONNÉ]
+
+L'email doit :
+- Faire référence à un moment spécifique de la démo (montre que t'as écouté)
+- Résumer leur problème dans leurs propres mots
+- Rappeler les 3 points clés de la valeur de mon offre
+- Confirmer la prochaine étape avec une date précise
+- Maximum 150 mots
+
+Ton : chaleureux mais professionnel, pas "trop vendeur".`,
+    tip: "L'email post-démo est souvent lu par le décideur final — écris pour lui aussi, pas seulement pour ton contact."
+  },
+  {
+    id: 23, cat: "demo", title: "Analyser pourquoi un deal n'a pas closé",
+    preview: "Post-mortem structuré pour tirer les leçons d'un deal perdu.",
+    prompt: `Aide-moi à analyser ce deal perdu pour en tirer des leçons actionnables.
+
+Résumé du deal :
+- Prospect : [TYPE, SECTEUR, TAILLE]
+- Durée du cycle : [SEMAINES/MOIS]
+- Raison invoquée pour le refus : [CE QU'ILS ONT DIT]
+- Signaux que j'aurais dû voir plus tôt : [CE QUE JE REMARQUE MAINTENANT]
+- Où le deal s'est bloqué dans mon funnel : [ÉTAPE]
+
+Analyse :
+1. La vraie raison du refus (derrière la raison officielle)
+2. Le moment où j'aurais pu changer le cours du deal
+3. Ce que je ferai différemment avec le prochain prospect similaire
+4. Est-ce que je peux sauver ce deal dans 30 jours ? Comment ?
+5. Le profil de prospect à éviter à l'avenir (si le deal était mal qualifié dès le départ)`,
+    tip: "Fais cet exercice dans l'heure qui suit le refus. Les détails s'oublient vite."
+  },
+  {
+    id: 24, cat: "demo", title: "Script de closing en fin d'appel",
+    preview: "Les phrases exactes pour closer le deal en fin d'appel sans pressure sell.",
+    prompt: `Écris le script de closing pour les 5 dernières minutes d'un appel.
+
+Contexte :
+- La démo s'est bien passée, le prospect semble intéressé
+- Il n'a pas encore dit oui ou non
+- Mon offre : [OFFRE + PRIX]
+- La prochaine étape logique : [PROPALE / DÉMARRAGE / AUTRE]
+
+Le script inclut :
+1. La transition naturelle vers le closing (sans rupture de ton)
+2. Le résumé de leur situation + ma solution (en 30 secondes)
+3. L'annonce du prix avec le contexte (pas juste le chiffre)
+4. La question de closing (fermée mais pas agressive)
+5. Les 3 réponses possibles et quoi dire dans chaque cas (oui / non / réfléchir)
+
+Ton : assumé, pas désespéré. Tu veux leur aider, pas leur vendre.`,
+    tip: "Silence après la question de closing. Celui qui parle le premier en premier perd sa position."
+  },
+  {
+    id: 25, cat: "demo", title: "Proposition de valeur sur mesure",
+    preview: "Génère une proposition de valeur personnalisée à partir des infos du prospect.",
+    prompt: `Génère une proposition de valeur ultra-personnalisée pour ce prospect.
+
+Infos collectées en découverte :
+- Problème principal : [PROBLÈME EN LEURS MOTS]
+- Conséquences du problème : [CE QUE ÇA LEUR COÛTE]
+- Ce qu'ils ont déjà essayé : [SOLUTIONS TESTÉES]
+- Leur objectif dans 6 mois : [CE QU'ILS VEULENT ATTEINDRE]
+- Ce qui est important pour eux : [VALEURS / PRIORITÉS]
+
+Génère :
+1. Une phrase de positionnement sur mesure (utilise LEURS mots, pas les miens)
+2. 3 bénéfices personnalisés (dans le même ordre que leurs priorités)
+3. La preuve sociale la plus pertinente pour eux (type de client / résultat similaire)
+4. La phrase d'ouverture pour la propale
+
+Format : prêt à copier dans une propale ou à dire en call.`,
+    tip: "Plus tu utilises leurs mots exacts, plus ils pensent que tu les comprends parfaitement."
+  },
+  {
+    id: 26, cat: "demo", title: "Réponse à l'objection 'je dois en parler à mon associé'",
+    preview: "Script pour gérer le gatekeeper sans perdre le deal ni braquer le prospect.",
+    prompt: `Écris le script pour répondre à "je dois en parler à mon associé/responsable" en call.
+
+Contexte :
+- On est en fin de démo ou de présentation de prix
+- Le prospect a l'air intéressé mais évite la décision
+- Son associé/responsable n'était pas sur l'appel
+- Mon offre : [OFFRE]
+
+Le script doit :
+1. Valider la nécessité sans paraître contrarié
+2. Qualifier le rôle décisionnel du contact (sans le braquer)
+3. Proposer un appel à 3 (toi + contact + décideur) plutôt qu'une propale envoyée dans le vide
+4. Si l'appel à 3 est refusé : comment préparer le contact pour qu'il vende pour toi
+5. La date de suivi à caler avant de raccrocher
+
+Ce qu'il ne faut surtout pas faire dans ce moment (liste courte).`,
+    tip: "Une propale envoyée sans le décideur présent meurt dans une boîte mail. Toujours viser l'appel à 3."
+  },
+
+  // DELIVERY
+  {
+    id: 27, cat: "delivery", title: "Plan d'onboarding client 30 jours",
+    preview: "Programme d'onboarding structuré pour démarrer une mission sans friction.",
+    prompt: `Génère un plan d'onboarding client complet sur 30 jours pour ma prestation IA.
+
+Ma prestation : [DESCRIPTION]
+Livrables : [CE QUE JE LIVRE ET QUAND]
+Accès nécessaires : [OUTILS / CREDENTIALS / INFORMATIONS]
+
+Structure le plan en 4 phases :
+
+Phase 1 — Kick-off (J1-J3) : accès, objectifs alignés, premières décisions
+Phase 2 — Construction (J3-J14) : développement, tests intermédiaires, feedback
+Phase 3 — Déploiement (J14-J21) : mise en production, formation, ajustements
+Phase 4 — Stabilisation (J21-J30) : optimisation, mesure résultats, handover
+
+Pour chaque phase :
+- Actions de ma part
+- Ce que le client doit faire
+- Livrable de fin de phase
+- Risques et comment les éviter
+
+Format : tableau + email de bienvenue J0 prêt à envoyer.`,
+    tip: "Un onboarding clair réduit les allers-retours de 60%. Envoie ce plan avant même la signature."
+  },
+  {
+    id: 28, cat: "delivery", title: "Email de bienvenue après signature",
+    preview: "Email professionnel à envoyer dès que le contrat est signé.",
+    prompt: `Rédige l'email de bienvenue à envoyer dans l'heure qui suit la signature du contrat.
+
+Client : [PRÉNOM / ENTREPRISE]
+Projet : [DESCRIPTION COURTE]
+Date de début : [DATE]
+Premier call prévu : [DATE + HEURE]
+
+L'email doit :
+1. Confirmer que tu es ravi de travailler ensemble (sincère, pas corporate)
+2. Récapituler en 3 bullets ce qui va se passer dans les 7 premiers jours
+3. Lister les accès/informations nécessaires à collecter avant J1
+4. Donner le lien vers l'appel de kick-off
+5. Inclure tes coordonnées directes (téléphone/WhatsApp) pour les urgences
+
+Ton : professionnel mais humain. Ils viennent de dépenser [PRIX] — ils doivent se sentir rassurés.
+Max 200 mots.`,
+    tip: "Cet email détermine le ton de toute la relation. Un client rassuré dès J0 ne te relance pas toutes les 2 heures."
+  },
+  {
+    id: 29, cat: "delivery", title: "Rapport de résultats mensuel",
+    preview: "Template de rapport mensuel qui justifie le retainer et prépare l'upsell.",
+    prompt: `Génère le template de rapport mensuel à envoyer à mon client en retainer.
+
+Client : [NOM / SECTEUR]
+Mois concerné : [MOIS]
+KPIs suivis : [LISTE DES MÉTRIQUES (ex: temps économisé, leads traités, erreurs évitées)]
+Chiffres du mois : [VOS DONNÉES]
+
+Structure du rapport :
+1. Résumé exécutif (3 lignes — pour le dirigeant qui ne lit pas tout)
+2. Résultats du mois vs objectifs (tableau avec delta)
+3. Ce qui a bien fonctionné (1-2 points)
+4. Ce qu'on améliore le mois prochain (1-2 points)
+5. Recommandations (optionnel — pour ouvrir une conversation d'upsell)
+
+Ton : factuel, pas défensif. Tu n'as pas à sur-expliquer — les chiffres parlent.
+Format : peut être envoyé par email ou partagé en PDF.`,
+    tip: "Le rapport mensuel est ton meilleur outil de rétention. Un client qui voit ses résultats ne résilie pas."
+  },
+  {
+    id: 30, cat: "delivery", title: "Gérer un client mécontent",
+    preview: "Script pour désamorcer une situation tendue avec un client insatisfait.",
+    prompt: `Aide-moi à gérer cette situation avec un client mécontent.
+
+Situation : [DÉCRIS LE PROBLÈME — bug, délai, résultat en dessous des attentes]
+Ce que le client a dit : [SES MOTS EXACTS si possible]
+Ce qui s'est réellement passé : [TA VERSION]
+Est-ce que c'est de ma faute ? [OUI / PARTIELLEMENT / NON]
+
+Génère :
+1. L'email de réponse (à envoyer dans l'heure)
+2. Ce qu'il ne faut surtout pas écrire dans cet email
+3. La solution concrète à proposer (selon le niveau de responsabilité)
+4. Comment sauver la relation sur le long terme
+5. Ce que tu documenteras pour ne plus que ça arrive
+
+Ton : calme, responsable, orienté solution — jamais défensif.`,
+    tip: "Réponds vite (dans l'heure) et propose une solution concrète. La vitesse de réponse atténue 50% de la colère."
+  },
+  {
+    id: 31, cat: "delivery", title: "Demander un témoignage vidéo",
+    preview: "Script pour obtenir un témoignage vidéo client (le plus puissant des social proofs).",
+    prompt: `Écris le message pour demander un témoignage vidéo à un client satisfait.
+
+Client : [PRÉNOM / ENTREPRISE]
+Résultat obtenu ensemble : [RÉSULTAT CONCRET]
+Durée de notre collaboration : [DURÉE]
+Canal de contact : [EMAIL / WHATSAPP / APPEL]
+
+Le message doit :
+1. Mentionner le résultat spécifique obtenu (pas juste "super boulot")
+2. Expliquer pourquoi une vidéo de 60 secondes (pas un texte) — pour être honnête
+3. Donner des questions précises auxquelles répondre (pour faciliter leur travail)
+4. Proposer une alternative si la vidéo les bloque (texte + photo)
+5. Remercier quel que soit le choix
+
+Questions suggérées pour leur vidéo : [LISTE DE 3-4 QUESTIONS SPÉCIFIQUES À LEUR CAS]`,
+    tip: "Envoie cette demande à J+30 de la livraison. Trop tôt = pas de recul. Trop tard = ils ont oublié les détails."
+  },
+  {
+    id: 32, cat: "delivery", title: "Proposer une extension de contrat",
+    preview: "Email naturel pour renouveler ou étendre une mission qui se termine.",
+    prompt: `Écris l'email pour proposer une extension de contrat à un client dont la mission se termine.
+
+Client : [NOM]
+Mission actuelle : [DESCRIPTION + DURÉE]
+Ce qui a été accompli : [RÉSULTATS CLÉS]
+Ce qui reste à optimiser : [OPPORTUNITÉS NON EXPLOITÉES]
+Ce que je propose comme extension : [NOUVELLE MISSION / RETAINER]
+
+L'email doit :
+1. Faire le bilan positif de la mission (chiffres à l'appui)
+2. Identifier naturellement la prochaine étape logique (pas forcer la vente)
+3. Proposer l'extension avec les détails (durée, scope, prix)
+4. Faciliter la décision (option simple et directe)
+5. Laisser la porte ouverte sans pression
+
+Ton : partenaire business, pas commercial qui cherche à closer. Tu connais ce client — écris en conséquence.`,
+    tip: "Un client existant coûte 5-7x moins cher à conserver qu'un nouveau à acquérir. Priorise le renouvellement."
+  },
+  {
+    id: 33, cat: "delivery", title: "SOP de fin de mission (handover)",
+    preview: "Document de passation pour clôturer proprement une mission et préparer le futur.",
+    prompt: `Génère le document de fin de mission (handover) pour cette prestation.
+
+Projet livré : [DESCRIPTION]
+Client : [NOM / ENTREPRISE]
+Durée de la mission : [DURÉE]
+Ce qui a été livré : [LISTE COMPLÈTE DES LIVRABLES]
+
+Le document doit contenir :
+1. Résumé de ce qui a été construit (pour quelqu'un qui n'était pas là)
+2. Architecture technique (schéma simplifié de comment l'agent fonctionne)
+3. Guide d'utilisation quotidienne (en langage non-technique)
+4. Procédures de maintenance (que faire si X arrive)
+5. Contacts et accès (où est quoi)
+6. Recommandations pour la suite (ce que je ferais en priorité après)
+
+Format : document Notion-ready ou Word. Ton : accessible pour un non-technicien.`,
+    tip: "Un bon handover génère des recommandations. Les clients qui comprennent ce qu'ils ont reçu en parlent mieux."
+  },
+  {
+    id: 34, cat: "delivery", title: "Rédiger une étude de cas client",
+    preview: "Transforme les résultats d'un client en case study publiable.",
+    prompt: `Rédige une étude de cas client à partir de ces informations.
+
+Client : [NOM ou pseudonyme si anonyme]
+Secteur : [SECTEUR]
+Problème de départ : [SITUATION AVANT]
+Solution mise en place : [AGENT IA CRÉÉ]
+Résultats obtenus : [CHIFFRES CONCRETS]
+Durée pour obtenir ces résultats : [DÉLAI]
+Citation du client : [SI DISPONIBLE]
+
+Structure :
+1. Accroche (le résultat en premier, pas le contexte)
+2. Situation de départ (problème + impact business)
+3. Solution déployée (technique mais accessible)
+4. Résultats mesurés (chiffres + avant/après)
+5. Ce qu'il dit maintenant (citation authentique)
+6. Ce que ça signifie pour quelqu'un dans la même situation
+
+Format : 400-600 mots, publiable sur LinkedIn ou page de vente.`,
+    tip: "Commence par le résultat — les lecteurs scannent. S'ils voient le chiffre en premier, ils lisent la suite."
+  },
+
+  // AGENTS IA
+  {
+    id: 35, cat: "agents", title: "System prompt pour agent de prospection",
+    preview: "Prompt système complet pour un agent qui prospecte de manière autonome.",
+    prompt: `Génère le system prompt complet pour un agent IA de prospection pour [NICHE].
+
+L'agent doit :
+- Analyser les informations d'un prospect (site, LinkedIn, secteur)
+- Générer un email de prospection personnalisé
+- Anticiper les objections spécifiques à ce profil
+- Suggérer le meilleur timing et canal de contact
+- Scorer le lead (chaud / tiède / froid) avec justification
+
+Contexte business :
+- Mon activité : [DESCRIPTION]
+- Client cible : [PROFIL ICP]
+- Ton de communication : [STYLE SOUHAITÉ]
+- Ce que je vends : [OFFRE]
+
+Génère le system prompt complet, prêt à coller dans Claude ou n8n.
+Inclus les instructions de format de sortie (JSON si applicable).`,
+    tip: "Teste le system prompt avec 5 prospects réels avant de l'automatiser. Ajuste jusqu'à 90% de satisfaction."
+  },
+  {
+    id: 36, cat: "agents", title: "System prompt pour agent SAV",
+    preview: "Prompt système pour un agent de support client autonome.",
+    prompt: `Génère le system prompt pour un agent de support client (SAV) pour [TYPE D'ENTREPRISE].
+
+L'agent doit gérer :
+- Questions fréquentes sur [PRODUIT/SERVICE]
+- Suivi de commandes / statuts
+- Réclamations et remboursements
+- Escalade vers un humain (quand et comment)
+
+Paramètres :
+- Ton : [PROFESSIONNEL / DÉCONTRACTÉ / etc.]
+- Langue : français
+- Informations accessibles : [BASE DE CONNAISSANCES / FAQ / etc.]
+- Ce que l'agent NE doit jamais faire : [LIMITES CLAIRES]
+- Déclencheurs d'escalade : [CONDITIONS POUR TRANSFÉRER À UN HUMAIN]
+
+Inclus : instructions pour reconnaître un client mécontent et adapter le ton.
+Format : prêt à déployer dans n8n (Tools Agent).`,
+    tip: "Définis explicitement les limites de l'agent. Un agent qui dit 'je ne sais pas, je vous passe un humain' inspire confiance."
+  },
+  {
+    id: 37, cat: "agents", title: "System prompt pour agent de qualification leads",
+    preview: "Agent qui qualifie automatiquement les leads entrants selon tes critères.",
+    prompt: `Génère le system prompt pour un agent de qualification des leads entrants.
+
+Source des leads : [FORMULAIRE / EMAIL / CHAT]
+Critères de qualification :
+- Critère 1 (éliminatoire) : [ex: budget minimum]
+- Critère 2 : [ex: secteur d'activité]
+- Critère 3 : [ex: timing du projet]
+- Critère 4 : [ex: taille d'entreprise]
+
+L'agent doit :
+1. Poser les questions de qualification de manière conversationnelle (pas un formulaire)
+2. Scorer le lead selon les critères (0-100)
+3. Si qualifié : proposer un créneau d'appel
+4. Si non qualifié : répondre poliment avec une alternative
+5. Logger les informations dans un format structuré (JSON)
+
+Génère le system prompt + exemple de conversation qualifiante.`,
+    tip: "L'agent doit poser max 4 questions. Au-delà, le prospect abandonne."
+  },
+  {
+    id: 38, cat: "agents", title: "System prompt pour agent de génération de contenu",
+    preview: "Agent qui génère du contenu marketing cohérent avec la voix de la marque.",
+    prompt: `Génère le system prompt pour un agent de génération de contenu pour [TYPE D'ENTREPRISE].
+
+Contexte de la marque :
+- Secteur : [SECTEUR]
+- Ton de voix : [DESCRIPTION EN 3 ADJECTIFS]
+- Audience : [QUI LIT CE CONTENU]
+- Formats à produire : [POSTS LINKEDIN / EMAILS / ARTICLES / etc.]
+- Ce qu'on ne fait jamais : [INTERDITS DE COMMUNICATION]
+
+L'agent reçoit : [BRIEF / SUJET / IDÉE DE DÉPART]
+L'agent produit : [FORMAT + LONGUEUR + STRUCTURE]
+
+Inclus dans le system prompt :
+- Exemples de ton "parfait" (2-3 phrases références)
+- Exemples de ton à éviter
+- Structure de sortie standardisée
+- Instructions de validation (comment l'agent vérifie la cohérence)`,
+    tip: "Plus tu donnes d'exemples de référence, plus l'agent capture la voix. 5 bons exemples > 500 mots de description."
+  },
+  {
+    id: 39, cat: "agents", title: "Débugger un agent n8n qui répond à côté",
+    preview: "Diagnostic structuré pour identifier et corriger un agent qui dérive.",
+    prompt: `Aide-moi à débugger cet agent n8n qui ne donne pas les résultats attendus.
+
+Comportement attendu : [CE QUE L'AGENT DEVRAIT FAIRE]
+Comportement observé : [CE QU'IL FAIT RÉELLEMENT]
+System prompt actuel : [COLLE TON SYSTEM PROMPT]
+Exemple d'input qui fail : [INPUT PROBLÉMATIQUE]
+Output reçu : [OUTPUT INCORRECT]
+
+Analyse :
+1. Identification du problème (ambiguïté dans le prompt / mauvaise instruction / manque de contexte)
+2. Les 3 corrections à apporter au system prompt
+3. Comment tester que la correction fonctionne
+4. Règles générales pour éviter ce type de dérive
+
+Propose une version corrigée du system prompt si le problème est dans le prompt.`,
+    tip: "80% des problèmes d'agent viennent du system prompt, pas de la technique. Commence toujours par là."
+  },
+  {
+    id: 40, cat: "agents", title: "Optimiser le system prompt existant",
+    preview: "Améliore un system prompt fonctionnel pour le rendre plus précis et fiable.",
+    prompt: `Optimise ce system prompt pour le rendre plus performant.
+
+System prompt actuel : [COLLE ICI]
+Problèmes observés :
+- [Problème 1]
+- [Problème 2]
+Cas d'usage principaux : [TOP 3 DES UTILISATIONS]
+Contraintes techniques : [LIMITE DE TOKENS / TOOLS DISPONIBLES / etc.]
+
+Optimisations demandées :
+1. Clarté des instructions (éliminer les ambiguïtés)
+2. Format de sortie (plus structuré / prévisible)
+3. Gestion des cas limites (que faire si l'input est incomplet)
+4. Réduction du token count sans perdre en qualité
+
+Livre : la version optimisée + une explication des changements clés.`,
+    tip: "Un bon system prompt tient en moins de 500 tokens. Si tu dépasses, coupe — la précision compense la longueur."
+  },
+  {
+    id: 41, cat: "agents", title: "Documenter un agent pour le client",
+    preview: "Génère la documentation utilisateur d'un agent IA livré à un client.",
+    prompt: `Génère la documentation utilisateur pour cet agent IA.
+
+Agent : [NOM ET DESCRIPTION]
+Client : [TYPE D'UTILISATEUR — non technique]
+Fonctionnalités principales : [LISTE]
+Inputs nécessaires : [CE QUE L'UTILISATEUR DOIT FOURNIR]
+Outputs générés : [CE QUE L'AGENT PRODUIT]
+Limitations connues : [CE QUE L'AGENT NE FAIT PAS]
+
+La doc doit contenir :
+1. "Comment ça marche" en 3 étapes simples
+2. Guide pas-à-pas pour la première utilisation
+3. FAQ (5 questions les plus probables)
+4. Que faire si ça ne fonctionne pas (troubleshooting simple)
+5. Contact support
+
+Ton : clair, non-technique, rassurant. Le client ne sait pas ce qu'est un LLM.`,
+    tip: "Teste la doc avec quelqu'un qui ne connaît pas le projet. Si ils bloquent quelque part, réécris ce passage."
+  },
+  {
+    id: 42, cat: "agents", title: "Créer les tool descriptions pour n8n",
+    preview: "Rédige les descriptions de tools pour que l'agent sache quoi appeler et quand.",
+    prompt: `Génère les descriptions de tools pour mon agent n8n AI Agent.
+
+Liste de mes tools disponibles :
+- Tool 1 : [NOM] — ce qu'il fait techniquement : [DESCRIPTION TECHNIQUE]
+- Tool 2 : [NOM] — [DESCRIPTION]
+- Tool 3 : [NOM] — [DESCRIPTION]
+(ajoute autant que nécessaire)
+
+Pour chaque tool, génère :
+1. **Nom du tool** (court, en snake_case)
+2. **Description** (2-3 phrases — ce que le tool fait, QUAND l'utiliser, ce qu'il retourne)
+3. **Parameters** (champ, type, description, required ou non)
+4. **Exemple d'appel** (cas d'usage concret)
+
+Objectif : que l'agent LLM comprenne EXACTEMENT quand et comment utiliser chaque tool.`,
+    tip: "La description du tool est lue par le LLM à chaque appel. Sois précis sur le 'quand utiliser' — c'est ce qui évite les mauvais choix."
+  },
+  {
+    id: 43, cat: "agents", title: "Tester un agent avant livraison",
+    preview: "Protocole de test complet pour valider un agent avant de le livrer au client.",
+    prompt: `Génère un protocole de test complet pour valider mon agent avant livraison.
+
+Agent : [DESCRIPTION]
+Fonctionnalités à tester : [LISTE]
+Cas d'usage principaux : [TOP 3]
+
+Génère :
+1. **Test cases nominaux** (10 inputs "normaux" qui doivent fonctionner parfaitement)
+2. **Test cases limites** (5 inputs aux limites du scope — que se passe-t-il ?)
+3. **Test cases d'erreur** (5 inputs incorrects — comment l'agent gère-t-il l'erreur ?)
+4. **Test de cohérence** (même input, 3 fois — les outputs sont-ils consistants ?)
+5. **Test de performance** (temps de réponse acceptable ?)
+
+Pour chaque test : input à utiliser / output attendu / critère de succès / que faire si ça fail
+
+Livre aussi : la checklist de validation finale avant envoi au client.`,
+    tip: "Fais passer les test cases à quelqu'un d'autre si possible. On est aveugle à ses propres bugs."
+  },
+  {
+    id: 44, cat: "agents", title: "System prompt pour agent de facturation",
+    preview: "Agent qui automatise les relances de paiement et le suivi facturation.",
+    prompt: `Génère le system prompt pour un agent de gestion de facturation et relances.
+
+Contexte :
+- Type d'entreprise : [SECTEUR]
+- Volume mensuel de factures : [ESTIMATION]
+- Délai de paiement standard : [JOURS]
+- Problème actuel : [ex: 30% des factures payées en retard]
+
+L'agent doit :
+1. Détecter les factures impayées passé l'échéance
+2. Envoyer des relances progressives (J+1, J+7, J+14, J+30)
+3. Adapter le ton selon l'ancienneté du retard (doux → ferme)
+4. Logger chaque action avec timestamp
+5. Alerter un humain à partir de [SEUIL] jours de retard
+
+Génère le system prompt + 4 templates d'emails de relance (J+1 / J+7 / J+14 / J+30).`,
+    tip: "Le ton J+1 doit sembler une erreur de leur côté, pas une accusation. La plupart des retards ne sont pas intentionnels."
+  },
+
+  // BUSINESS
+  {
+    id: 45, cat: "business", title: "Planifier sa semaine de 15h (bêta Closer IA)",
+    preview: "Planning hebdomadaire optimisé pour signer son premier client en 30 jours.",
+    prompt: `Génère mon planning hebdomadaire optimal pour signer mon premier client IA avec 15h disponibles.
+
+Ma situation :
+- Avancement : [débutant / j'ai ma niche / j'ai prospecté X fois / j'ai eu des appels]
+- Niche choisie : [NICHE]
+- Temps disponible : [15h] réparties sur [JOURS DISPONIBLES]
+- Principal blocage actuel : [CE QUI ME FREINE]
+
+Génère un planning jour par jour avec :
+- Lundi à [JOUR] : tâche principale + durée + objectif mesurable
+- Les 3 métriques à tracker cette semaine
+- La définition de "bonne semaine" (comment je sais que j'ai bien avancé)
+- Ce que je mets de côté cette semaine (pour rester focus)
+
+Principe : prospection > démos > construction technique. Dans cet ordre.`,
+    tip: "Bloque les créneaux de prospection comme des réunions. Sinon ils disparaissent dans le flou."
+  },
+  {
+    id: 46, cat: "business", title: "Identifier sa niche secondaire",
+    preview: "Trouve la prochaine niche à adresser après ton premier client.",
+    prompt: `Aide-moi à identifier ma prochaine niche après mon premier client.
+
+Mon premier client :
+- Secteur : [SECTEUR]
+- Agent construit : [DESCRIPTION]
+- Résultat obtenu : [RÉSULTAT]
+- Ce que j'ai appris techniquement : [SKILLS ACQUIS]
+- Ce qui m'a surpris (positif) : [DÉCOUVERTE]
+
+Analyse :
+1. Quelles niches adjacentes bénéficieraient du MÊME type d'agent ?
+2. Quelles niches ont les mêmes douleurs mais un budget plus élevé ?
+3. Le profil de mon prochain client idéal (basé sur mon expérience)
+4. La stratégie pour y entrer (réseau / contenu / cold outreach)
+5. Timeline réaliste pour signer dans cette niche (compte tenu de mon niveau actuel)
+
+Évite les niches trop techniques ou trop distantes de ce que j'ai déjà prouvé.`,
+    tip: "La niche #2 se vend 2x plus vite que la #1. Tu arrives avec une preuve réelle — c'est ton meilleur asset."
+  },
+  {
+    id: 47, cat: "business", title: "Script de référence client (demander une intro)",
+    preview: "Message pour demander à un client satisfait de te présenter à son réseau.",
+    prompt: `Écris le message pour demander à un client satisfait de me présenter à son réseau.
+
+Client : [PRÉNOM / ENTREPRISE / SECTEUR]
+Résultat obtenu ensemble : [RÉSULTAT]
+Type de contact que je cherche : [PROFIL IDÉAL DE RÉFÉRENCE]
+Canal : [EMAIL / WHATSAPP / APPEL]
+
+Le message doit :
+1. Mentionner le résultat obtenu (crée la dynamique positive)
+2. Expliquer le type de client que je cherche (précis — pas "des gens comme toi")
+3. Proposer de faire le travail à leur place (brouillon d'email qu'ils n'ont qu'à transférer)
+4. Remercier sans mettre de pression
+5. Leur dire ce qu'ils y gagnent (pas toujours nécessaire, mais parfois pertinent)
+
+Génère aussi : le brouillon d'email qu'ils peuvent transférer directement.`,
+    tip: "Un client satisfait est heureux de te recommander. Il hésite par manque de temps, pas par manque de volonté — facilite-lui le travail."
+  },
+  {
+    id: 48, cat: "business", title: "Créer un plan de contenu sur 30 jours",
+    preview: "Calendrier éditorial 30 jours pour LinkedIn / Twitter / YouTube Shorts.",
+    prompt: `Génère mon calendrier de contenu pour les 30 prochains jours.
+
+Mon activité : je crée des agents IA pour [NICHE]
+Canaux actifs : [LINKEDIN / TWITTER / YOUTUBE SHORTS — sélectionne]
+Objectif contenu : [NOTORIÉTÉ / LEADS / CRÉDIBILITÉ / TOUT]
+Fréquence cible : [X posts/semaine par canal]
+
+Piliers de contenu :
+1. Éducation IA (ce que les non-techniciens ignorent)
+2. Démos et résultats (preuves réelles)
+3. Mindset et entrepreneuriat
+4. Coulisses (processus, erreurs, apprentissages)
+
+Pour chaque post :
+- Jour et canal
+- Type (texte / vidéo / image)
+- Angle / hook
+- Call to action
+
+Format : tableau des 30 jours, exportable.`,
+    tip: "30 idées en avance t'évite le blocage de la page blanche. Tu n'as plus qu'à exécuter."
+  },
+  {
+    id: 49, cat: "business", title: "Rédiger une offre bêta gratuite",
+    preview: "Présentation d'une offre bêta gratuite (pour obtenir les premiers case studies).",
+    prompt: `Rédige la présentation de mon offre bêta gratuite à destination de prospects qualifiés.
+
+Mon service : [DESCRIPTION]
+Ce que la bêta inclut : [LIVRABLES]
+Durée : [SEMAINES/MOIS]
+Ce que je demande en échange : [TÉMOIGNAGE VIDÉO / CASE STUDY / FEEDBACK]
+Nombre de places : [N]
+Conditions d'éligibilité : [QUI PEUT POSTULER]
+
+La présentation doit :
+1. Expliquer pourquoi c'est gratuit (honnêteté, pas mystère)
+2. Valoriser ce que la personne reçoit (même gratuit, ça a une valeur)
+3. Créer l'urgence sans manipulation (vraie limite de places)
+4. Filtrer les candidats peu sérieux (inclus une condition)
+5. CTA clair pour postuler
+
+Format : message LinkedIn OU email de candidature (choisis le plus adapté).`,
+    tip: "La bêta gratuite n'est pas un service dégradé. Livre exactement ce que tu livreras en payant — les case studies en dépendent."
+  },
+  {
+    id: 50, cat: "business", title: "Pitcher son activité à un partenaire",
+    preview: "Présentation de ton activité IA à un partenaire potentiel (agence, freelance, réseau).",
+    prompt: `Génère le pitch de 2 minutes pour présenter mon activité à un partenaire potentiel.
+
+Mon activité : je crée des agents IA pour [NICHE]
+Le partenaire : [TYPE — agence, expert-comptable, consultant, autre freelance]
+Ce que je cherche dans ce partenariat : [LEAD GEN / COLLABORATION / SOUS-TRAITANCE]
+Ce que j'apporte au partenaire : [VALEUR POUR EUX]
+Ce qu'il apporte : [SA VALEUR POUR MOI]
+
+Le pitch inclut :
+1. Ce que je fais (30 secondes, focus résultat client)
+2. Pourquoi c'est complémentaire à ce qu'il fait (pas concurrent)
+3. Le mécanisme du partenariat (concrètement, comment ça marche)
+4. La prochaine étape proposée (un appel, un test, autre)
+
+Ton : entre pairs, pas en mode "j'ai besoin de toi".`,
+    tip: "Le meilleur partenaire est celui qui parle déjà à ta cible idéale. Commence par là, pas par les gens que tu connais."
+  }
+];
+
+const catColors = {
+  prospection: 'cat-prospection', offre: 'cat-offre',
+  demo: 'cat-demo', delivery: 'cat-delivery',
+  agents: 'cat-agents', business: 'cat-business'
+};
+const catLabels = {
+  prospection: 'Prospection', offre: 'Offre & Pricing',
+  demo: 'Démo & Closing', delivery: 'Delivery',
+  agents: 'Agents IA', business: 'Business'
+};
+
+function renderGrid(data) {
+  const grid = document.getElementById('grid');
+  document.getElementById('count').textContent = `${data.length} prompt${data.length > 1 ? 's' : ''}`;
+  grid.innerHTML = data.map(p => `
+    <div class="card" id="card-${p.id}" onclick="toggleCard(${p.id})">
+      <div class="card-header">
+        <span class="card-num">#${String(p.id).padStart(2,'0')}</span>
+        <span class="card-cat ${catColors[p.cat]}">${catLabels[p.cat]}</span>
+      </div>
+      <div class="card-title">${p.title}</div>
+      <div class="card-preview">${p.preview}</div>
+      <div class="card-body">
+        <pre class="prompt-text">${escHtml(p.prompt)}</pre>
+        <button class="copy-btn" onclick="copyPrompt(event, ${p.id})">Copier le prompt</button>
+        ${p.tip ? `<div class="tip">💡 ${p.tip}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function toggleCard(id) {
+  document.getElementById('card-'+id).classList.toggle('open');
+}
+
+function copyPrompt(e, id) {
+  e.stopPropagation();
+  const p = prompts.find(x => x.id === id);
+  navigator.clipboard.writeText(p.prompt).then(() => {
+    const btn = e.target;
+    btn.textContent = 'Copié ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copier le prompt'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+let currentCat = 'all';
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    applyFilters();
+  });
+});
+
+document.getElementById('search').addEventListener('input', applyFilters);
+
+function applyFilters() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const filtered = prompts.filter(p => {
+    const catMatch = currentCat === 'all' || p.cat === currentCat;
+    const textMatch = !q || p.title.toLowerCase().includes(q) || p.preview.toLowerCase().includes(q) || p.prompt.toLowerCase().includes(q);
+    return catMatch && textMatch;
+  });
+  renderGrid(filtered);
+}
+
+renderGrid(prompts);
+</script>
+</body>
+</html>

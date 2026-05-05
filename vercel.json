@@ -6,6 +6,13 @@
     { "source": "/prompt", "destination": "/prompt.html" },
     { "source": "/agent-hormozi", "destination": "/agent-hormozi/index.html" },
     { "source": "/niche-selector", "destination": "/niche-selector/index.html" },
-    { "source": "/prompts-agents-ia", "destination": "/prompts-agents-ia/index.html" }
+    { "source": "/prompts-agents-ia", "destination": "/prompts-agents-ia/index.html" },
+    { "source": "/prompt-library", "destination": "/prompt-library/index.html" },
+    { "source": "/lead-sourcing", "destination": "/lead-sourcing/index.html" },
+    { "source": "/demo-framework", "destination": "/demo-framework/index.html" },
+    { "source": "/objection-bible", "destination": "/objection-bible/index.html" },
+    { "source": "/template-propale", "destination": "/template-propale/index.html" },
+    { "source": "/pack-juridique", "destination": "/pack-juridique/index.html" },
+    { "source": "/sop-livraison", "destination": "/sop-livraison/index.html" }
   ]
 }

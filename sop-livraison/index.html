@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOP Livraison — BONUS #11 · Closer IA</title>
+  <link rel="icon" type="image/png" href="../BigJim.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --noir: #0D0D0D; --grey: #161616; --orange: #E8612C; --teal: #0ABAB5; --white: #F0F0EB; --muted: #555; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--noir); color: var(--white); font-family: 'Courier Prime', monospace; min-height: 100vh; overflow-x: hidden; }
+    nav { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 1px solid #222; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); font-weight: 700; font-size: 15px; }
+    .nav-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); padding: 5px 12px; border: 1px solid var(--teal); }
+    .container { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+    .hero { text-align: center; margin-bottom: 60px; }
+    .badge { display: inline-block; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 6px 14px; margin-bottom: 24px; }
+    h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 700; line-height: 1.1; margin-bottom: 20px; }
+    h1 em { color: var(--orange); font-style: normal; }
+    .hero p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .progress-bar { background: #111; border: 1px solid #222; height: 8px; margin-bottom: 8px; }
+    .progress-fill { height: 100%; background: var(--orange); transition: width .4s; }
+    .progress-label { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-align: right; margin-bottom: 40px; }
+    .phase { margin-bottom: 40px; }
+    .phase-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #1a1a1a; }
+    .phase-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; padding: 4px 10px; border: 1px solid var(--orange); color: var(--orange); }
+    .phase-title { font-size: 16px; font-weight: 700; flex: 1; }
+    .phase-timing { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+    .phase-done-count { font-size: 11px; color: var(--teal); }
+    .check-item { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border-bottom: 1px solid #111; cursor: pointer; transition: opacity .2s; }
+    .check-item:last-child { border-bottom: none; }
+    .check-box { width: 18px; height: 18px; border: 1.5px solid #444; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+    .check-item.done .check-box { background: var(--teal); border-color: var(--teal); }
+    .check-item.done .check-box::after { content: '✓'; color: var(--noir); font-size: 11px; font-weight: 700; }
+    .check-item.done { opacity: .5; }
+    .check-content { flex: 1; }
+    .check-label { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .check-item.done .check-label { text-decoration: line-through; color: var(--muted); }
+    .check-detail { font-size: 12px; color: var(--muted); line-height: 1.6; }
+    .check-detail strong { color: var(--white); }
+    .template-inline { background: #0a0a0a; border-left: 2px solid var(--teal); padding: 10px 14px; margin-top: 8px; font-size: 11px; color: #999; line-height: 1.7; font-style: italic; }
+    .reset-btn { background: none; border: 1px solid #333; color: var(--muted); font-family: 'Courier Prime', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 8px 16px; cursor: pointer; transition: all .2s; margin-bottom: 40px; }
+    .reset-btn:hover { border-color: var(--muted); color: var(--white); }
+    .next-bonus { background: var(--grey); border: 1px solid #333; padding: 40px; text-align: center; margin-top: 80px; }
+    .next-bonus h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .next-bonus p { color: var(--muted); font-size: 13px; margin-bottom: 24px; line-height: 1.7; }
+    .btn-next { background: var(--orange); color: var(--noir); font-family: 'Courier Prime', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 14px 28px; font-weight: 700; text-decoration: none; display: inline-block; transition: opacity .2s; }
+    .btn-next:hover { opacity: .85; }
+    .complete-banner { display: none; background: #001a00; border: 1px solid #004400; padding: 20px; text-align: center; font-size: 14px; color: #34d399; margin-bottom: 40px; }
+    .complete-banner.show { display: block; }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/BigJim.png" alt="BigJim" style="width:34px;height:34px;object-fit:contain" />
+    <span>BigJim</span>
+  </a>
+  <div class="nav-tag">Closer IA — SOP Livraison</div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="badge">Closer IA — BONUS #11</div>
+    <h1>SOP<br><em>LIVRAISON</em></h1>
+    <p>Le process complet pour onboarder, construire et livrer<br>une mission IA sans friction — et obtenir le témoignage.</p>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+  <div class="progress-label" id="progress-label">0 / 0 tâches complétées</div>
+
+  <div class="complete-banner" id="complete-banner">✓ Mission livrée. N'oublie pas de demander le témoignage vidéo.</div>
+
+  <button class="reset-btn" onclick="resetAll()">Réinitialiser la checklist</button>
+
+  <div id="phases"></div>
+
+  <div class="next-bonus">
+    <h3>Tu as tout ce qu'il faut pour signer et livrer.</h3>
+    <p>Tu viens de traverser les 11 bonus de la bêta Closer IA. La prochaine étape : rejoindre la communauté et démarrer.</p>
+    <a href="https://skool.com" class="btn-next">Rejoindre la bêta Closer IA →</a>
+  </div>
+</div>
+
+<script>
+const phases = [
+  {
+    tag: "Phase 01",
+    title: "Avant la signature",
+    timing: "J-7 → J0",
+    tasks: [
+      {
+        label: "Propale envoyée dans l'heure suivant l'appel",
+        detail: "La chaleur de la conversation est ton meilleur outil de closing. Chaque heure qui passe refroidit le deal.",
+        template: null
+      },
+      {
+        label: "Relance J+3 si pas de réponse",
+        detail: "Un email court, direct. Pas de pression — une question ouverte sur ce qui bloque.",
+        template: '"[Prénom], je reviens vers vous — quelque chose bloque votre décision ? 15 minutes suffisent pour en parler."'
+      },
+      {
+        label: "Contrat envoyé dès accord verbal",
+        detail: "N'attends pas qu'ils disent 'envoyez le contrat'. Envoie dès le oui. Chaque heure de délai = risque de rétraction.",
+        template: null
+      },
+      {
+        label: "Acompte 50% reçu avant de démarrer",
+        detail: "Règle absolue. Pas d'acompte = pas de démarrage. Pas d'exception.",
+        template: null
+      }
+    ]
+  },
+  {
+    tag: "Phase 02",
+    title: "Kick-off (J1–J3)",
+    timing: "Dans les 48h après l'acompte",
+    tasks: [
+      {
+        label: "Email de bienvenue envoyé dans l'heure",
+        detail: "Confirme le démarrage, rappelle les prochaines étapes, donne tes coordonnées directes.",
+        template: '"[Prénom], c\'est parti ! Voici ce qui se passe dans les 7 prochains jours : [3 points]. J\'ai besoin de : [liste accès]. Mon WhatsApp pour les urgences : [tel]."'
+      },
+      {
+        label: "Call de kick-off réalisé (max 60 min)",
+        detail: "Objectifs : aligner les attentes, collecter les infos manquantes, valider le périmètre. Ordre du jour envoyé 24h avant.",
+        template: null
+      },
+      {
+        label: "Tous les accès collectés",
+        detail: "n8n, outils tiers, données de test, credentials. Note-les dans un gestionnaire de mots de passe — jamais dans un email.",
+        template: null
+      },
+      {
+        label: "Architecture validée par écrit avant de coder",
+        detail: "Envoie un schéma simple de ce que tu vas construire. Une validation écrite protège les deux parties si le scope dérive.",
+        template: '"Voici ce que je vais construire : [SCHÉMA]. Confirmez-moi que c\'est bien ça par retour d\'email."'
+      }
+    ]
+  },
+  {
+    tag: "Phase 03",
+    title: "Construction (J3–J14)",
+    timing: "Développement principal",
+    tasks: [
+      {
+        label: "Point d'avancement J7 envoyé proactivement",
+        detail: "N'attends pas qu'ils demandent des nouvelles. Un update hebdomadaire maintient la confiance et évite l'anxiété client.",
+        template: '"[Prénom] — point d\'étape semaine 1 : [ce qui est fait] / [ce qui reste] / [ce qui arrive]. Tout est en ordre pour la livraison le [DATE]."'
+      },
+      {
+        label: "Tests internes sur tes propres données de test",
+        detail: "Teste les 3 scénarios principaux + 2 cas limites avant de montrer quoi que ce soit au client.",
+        template: null
+      },
+      {
+        label: "Documentation technique rédigée pendant le développement",
+        detail: "Pas après — pendant. Tu connais le système à ce moment. Dans 2 semaines, tu auras oublié les détails.",
+        template: null
+      },
+      {
+        label: "Bug critique ou changement de périmètre signalé immédiatement",
+        detail: "Si quelque chose change, informe le client avant qu'il demande. La transparence proactive évite 90% des conflits.",
+        template: '"[Prénom], je veux vous informer d\'une situation : [problème/changement]. Ma proposition : [solution]. Ça nous décale de [X jours]. Ça vous convient ?"'
+      }
+    ]
+  },
+  {
+    tag: "Phase 04",
+    title: "Validation client (J14–J18)",
+    timing: "Avant la livraison finale",
+    tasks: [
+      {
+        label: "Démo de validation avec le client (30 min)",
+        detail: "Montre l'agent sur leurs vrais cas d'usage. Note chaque retour. C'est maintenant qu'on ajuste — pas après la livraison.",
+        template: null
+      },
+      {
+        label: "Liste des ajustements demandés documentée par écrit",
+        detail: "Après la démo, envoie un email récapitulatif de ce qui va être ajusté. Validation écrite = protection contre le scope creep.",
+        template: '"Suite à notre démo du [DATE], voici les ajustements à réaliser : [liste]. Hors de ce périmètre, toute modification sera facturée séparément. Confirmez-vous ?"'
+      },
+      {
+        label: "Ajustements réalisés et retestés",
+        detail: "Pas de livraison avant d'avoir retesté les ajustements toi-même. Ce qui fonctionne pour toi doit fonctionner pour eux.",
+        template: null
+      },
+      {
+        label: "Validation finale obtenue par écrit",
+        detail: "Un simple 'OK c'est parfait' par email suffit. Garde-le. C'est la référence en cas de litige post-livraison.",
+        template: '"[Prénom], l\'agent est prêt pour la livraison finale. Confirmez-vous que les ajustements correspondent à vos attentes ?"'
+      }
+    ]
+  },
+  {
+    tag: "Phase 05",
+    title: "Livraison et formation (J18–J21)",
+    timing: "Fin de mission",
+    tasks: [
+      {
+        label: "Formation du client réalisée (45-60 min max)",
+        detail: "Focus sur ce qu'ils vont utiliser au quotidien — pas sur tout ce que tu as construit. Enregistre la session si ils acceptent.",
+        template: null
+      },
+      {
+        label: "Documentation remise : guide utilisateur + technique",
+        detail: "2 documents séparés : un pour l'utilisateur final (non-technique), un pour le développeur potentiel qui reprendrait.",
+        template: null
+      },
+      {
+        label: "Accès vérifiés — le client peut utiliser l'agent sans toi",
+        detail: "Teste avec eux en live. S'ils bloquent quelque part, c'est maintenant qu'on le règle — pas dans 3 semaines.",
+        template: null
+      },
+      {
+        label: "Facture de solde envoyée",
+        detail: "Envoie la facture le jour de la livraison. Pas après. Le service est rendu — la facturation suit immédiatement.",
+        template: null
+      }
+    ]
+  },
+  {
+    tag: "Phase 06",
+    title: "Post-livraison (J21–J30)",
+    timing: "Après la livraison",
+    tasks: [
+      {
+        label: "Check-in J+7 : tout fonctionne bien ?",
+        detail: "Un message simple. Montre que tu t'assures du résultat, pas que tu as disparu après encaissement.",
+        template: '"[Prénom] — ça fait une semaine que l\'agent tourne. Comment ça se passe de votre côté ? Des questions ou des ajustements ?"'
+      },
+      {
+        label: "Résultats mesurés avec le client",
+        detail: "Demande les chiffres concrets. Temps économisé, demandes traitées, erreurs évitées. Ces données deviennent ton case study.",
+        template: null
+      },
+      {
+        label: "Demande de témoignage vidéo envoyée (J+30)",
+        detail: "J+30 = juste assez de recul pour qu'ils mesurent l'impact. Trop tôt = pas de données. Trop tard = ils ont oublié l'enthousiasme.",
+        template: '"[Prénom], ça fait un mois. [RÉSULTAT OBTENU] — c\'est exactement ce qu\'on avait visé. Je prépare des témoignages pour montrer ce que j\'accomplis avec mes clients. Est-ce que vous seriez prêt à enregistrer 60 secondes sur votre expérience ? Je vous envoie 3 questions si vous voulez."'
+      },
+      {
+        label: "Proposition de retainer ou mission suivante",
+        detail: "C'est le moment idéal — ils sont satisfaits, ils voient les résultats. La conversation se fait naturellement.",
+        template: '"Maintenant que l\'agent tourne bien, j\'ai identifié 2 choses qui pourraient encore améliorer [RÉSULTAT]. Vous voulez qu\'on en parle ?"'
+      }
+    ]
+  }
+];
+
+let state = {};
+
+function loadState() {
+  try { state = JSON.parse(localStorage.getItem('sop-state') || '{}'); } catch(e) { state = {}; }
+}
+
+function saveState() {
+  localStorage.setItem('sop-state', JSON.stringify(state));
+}
+
+function toggleTask(phaseIdx, taskIdx) {
+  const key = `${phaseIdx}-${taskIdx}`;
+  state[key] = !state[key];
+  saveState();
+  render();
+}
+
+function resetAll() {
+  if (confirm('Réinitialiser toutes les tâches ?')) {
+    state = {};
+    saveState();
+    render();
+  }
+}
+
+function render() {
+  let totalTasks = 0, doneTasks = 0;
+  phases.forEach((p, pi) => { p.tasks.forEach((_, ti) => { totalTasks++; if (state[`${pi}-${ti}`]) doneTasks++; }); });
+
+  const pct = totalTasks ? Math.round(doneTasks / totalTasks * 100) : 0;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${doneTasks} / ${totalTasks} tâches complétées — ${pct}%`;
+  document.getElementById('complete-banner').classList.toggle('show', doneTasks === totalTasks && totalTasks > 0);
+
+  document.getElementById('phases').innerHTML = phases.map((p, pi) => {
+    const phaseDone = p.tasks.filter((_, ti) => state[`${pi}-${ti}`]).length;
+    return `
+    <div class="phase">
+      <div class="phase-header">
+        <span class="phase-tag">${p.tag}</span>
+        <span class="phase-title">${p.title}</span>
+        <span class="phase-timing">${p.timing}</span>
+        <span class="phase-done-count">${phaseDone}/${p.tasks.length}</span>
+      </div>
+      ${p.tasks.map((t, ti) => {
+        const done = state[`${pi}-${ti}`] || false;
+        return `
+        <div class="check-item ${done ? 'done' : ''}" onclick="toggleTask(${pi}, ${ti})">
+          <div class="check-box"></div>
+          <div class="check-content">
+            <div class="check-label">${t.label}</div>
+            <div class="check-detail">${t.detail}</div>
+            ${t.template ? `<div class="template-inline">${t.template}</div>` : ''}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+loadState();
+render();
+</script>
+</body>
+</html>

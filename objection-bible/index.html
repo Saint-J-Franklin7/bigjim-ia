@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Objection Bible — BONUS #08 · Closer IA</title>
+  <link rel="icon" type="image/png" href="../BigJim.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --noir: #0D0D0D; --grey: #161616; --orange: #E8612C; --teal: #0ABAB5; --white: #F0F0EB; --muted: #555; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--noir); color: var(--white); font-family: 'Courier Prime', monospace; min-height: 100vh; overflow-x: hidden; }
+    nav { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 1px solid #222; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); font-weight: 700; font-size: 15px; }
+    .nav-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); padding: 5px 12px; border: 1px solid var(--teal); }
+    .container { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+    .hero { text-align: center; margin-bottom: 60px; }
+    .badge { display: inline-block; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 6px 14px; margin-bottom: 24px; }
+    h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 700; line-height: 1.1; margin-bottom: 20px; }
+    h1 em { color: var(--orange); font-style: normal; }
+    .hero p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .search-bar { width: 100%; max-width: 600px; margin: 0 auto 40px; display: block; background: var(--grey); border: 1px solid #333; color: var(--white); font-family: 'Courier Prime', monospace; font-size: 14px; padding: 14px 20px; outline: none; }
+    .search-bar::placeholder { color: var(--muted); }
+    .search-bar:focus { border-color: var(--teal); }
+    .count { text-align: center; color: var(--muted); font-size: 12px; letter-spacing: 2px; margin-bottom: 30px; }
+    .objection-list { display: flex; flex-direction: column; gap: 16px; }
+    .obj { border: 1px solid #222; }
+    .obj-header { display: flex; align-items: center; gap: 20px; padding: 20px 24px; cursor: pointer; transition: background .2s; }
+    .obj-header:hover { background: #111; }
+    .obj-num { font-size: 11px; color: var(--orange); letter-spacing: 2px; min-width: 30px; }
+    .obj-question { flex: 1; font-size: 15px; font-weight: 700; }
+    .obj-tag { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 3px 8px; border: 1px solid; flex-shrink: 0; }
+    .tag-prix { color: #f87171; border-color: #f87171; }
+    .tag-temps { color: #fbbf24; border-color: #fbbf24; }
+    .tag-confiance { color: var(--teal); border-color: var(--teal); }
+    .tag-report { color: #a78bfa; border-color: #a78bfa; }
+    .tag-peur { color: #fb923c; border-color: #fb923c; }
+    .expand-icon { color: var(--muted); font-size: 16px; transition: transform .2s; }
+    .obj.open .expand-icon { transform: rotate(45deg); }
+    .obj-body { display: none; padding: 0 24px 24px; border-top: 1px solid #1a1a1a; }
+    .obj.open .obj-body { display: block; padding-top: 20px; }
+    .real-fear { background: #1a0a00; border: 1px solid #3a1a00; padding: 14px 18px; margin-bottom: 18px; font-size: 12px; color: #fb923c; }
+    .real-fear strong { color: #fb923c; }
+    .response-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .response-text { background: #0a1200; border-left: 3px solid var(--teal); padding: 14px 18px; font-size: 13px; color: #ccc; line-height: 1.9; font-style: italic; margin-bottom: 14px; }
+    .followup { font-size: 12px; color: var(--muted); line-height: 1.7; }
+    .followup strong { color: var(--white); }
+    .never-say { background: #1a0000; border: 1px solid #3a0000; padding: 14px 18px; margin-top: 14px; font-size: 12px; color: #f87171; line-height: 1.7; }
+    .never-say strong { color: #f87171; }
+    .next-bonus { background: var(--grey); border: 1px solid #333; padding: 40px; text-align: center; margin-top: 80px; }
+    .next-bonus h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .next-bonus p { color: var(--muted); font-size: 13px; margin-bottom: 24px; line-height: 1.7; }
+    .btn-next { background: var(--orange); color: var(--noir); font-family: 'Courier Prime', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 14px 28px; font-weight: 700; text-decoration: none; display: inline-block; transition: opacity .2s; }
+    .btn-next:hover { opacity: .85; }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/BigJim.png" alt="BigJim" style="width:34px;height:34px;object-fit:contain" />
+    <span>BigJim</span>
+  </a>
+  <div class="nav-tag">Closer IA — Objection Bible</div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="badge">Closer IA — BONUS #08</div>
+    <h1>OBJECTION<br><em>BIBLE</em></h1>
+    <p>20 objections réelles. La peur cachée derrière chaque objection.<br>Et la réponse exacte à dire — sans bafouiller, sans brader.</p>
+  </div>
+
+  <input class="search-bar" type="text" id="search" placeholder="Cherche une objection..." />
+  <div class="count" id="count">20 objections</div>
+
+  <div class="objection-list" id="list"></div>
+
+  <div class="next-bonus">
+    <h3>Tu gères les objections. Maintenant formalise ton offre.</h3>
+    <p>BONUS #09 — Template Propale : le document de proposition commerciale qui fait signer sans appel supplémentaire.</p>
+    <a href="/template-propale" class="btn-next">Accéder au BONUS #09 →</a>
+  </div>
+</div>
+
+<script>
+const objections = [
+  {
+    q: "C'est trop cher.",
+    tag: "prix", tagLabel: "Prix",
+    fear: "La vraie peur : ils ne sont pas sûrs de la valeur, pas qu'ils n'ont pas le budget. S'ils étaient certains du ROI, 'c'est trop cher' ne sortirait jamais.",
+    response: `"Je comprends. Laissez-moi vous poser une question — si cet agent vous fait gagner [X heures/semaine], à [COÛT HORAIRE] l'heure, on est sur [€/mois] d'économies. Mon tarif c'est [TARIF]. Vous payez en mois 1, vous récupérez en mois 2 et après c'est du gain pur. Est-ce que c'est le prix qui pose problème, ou c'est l'incertitude sur le résultat ?"`,
+    followup: "Distinguez toujours prix et valeur perçue. Si c'est la valeur — montrez le ROI. Si c'est vraiment le budget — proposez un périmètre réduit, jamais un discount.",
+    never: "Ne dites jamais : 'Je peux faire un effort sur le prix.' Vous dévaluez l'offre et vous perdez leur confiance."
+  },
+  {
+    q: "J'ai pas le temps de m'en occuper.",
+    tag: "temps", tagLabel: "Temps",
+    fear: "La vraie peur : ils imaginent un projet chronophage. Ils ont déjà lancé des projets IT qui ont pris 6 mois. Ils ne font pas confiance au délai.",
+    response: `"C'est exactement le problème que ça résout — vous n'avez pas à vous en occuper. De votre côté : 1h pour le briefing initial, 30 minutes pour valider l'agent avant livraison. C'est tout. Je m'occupe du reste et je vous livre en [DÉLAI]. Votre temps, c'est ce que ça vous libère — pas ce que ça vous prend."`,
+    followup: "Précisez exactement ce que vous demandez au client (en heures). Vague = peur. Concret = réassurance.",
+    never: "Ne dites jamais : 'Ça prend peu de temps de votre côté.' Sans chiffre, ça ne rassure personne."
+  },
+  {
+    q: "Je dois en parler à mon associé / responsable.",
+    tag: "report", tagLabel: "Report",
+    fear: "La vraie peur : soit ils veulent vraiment consulter, soit ils cherchent un échappatoire poli. Les deux se traitent différemment.",
+    response: `"Bien sûr — quelle est la prochaine réunion avec lui ? Parce que je peux préparer un récap de 1 page qui lui donne tout ce qu'il faut pour prendre la décision, et si vous voulez, on fait un appel de 15 minutes tous les trois pour qu'il puisse poser ses questions directement. Ça vous semble faisable cette semaine ?"`,
+    followup: "L'objectif est d'éviter que la propale atterrisse dans une boîte mail sans toi pour la défendre. Propose toujours l'appel à 3.",
+    never: "Ne dites jamais : 'Pas de problème, je vous envoie un document.' C'est le meilleur moyen de ne plus jamais les avoir."
+  },
+  {
+    q: "Je veux réfléchir.",
+    tag: "report", tagLabel: "Report",
+    fear: "La vraie peur : une objection non exprimée. Ils ne disent pas la vraie raison. Il faut la trouver.",
+    response: `"Je respecte tout à fait. Pour que votre réflexion porte sur les bons points — qu'est-ce qui vous freine le plus là maintenant ? Le prix, l'incertitude sur les résultats, le timing, ou autre chose ?"`,
+    followup: "Cette question ouvre la vraie objection. Une fois qu'ils la disent, traitez-la directement. Si ils refusent de préciser, la décision est déjà prise — ne s'acharnez pas.",
+    never: "Ne dites jamais : 'Prenez le temps qu'il vous faut.' Sans relance cadrée, le deal meurt dans l'indécision."
+  },
+  {
+    q: "L'IA, ça marche pas vraiment / c'est du buzz.",
+    tag: "confiance", tagLabel: "Confiance",
+    fear: "La vraie peur : ils ont vu des démos impressionnantes qui n'ont rien donné en pratique. Leur scepticisme est légitime — ils ont été déçus avant.",
+    response: `"Vous avez raison d'être sceptique — beaucoup d'outils IA promettent trop. Ce que je vous propose c'est différent : un agent construit pour votre cas précis, pas un outil générique. Et je vous montre exactement ce qu'il fait avant que vous signez quoi que ce soit. Si ce que je montre ne vous convainc pas, pas de discussion. Mais laissez-moi au moins vous montrer — ça prend 7 minutes."`,
+    followup: "Proposez toujours une démo avant la signature pour les sceptiques. La preuve en live vaut 1000 mots.",
+    never: "Ne débattez pas sur 'l'IA en général'. Ramenez toujours sur votre agent spécifique et son résultat concret."
+  },
+  {
+    q: "J'ai déjà quelqu'un / un outil pour ça.",
+    tag: "confiance", tagLabel: "Confiance",
+    fear: "La vraie peur : peur du double emploi, peur de la transition. Ils ont investi dans quelque chose — admettre que c'est insuffisant est difficile.",
+    response: `"Intéressant — qu'est-ce qu'il fait exactement ? [ÉCOUTE] ... Je vois. La différence c'est [POINT SPÉCIFIQUE QUE VOUS COUVREZ ET QU'ILS N'ONT PAS]. Est-ce que [LACUNE IDENTIFIÉE] c'est quelque chose que votre solution actuelle gère ?"`,
+    followup: "Ne critiquez jamais leur solution actuelle. Cherchez le gap — ce qu'ils n'ont pas. Positionnez-vous sur ce gap, pas comme remplacement total.",
+    never: "Ne dites jamais : 'Notre solution est meilleure que X.' Comparer directement crée de la défense, pas de l'ouverture."
+  },
+  {
+    q: "Revenez dans 3 mois.",
+    tag: "report", tagLabel: "Report",
+    fear: "La vraie peur : soit le timing est réellement mauvais (acceptez-le), soit c'est un refus poli. Qualifiez d'abord.",
+    response: `"Je comprends. Qu'est-ce qui change dans 3 mois pour que ce soit le bon moment ? [ÉCOUTE] ...Si la situation est [RAISON], ça fait sens. Dans ce cas, est-ce qu'on peut caler un rappel le [DATE PRÉCISE] pour qu'on reprenne cette conversation quand le contexte est différent ?"`,
+    followup: "Calendrisez le rappel maintenant — pas 'je vous recontacte dans 3 mois.' Une date = un engagement. Pas de date = oubli.",
+    never: "N'acceptez jamais le '3 mois' sans comprendre pourquoi. Vous prospectez dans le vide sinon."
+  },
+  {
+    q: "J'ai peur de perdre le contrôle de mes données.",
+    tag: "peur", tagLabel: "Peur",
+    fear: "La vraie peur : légitime. RGPD, confidentialité, dépendance à un tiers. Ce n'est pas une objection à contourner — c'est un concern réel à adresser sérieusement.",
+    response: `"C'est une question importante et vous avez raison de la poser. Voici comment c'est structuré : [EXPLICATION TECHNIQUE SIMPLE — ex: les données restent dans votre compte n8n / je n'ai pas accès après livraison / aucune donnée stockée côté moi]. Vous restez propriétaire de tout. Si vous voulez, je vous envoie notre clause de confidentialité avant qu'on aille plus loin."`,
+    followup: "Préparez une réponse précise sur votre architecture de données avant chaque démo. 'Je ne sais pas' sur cette question tue le deal.",
+    never: "Ne minimisez jamais la question des données : 'vous vous inquiétez pour rien.' C'est leur data — c'est leur droit."
+  },
+  {
+    q: "Vous avez des références dans mon secteur ?",
+    tag: "confiance", tagLabel: "Confiance",
+    fear: "La vraie peur : peur d'être le cobaye. Ils veulent savoir que ça a déjà marché pour quelqu'un comme eux.",
+    response: `"Pas encore dans exactement votre activité — et je vais être honnête là-dessus. En revanche, j'ai travaillé avec [SECTEUR PROCHE] sur [PROBLÈME SIMILAIRE] et le résultat c'était [RÉSULTAT]. Le problème que vous avez — [LEUR PROBLÈME] — c'est structurellement le même. Et c'est justement pour ça que je suis à un tarif plus accessible maintenant : en échange d'un retour d'expérience réel de votre côté."`,
+    followup: "Transformer l'absence de référence en argument de tarif et de personnalisation — c'est votre meilleure réponse quand vous débutez.",
+    never: "Ne mentez jamais sur vos références. Le mensonge découvert tue la relation définitivement."
+  },
+  {
+    q: "Je peux pas me permettre de payer maintenant.",
+    tag: "prix", tagLabel: "Prix",
+    fear: "La vraie peur : soit vrai budget problem, soit ils n'ont pas assez confiance pour justifier la dépense. À qualifier.",
+    response: `"Je comprends — la trésorerie c'est concret. Deux options : soit on adapte le périmètre pour rentrer dans votre budget actuel [OPTION RÉDUITE], soit on cale un démarrage dans [DÉLAI] quand c'est plus confortable. Dans les deux cas, dites-moi quel budget vous avez disponible maintenant — je vous dis honnêtement si on peut travailler ensemble ou non."`,
+    followup: "Demandez le budget disponible directement. Si ils refusent de le dire, le budget n'est pas le vrai problème.",
+    never: "Ne proposez jamais 'payer plus tard sans conditions'. C'est vous qui prenez le risque — pas eux."
+  },
+  {
+    q: "Je vais le faire en interne / former quelqu'un.",
+    tag: "confiance", tagLabel: "Confiance",
+    fear: "La vraie peur : peur de la dépendance à un prestataire externe. Ils veulent la maîtrise. C'est légitime.",
+    response: `"C'est une option valable — regardons les deux côtés. Former quelqu'un : [X semaines] avant qu'il soit opérationnel + coût formation + risque qu'il parte. Moi : opérationnel en [DÉLAI], garanti. Après livraison, vous avez la main complète sur l'agent — je vous forme et je vous donne toute la documentation. Vous n'êtes pas dépendants. La question c'est : voulez-vous le construire, ou voulez-vous l'utiliser ?"`,
+    followup: "Proposez toujours la formation post-livraison comme partie intégrante — ça lève l'objection de dépendance.",
+    never: "Ne critiquez pas leur équipe interne. Respectez leur désir d'autonomie — et montrez que vous l'honorez."
+  },
+  {
+    q: "Je comprends pas vraiment ce que vous faites.",
+    tag: "confiance", tagLabel: "Confiance",
+    fear: "La vraie peur : peur de prendre une décision sans comprendre. Totalement légitime. Votre explication était trop technique.",
+    response: `"Laissez-moi recommencer différemment. Vous avez [PROBLÈME CONCRET] — [TÂCHE SPÉCIFIQUE] vous prend [TEMPS]. Mon agent, c'est comme si vous aviez un assistant qui fait exactement cette tâche, 24h/24, sans erreur, sans pause. Vous lui donnez [INPUT], il vous donne [OUTPUT]. C'est tout. Est-ce que ça c'est plus clair ?"`,
+    followup: "Adaptez votre analogie à leur métier. Un restaurateur comprend 'serveur automatique'. Un avocat comprend 'assistant de recherche jurisprudence'.",
+    never: "Ne répétez pas la même explication plus fort. Changez l'angle — pas le volume."
+  },
+  {
+    q: "On teste d'abord, et si ça marche on paie.",
+    tag: "prix", tagLabel: "Prix",
+    fear: "La vraie peur : ils ne font pas confiance au résultat. Ils veulent la preuve avant l'engagement. C'est raisonnable — mais le 'test gratuit' crée un déséquilibre.",
+    response: `"Je comprends la logique — vous voulez la preuve avant de vous engager. Ce que je propose : une démo live sur un cas réel de votre activité — vous voyez le résultat en direct. Si ça ne vous convainc pas, on s'arrête là. Mais si je construis l'agent complet sans garantie de paiement, je ne peux pas tenir un niveau de qualité correct — ce n'est bon ni pour vous ni pour moi."`,
+    followup: "Offrez une démo approfondie ou un POC limité payant — jamais le projet complet gratuit.",
+    never: "Ne dites jamais 'si vous êtes pas content on rembourse' sans conditions strictes. La garantie sans conditions vous expose."
+  },
+  {
+    q: "C'est pas le bon moment / on est en pleine période chargée.",
+    tag: "temps", tagLabel: "Temps",
+    fear: "La vraie peur : surcharge réelle ou peur du changement pendant une période sensible. Distinguez les deux.",
+    response: `"C'est compréhensible — et c'est souvent les périodes chargées qui font prendre conscience du problème. Question honnête : si vous démarrez dans 2 mois, est-ce que votre planning sera vraiment plus calme ? Ou est-ce que c'est structurellement toujours chargé ? Si c'est le deuxième cas, le meilleur moment c'est maintenant — parce qu'en 3 semaines l'agent gère une partie de votre charge."`,
+    followup: "Si le timing est vraiment mauvais (lancement produit, clôture annuelle), respectez-le et calendrisez.",
+    never: "Ne dites jamais 'c'est maintenant ou jamais' — la pression artificielle détruit la confiance."
+  },
+  {
+    q: "Je veux comparer avec d'autres prestataires.",
+    tag: "confiance", tagLabel: "Confiance",
+    fear: "La vraie peur : peur de ne pas faire le meilleur choix. Légitime. Ils veulent un ancrage comparatif.",
+    response: `"Bien sûr — comparer c'est intelligent. Voici ce que je vous suggère : faites votre sélection, et quand vous avez 2-3 options, envoyez-moi le brief que vous leur avez donné. Je vous dis honnêtement si je suis le bon fit ou non. Je préfère perdre un deal que vous décevoir après."`,
+    followup: "Cette posture de confiance est votre meilleur argument. La plupart des prestataires paniquent à 'je compare' — différenciez-vous en accueillant ça.",
+    never: "Ne dénigrez pas vos concurrents. Ça se retourne toujours contre vous."
+  },
+  {
+    q: "Et si vous disparaissez / arrêtez votre activité ?",
+    tag: "peur", tagLabel: "Peur",
+    fear: "La vraie peur : dépendance à une personne unique. Risque réel pour une PME de confier un processus critique à un freelance.",
+    response: `"Question légitime. Voici ce que je mets en place pour éviter exactement ça : vous recevez tout le code source, la documentation complète, et je vous forme pour que vous compreniez ce qui tourne. N'importe quel développeur peut reprendre le projet. Vous n'êtes dépendants de moi que pendant la construction — après livraison, vous êtes autonomes."`,
+    followup: "La documentation de livraison et la formation client ne sont pas juste un bonus — ce sont votre argument principal contre cette objection.",
+    never: "Ne dites pas 'ne vous inquiétez pas, je vais pas disparaître.' Ce n'est pas rassurant — c'est ce que dirait quelqu'un qui va disparaître."
+  },
+  {
+    q: "On préfère attendre que l'IA soit plus mature.",
+    tag: "peur", tagLabel: "Peur",
+    fear: "La vraie peur : peur d'adopter trop tôt et de refaire le travail dans 1 an. Peur du gaspillage.",
+    response: `"L'IA est déjà mature pour les cas d'usage que je construis — ce ne sont pas des expériences, ce sont des systèmes en production chez d'autres clients aujourd'hui. La vraie question c'est : pendant que vous attendez, vos concurrents qui l'adoptent maintenant prennent quelle avance ? L'IA n'attend pas que vous soyez prêt."`,
+    followup: "Citez des exemples concrets dans leur secteur si possible. L'abstraction de 'l'IA' effraie — le cas concret rassure.",
+    never: "Ne promettez pas que 'ça va encore s'améliorer' — ça confirme qu'ils ont raison d'attendre."
+  },
+  {
+    q: "Le prix que vous demandez, c'est trop élevé pour ce que c'est.",
+    tag: "prix", tagLabel: "Prix",
+    fear: "La vraie peur : ils comparent votre prix à quelque chose de comparable (dev intern, outil SaaS) — ils ne voient pas la différence de valeur.",
+    response: `"Ce que je facture c'est pas le code — le code c'est 20% du travail. C'est la conception, l'adaptation à votre cas précis, les tests, la formation, le support post-lancement. Et surtout c'est le résultat : [RÉSULTAT CONCRET]. Si vous achetez le résultat — et non le temps passé — le prix est différent. C'est quoi votre référentiel de comparaison ?"`,
+    followup: "Comprendre leur référentiel (un développeur freelance ? un outil SaaS à 50€/mois ?) vous permet de recadrer spécifiquement.",
+    never: "Ne justifiez pas votre prix par votre temps passé. Le client s'en fiche. Il paie pour le résultat."
+  },
+  {
+    q: "Je vais attendre d'avoir mon premier client avant d'investir.",
+    tag: "report", tagLabel: "Report",
+    fear: "La vraie peur : peur du risque financier. L'œuf ou la poule — ils veulent le revenu avant la dépense.",
+    response: `"Je comprends la logique. Renversons-la : comment vous allez obtenir ce premier client sans l'outil qui vous différencie de tous les autres freelances ? Ce que j'ai construit pour [CLIENT SIMILAIRE] — c'est exactement ce qui a fait la différence lors de sa première démo. L'agent IA c'est pas un coût après avoir des clients, c'est ce qui vous permet d'en avoir."`,
+    followup: "Si le budget est vraiment bloquant, proposez votre offre bêta ou un périmètre minimal first-step.",
+    never: "Ne forcez pas si le budget n'est vraiment pas là. Un client sans budget qui signe = problème de paiement assuré."
+  },
+  {
+    q: "Je connais quelqu'un qui peut le faire moins cher.",
+    tag: "prix", tagLabel: "Prix",
+    fear: "La vraie peur : soit ils cherchent à négocier, soit ils ont une vraie alternative. Qualifiez avant de répondre.",
+    response: `"C'est possible — il y a toujours moins cher. La question c'est : qu'est-ce qu'il inclut exactement ? Parce que si c'est le même périmètre [LISTE VOS LIVRABLES], à ce prix-là, je serais curieux de voir comment. Si c'est un scope réduit ou sans support, le prix reflète exactement ça. Est-ce que vous voulez qu'on compare ligne par ligne ?"`,
+    followup: "Comparer ligne par ligne démontre la valeur de chaque élément et met en lumière ce que l'autre prestataire ne fait pas.",
+    never: "Ne dites jamais : 'Il doit pas être très bon alors.' Vous parlez d'un inconnu — restez factuel et professionnel."
+  }
+];
+
+const tagColors = { prix:'tag-prix', temps:'tag-temps', confiance:'tag-confiance', report:'tag-report', peur:'tag-peur' };
+
+function render(data) {
+  document.getElementById('count').textContent = `${data.length} objection${data.length > 1 ? 's' : ''}`;
+  document.getElementById('list').innerHTML = data.map((o, i) => `
+    <div class="obj" id="obj-${i}">
+      <div class="obj-header" onclick="toggle(${i})">
+        <span class="obj-num">#${String(i+1).padStart(2,'0')}</span>
+        <span class="obj-question">"${o.q}"</span>
+        <span class="obj-tag ${tagColors[o.tag]}">${o.tagLabel}</span>
+        <span class="expand-icon">+</span>
+      </div>
+      <div class="obj-body">
+        <div class="real-fear">⚠️ <strong>La vraie peur :</strong> ${o.fear}</div>
+        <div class="response-label">Ce que tu dis :</div>
+        <div class="response-text">${o.response}</div>
+        <div class="followup"><strong>À retenir :</strong> ${o.followup}</div>
+        ${o.never ? `<div class="never-say">🚫 <strong>Ne jamais dire :</strong> ${o.never}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggle(i) {
+  document.getElementById('obj-'+i).classList.toggle('open');
+}
+
+document.getElementById('search').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  const filtered = q ? objections.filter(o => o.q.toLowerCase().includes(q) || o.fear.toLowerCase().includes(q) || o.response.toLowerCase().includes(q)) : objections;
+  render(filtered);
+});
+
+render(objections);
+</script>
+</body>
+</html>

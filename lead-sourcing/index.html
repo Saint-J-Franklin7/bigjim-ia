@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lead Sourcing — BONUS #06 · Closer IA</title>
+  <link rel="icon" type="image/png" href="../BigJim.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --noir: #0D0D0D; --grey: #161616; --orange: #E8612C; --teal: #0ABAB5; --white: #F0F0EB; --muted: #555; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--noir); color: var(--white); font-family: 'Courier Prime', monospace; min-height: 100vh; overflow-x: hidden; }
+    nav { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 1px solid #222; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); font-weight: 700; font-size: 15px; }
+    .nav-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); padding: 5px 12px; border: 1px solid var(--teal); }
+    .container { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+    .hero { text-align: center; margin-bottom: 70px; }
+    .badge { display: inline-block; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange); padding: 6px 14px; margin-bottom: 24px; }
+    h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 700; line-height: 1.1; margin-bottom: 20px; }
+    h1 em { color: var(--orange); font-style: normal; }
+    .hero p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+    .stat-bar { display: flex; justify-content: center; gap: 40px; margin-top: 40px; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 32px; font-weight: 700; color: var(--orange); }
+    .stat-label { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+    .method { border: 1px solid #222; margin-bottom: 24px; }
+    .method-header { display: flex; align-items: center; gap: 20px; padding: 24px 28px; cursor: pointer; transition: background .2s; }
+    .method-header:hover { background: #111; }
+    .method-num { font-size: 28px; font-weight: 700; color: var(--orange); min-width: 48px; }
+    .method-info { flex: 1; }
+    .method-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .method-meta { display: flex; gap: 16px; flex-wrap: wrap; }
+    .tag { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 3px 8px; border: 1px solid; }
+    .tag-free { color: #34d399; border-color: #34d399; }
+    .tag-fast { color: var(--teal); border-color: var(--teal); }
+    .tag-vol { color: #fbbf24; border-color: #fbbf24; }
+    .tag-qual { color: #a78bfa; border-color: #a78bfa; }
+    .expand-icon { font-size: 18px; color: var(--muted); transition: transform .2s; }
+    .method.open .expand-icon { transform: rotate(45deg); }
+    .method-body { display: none; padding: 0 28px 28px; border-top: 1px solid #1a1a1a; }
+    .method.open .method-body { display: block; padding-top: 24px; }
+    .method-desc { color: #999; font-size: 13px; line-height: 1.8; margin-bottom: 20px; }
+    .steps { list-style: none; counter-reset: steps; }
+    .steps li { counter-increment: steps; display: flex; gap: 16px; margin-bottom: 14px; font-size: 13px; line-height: 1.7; }
+    .steps li::before { content: counter(steps); color: var(--orange); font-weight: 700; font-size: 14px; min-width: 20px; }
+    .steps li strong { color: var(--white); }
+    .tool-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tool { background: #111; border: 1px solid #2a2a2a; padding: 4px 10px; font-size: 11px; color: var(--muted); }
+    .quota { background: #0a1a0a; border: 1px solid #1a3a1a; padding: 14px 18px; margin-top: 16px; font-size: 12px; color: #34d399; }
+    .quota strong { color: #34d399; }
+    .warning { background: #1a1000; border: 1px solid #3a2800; padding: 14px 18px; margin-top: 12px; font-size: 12px; color: #fbbf24; }
+    .next-bonus { background: var(--grey); border: 1px solid #333; padding: 40px; text-align: center; margin-top: 80px; }
+    .next-bonus h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .next-bonus p { color: var(--muted); font-size: 13px; margin-bottom: 24px; line-height: 1.7; }
+    .btn-next { background: var(--orange); color: var(--noir); font-family: 'Courier Prime', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 14px 28px; font-weight: 700; text-decoration: none; display: inline-block; transition: opacity .2s; }
+    .btn-next:hover { opacity: .85; }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/BigJim.png" alt="BigJim" style="width:34px;height:34px;object-fit:contain" />
+    <span>BigJim</span>
+  </a>
+  <div class="nav-tag">Closer IA — Lead Sourcing</div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="badge">Closer IA — BONUS #06</div>
+    <h1>LEAD<br><em>SOURCING</em></h1>
+    <p>10 méthodes gratuites pour trouver 100 prospects par jour.<br>Pas d'excuse pour manquer de leads.</p>
+    <div class="stat-bar">
+      <div class="stat"><div class="stat-num">10</div><div class="stat-label">Méthodes</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Gratuit</div></div>
+      <div class="stat"><div class="stat-num">0€</div><div class="stat-label">Coût outils</div></div>
+    </div>
+  </div>
+
+  <div id="methods"></div>
+
+  <div class="next-bonus">
+    <h3>T'as tes prospects. Maintenant convaincs-les.</h3>
+    <p>BONUS #07 — Demo Framework : structure ta démo en 7 minutes pour que le prospect signe sur le call.</p>
+    <a href="/demo-framework" class="btn-next">Accéder au BONUS #07 →</a>
+  </div>
+</div>
+
+<script>
+const methods = [
+  {
+    num: "01",
+    title: "Google Maps — extraction manuelle locale",
+    tags: [["Gratuit","free"],["Volume : élevé","vol"],["Setup : 5 min","fast"]],
+    desc: "La mine d'or des PME locales. Chaque restaurant, cabinet, agence, salon — tout y est avec email, téléphone et site web. Idéal pour les niches : restaurant, avocat, médecin, agent immobilier, artisan.",
+    steps: [
+      "<strong>Ouvre Google Maps</strong> et tape [TYPE D'ACTIVITÉ] [VILLE] (ex: \"cabinet comptable Lyon\")",
+      "<strong>Liste tous les résultats</strong> affichés (en général 20-30 par ville). Ouvre chaque fiche.",
+      "<strong>Collecte</strong> : nom de l'entreprise, nom du gérant si visible, email sur le site, téléphone, site web.",
+      "<strong>Note dans un Google Sheet</strong> : 5 colonnes (Entreprise / Gérant / Email / Tel / Site / Statut)",
+      "<strong>Répète</strong> sur 5-10 villes cibles pour atteindre 100 prospects rapidement.",
+      "<strong>Filtre</strong> : ceux qui ont un site web > ceux sans site (plus de budget, plus d'urgence)."
+    ],
+    tools: ["Google Maps", "Google Sheets", "Hunter.io (email finder gratuit 25/mois)"],
+    quota: "Objectif : 20 fiches complètes / heure. En 5h tu as 100 prospects qualifiés.",
+    warning: null
+  },
+  {
+    num: "02",
+    title: "LinkedIn — recherche avancée gratuite",
+    tags: [["Gratuit","free"],["Qualité : très élevée","qual"],["Volume : moyen","vol"]],
+    desc: "LinkedIn permet de cibler par poste, secteur, taille d'entreprise et localisation. Tu accèdes directement aux décideurs — pas aux secrétaires. Limite gratuite : 50-100 profils/semaine avant blocage.",
+    steps: [
+      "<strong>Va sur LinkedIn > Recherche</strong> > clique sur \"Personnes\"",
+      "<strong>Filtres à utiliser</strong> : Titre de poste (ex: Directeur, Gérant, Fondateur) + Secteur + Localisation + Taille d'entreprise",
+      "<strong>Exemple de recherche</strong> : \"Directeur\" + \"Immobilier\" + \"France\" + \"1-50 employés\"",
+      "<strong>Pour chaque profil</strong> : vérifie qu'il est décideur (pas employé), note son activité et 1 info personnalisable",
+      "<strong>Trouve son email</strong> avec Hunter.io (colle le nom + domaine entreprise)",
+      "<strong>Alternative directe</strong> : envoie une note de connexion personnalisée (300 caractères max)"
+    ],
+    tools: ["LinkedIn (gratuit)", "Hunter.io", "Apollo.io (gratuit 50 contacts/mois)", "Kaspr.io"],
+    quota: "Objectif : 15-20 connexions qualifiées par jour. Taux d'acceptation moyen : 25-40%.",
+    warning: "Ne fais pas plus de 30 connexions/jour — LinkedIn peut restreindre ton compte."
+  },
+  {
+    num: "03",
+    title: "Apollo.io — base de données B2B gratuite",
+    tags: [["Gratuit","free"],["Volume : très élevé","vol"],["Setup : 30 min","fast"]],
+    desc: "Apollo.io donne accès à 265M+ de contacts B2B avec emails vérifiés. La version gratuite : 50 crédits email/mois. Suffisant pour commencer et tester tes niches.",
+    steps: [
+      "<strong>Crée un compte gratuit</strong> sur apollo.io",
+      "<strong>Onglet 'People'</strong> > Filtres : Titre de poste + Secteur + Pays + Taille d'entreprise",
+      "<strong>Exemple</strong> : Job Title = [\"CEO\", \"Fondateur\", \"Directeur Général\"] + Industry = [TON SECTEUR] + Country = France",
+      "<strong>Sauvegarde la liste</strong> et exporte en CSV (email + nom + entreprise + poste)",
+      "<strong>Importe dans un Google Sheet</strong> et rajoute une colonne \"Personnalisation\" pour noter ce que tu vas écrire",
+      "<strong>Commence par envoyer</strong> 10 emails/jour avec personnalisation réelle (pas de masse blindée)"
+    ],
+    tools: ["Apollo.io", "Google Sheets", "Gmail"],
+    quota: "Version gratuite : 50 emails vérifiés/mois. Premium ($49/mois) : illimité.",
+    warning: "Les emails Apollo sont plus génériques. Personnalise toujours avant d'envoyer."
+  },
+  {
+    num: "04",
+    title: "Commentaires YouTube — leads ultra-qualifiés",
+    tags: [["Gratuit","free"],["Qualité : très élevée","qual"],["Volume : faible","vol"]],
+    desc: "Les gens qui commentent des vidéos sur [TON SUJET] ont déjà le problème. Ils cherchent activement une solution. Ce sont les leads les plus chauds qui existent. Volume faible mais taux de conversion élevé.",
+    steps: [
+      "<strong>Trouve les vidéos YouTube</strong> sur le problème de tes prospects (ex: \"gérer sa compta auto-entrepreneur\", \"débordé de demandes clients\")",
+      "<strong>Lis les commentaires</strong> — cherche des phrases comme : \"j'ai le même problème\", \"ça me prend des heures\", \"j'ai essayé X mais...\"",
+      "<strong>Identifie le canal</strong> de contact : certains ont leur email en bio, d'autres ont un site web lié",
+      "<strong>Personnalise ton approche</strong> : mentionne la vidéo et leur commentaire (montre que tu as lu)",
+      "<strong>Message en réponse au commentaire</strong> (visible) : \"J'ai construit un système pour exactement ce problème — tu veux que je t'envoie les détails ?\"",
+      "<strong>Passe en DM</strong> si ils répondent positivement"
+    ],
+    tools: ["YouTube", "LinkedInou Instagram pour retrouver leur profil"],
+    quota: "10-20 leads ultra-qualifiés par semaine. Taux de réponse : 40-60%.",
+    warning: null
+  },
+  {
+    num: "05",
+    title: "Pages Jaunes & annuaires pros",
+    tags: [["Gratuit","free"],["Volume : très élevé","vol"],["Setup : 10 min","fast"]],
+    desc: "Pagesjaunes.fr, Societe.com, Infogreffe — des millions de PME avec coordonnées. Parfait pour les niches locales avec décideur accessible : artisan, profession libérale, commerce de proximité.",
+    steps: [
+      "<strong>Pagesjaunes.fr</strong> : tape le type d'activité + la ville > liste paginée avec téléphone direct",
+      "<strong>Societe.com</strong> : recherche par activité (code NAF) > accès au nom du gérant, email parfois",
+      "<strong>Infogreffe.fr</strong> : recherche par secteur + département > données légales + dirigeant",
+      "<strong>Google : \"[NICHE] [VILLE] contact\"</strong> — les premiers résultats sont souvent des annuaires compilés",
+      "<strong>Collecte dans un Sheet</strong> : Nom entreprise / Gérant / Tel / Email / Ville",
+      "<strong>Appelle directement</strong> — les PME locales répondent mieux au téléphone qu'à l'email"
+    ],
+    tools: ["pagesjaunes.fr", "societe.com", "infogreffe.fr", "Google"],
+    quota: "50-100 contacts/heure selon la niche et la ville ciblée.",
+    warning: null
+  },
+  {
+    num: "06",
+    title: "Groupes Facebook — communautés de décideurs",
+    tags: [["Gratuit","free"],["Qualité : élevée","qual"],["Volume : moyen","vol"]],
+    desc: "Des milliers de groupes Facebook regroupent des dirigeants par secteur. Ils y partagent leurs problèmes publiquement. Tu peux les contacter directement en DM sur Facebook ou Messenger.",
+    steps: [
+      "<strong>Recherche sur Facebook</strong> : \"[NICHE] France\", \"entrepreneurs [SECTEUR]\", \"dirigeants [ACTIVITÉ]\"",
+      "<strong>Rejoins les groupes</strong> actifs (+1000 membres, derniers posts < 7 jours)",
+      "<strong>Observe 3-5 jours</strong> avant de poster — repère les membres qui partagent des problèmes réels",
+      "<strong>Commente avec de la valeur</strong> sur leurs posts (pas de pitch, juste de l'aide réelle)",
+      "<strong>En DM</strong> : \"J'ai vu ton post sur [PROBLÈME] — j'ai construit un outil exactement pour ça, tu veux un aperçu ?\"",
+      "<strong>Option</strong> : poste dans le groupe une question ouverte sur le problème que tu résous (génère des réponses = leads)"
+    ],
+    tools: ["Facebook", "Messenger"],
+    quota: "5-15 conversations engagées par semaine selon l'activité dans les groupes.",
+    warning: "Ne pitch pas dans les commentaires publics — DM uniquement après interaction."
+  },
+  {
+    num: "07",
+    title: "Instagram — fondateurs DTC et créateurs",
+    tags: [["Gratuit","free"],["Qualité : élevée","qual"],["Volume : moyen","vol"]],
+    desc: "Instagram est le terrain de chasse idéal pour les fondateurs de marques DTC, créateurs de contenu et indépendants. Tu peux voir leur activité, leur audience, leurs problèmes — et les approcher en DM avec contexte.",
+    steps: [
+      "<strong>Hashtags ciblés</strong> : #entrepreneur[NICHE] #marque[PRODUIT] #fondateur — épluche les résultats récents",
+      "<strong>Profil type à chercher</strong> : bio qui mentionne \"fondateur\", \"créateur\", \"CEO\" + lien vers un site/shop",
+      "<strong>Analyse leur compte</strong> : stories, posts, problèmes mentionnés, commentaires de leur audience",
+      "<strong>Commente 2-3 posts</strong> avant le DM — ils reconnaîtront ton nom",
+      "<strong>DM de 100 mots max</strong> : observation sincère sur leur marque + problème identifié + résultat pour un client similaire + question",
+      "<strong>Suivi à J+4</strong> si pas de réponse : un message encore plus court"
+    ],
+    tools: ["Instagram", "Phlanx.com (analyse d'audience)", "Similar Web (trafic site)"],
+    quota: "10-20 DMs qualifiés par jour. Taux de réponse : 15-30% si bien personnalisé.",
+    warning: "Maximum 30 DMs/jour sur Instagram pour éviter la restriction de compte."
+  },
+  {
+    num: "08",
+    title: "Reddit & forums FR — veille problèmes réels",
+    tags: [["Gratuit","free"],["Qualité : très élevée","qual"],["Volume : faible","vol"]],
+    desc: "Reddit et les forums francophones (Forum-auto, FrenchWeb, etc.) sont des mines d'or pour identifier les vrais problèmes. Les gens y sont honnêtes. Utilise-les pour cibler, pas pour prospecter directement.",
+    steps: [
+      "<strong>Reddit</strong> : cherche r/france, r/entrepreneur, r/freelance + mots-clés liés à ton secteur",
+      "<strong>Requête Google</strong> : site:reddit.com \"[PROBLÈME DE TA NICHE]\" pour trouver les fils pertinents",
+      "<strong>Identifie</strong> les utilisateurs qui postent sur ce problème — clique sur leur profil, cherche leurs autres postes",
+      "<strong>Certains ont un site web</strong> en bio ou dans leurs commentaires — c'est ton point d'entrée",
+      "<strong>Forums spécialisés</strong> : cherche \"[NICHE] forum\" — beaucoup d'indépendants s'y retrouvent",
+      "<strong>Usage principal</strong> : copier les formulations de leurs problèmes pour tes cold emails (verbatim = magnétique)"
+    ],
+    tools: ["Reddit", "Google (site:reddit.com)", "forums-secteur.fr"],
+    quota: "5-10 prospects directs/semaine + vocabulaire pour améliorer tes emails.",
+    warning: null
+  },
+  {
+    num: "09",
+    title: "Réseau personnel — les gens que tu connais déjà",
+    tags: [["Gratuit","free"],["Qualité : maximale","qual"],["Volume : faible","vol"]],
+    desc: "Le réseau personnel est sous-estimé. Tout le monde connaît quelqu'un qui dirige une entreprise ou connait quelqu'un qui dirige une entreprise. La confiance préexistante accélère tout.",
+    steps: [
+      "<strong>Liste exhaustive</strong> : ouvre tes contacts téléphone, LinkedIn, Facebook — qui est entrepreneur ou décideur ?",
+      "<strong>2 degrés de séparation</strong> : qui dans ton réseau connaît un [TYPE DE PROSPECT] ?",
+      "<strong>Message direct et honnête</strong> : \"Je lance un service IA pour [NICHE] — tu connais quelqu'un qui pourrait avoir ce problème ?\"",
+      "<strong>Pas d'intro froide</strong> : demande une intro chaleureuse (\"tu peux me présenter à [NOM] ?\") — taux de réponse 5x supérieur",
+      "<strong>Offre une bêta gratuite</strong> à tes contacts proches en échange d'un témoignage — premier case study assuré",
+      "<strong>Suivi</strong> : rappelle-leur 1x par mois que tu avances — les opportunités surgissent quand tu es présent dans leur esprit"
+    ],
+    tools: ["WhatsApp", "SMS", "LinkedIn"],
+    quota: "1-3 prospects chauds par semaine. Taux de closing : 3-5x supérieur au cold outreach.",
+    warning: null
+  },
+  {
+    num: "10",
+    title: "Partenariats — lever dans leur réseau",
+    tags: [["Gratuit","free"],["Qualité : très élevée","qual"],["Setup : 1-2 semaines","fast"]],
+    desc: "Un partenaire qui te recommande à sa base client = des leads chauds sans effort de prospection. Les meilleurs partenaires : experts-comptables, agences web, consultants, autres freelances qui touchent ta cible sans la concurrencer.",
+    steps: [
+      "<strong>Identifie 5 partenaires potentiels</strong> : qui parle déjà à ta cible idéale mais ne leur vend pas d'IA ?",
+      "<strong>Approche directe</strong> : \"Je construis des agents IA pour [NICHE]. Je pense qu'on touche les mêmes clients. On s'appelle ?\"",
+      "<strong>Mécanisme simple</strong> : pour chaque client qu'il t'apporte, tu lui envoies une commission (10-20%) ou tu lui offres un agent gratuit",
+      "<strong>Fournis-lui du contenu</strong> : 3 slides qui expliquent ce que tu fais + email qu'il peut transférer à ses clients",
+      "<strong>Premier test</strong> : demande-lui de présenter ton service à 3 clients — pas à toute sa liste",
+      "<strong>Prouve la valeur</strong> : ferme ces 3 leads en priorité — la réussite décide si le partenariat se développe"
+    ],
+    tools: ["Email", "LinkedIn", "Google Slides"],
+    quota: "1 bon partenaire = 3-10 leads/mois passifs. 3 partenaires actifs = pipeline rempli.",
+    warning: null
+  }
+];
+
+function render() {
+  const container = document.getElementById('methods');
+  container.innerHTML = methods.map((m, i) => `
+    <div class="method" id="m${i}" onclick="toggle(${i})">
+      <div class="method-header">
+        <div class="method-num">${m.num}</div>
+        <div class="method-info">
+          <div class="method-title">${m.title}</div>
+          <div class="method-meta">
+            ${m.tags.map(([label, type]) => `<span class="tag tag-${type}">${label}</span>`).join('')}
+          </div>
+        </div>
+        <div class="expand-icon">+</div>
+      </div>
+      <div class="method-body">
+        <p class="method-desc">${m.desc}</p>
+        <ol class="steps">${m.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+        <div class="tool-list">${m.tools.map(t => `<span class="tool">${t}</span>`).join('')}</div>
+        ${m.quota ? `<div class="quota">⚡ ${m.quota}</div>` : ''}
+        ${m.warning ? `<div class="warning">⚠️ ${m.warning}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggle(i) {
+  document.getElementById('m'+i).classList.toggle('open');
+}
+
+render();
+</script>
+</body>
+</html>
