@@ -336,6 +336,21 @@
     }
     .btn-restart:hover { border-color: var(--muted); color: var(--white); }
 
+    .next-bonus {
+      margin-top: 40px; border: 1px solid var(--orange);
+      padding: 32px; text-align: center;
+    }
+    .next-bonus h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .next-bonus p { color: var(--muted); font-size: 13px; margin-bottom: 24px; line-height: 1.7; }
+    .btn-next-bonus {
+      display: inline-block; background: var(--orange); color: var(--noir);
+      padding: 14px 36px; font-family: 'Courier Prime', monospace;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none;
+      border: none; cursor: pointer; transition: opacity .15s;
+    }
+    .btn-next-bonus:hover { opacity: .85; }
+
     /* Markdown output */
     .md-output {
       background: var(--grey); padding: 36px 32px;
@@ -422,7 +437,7 @@
 <div class="page active fade-in" id="page-0">
   <div class="landing">
     <div class="badge">CLOSER IA — BONUS #02</div>
-    <h1>Trouve ta <span class="orange">niche IA</span><br>en 30 secondes.</h1>
+    <h1>Valide ta <span class="orange">niche IA</span>,<br>construis ton pitch.</h1>
     <p class="subtitle">
       Tu donnes ton profil, l'IA te sort :<br>
       niche validée · problème chiffré · pitch · agent à construire
@@ -659,6 +674,12 @@
     <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap">
       <button class="btn-dl" onclick="copyAll()">Copier tout</button>
       <button class="btn-restart" onclick="goTo(1)">Modifier mes réponses</button>
+    </div>
+
+    <div class="next-bonus">
+      <h3>Étape suivante — BONUS #03</h3>
+      <p>Tu as ta niche et ton pitch. Maintenant construis une offre irrésistible avec le framework 100M d'Hormozi — stack de valeur, nom MAGIC, garantie, dream outcome.</p>
+      <a href="/agent-hormozi" class="btn-next-bonus">Construire mon offre — BONUS #03 →</a>
     </div>
   </div>
 </div>
