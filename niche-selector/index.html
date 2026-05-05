@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Niche Selector — Closer IA by BigJim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0D0D0D;
+  --fg: #F0F0EB;
+  --orange: #E8612C;
+  --teal: #0ABAB5;
+  --muted: #555;
+  --card: #111;
+  --border: #1e1e1e;
+}
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Courier Prime', Courier, monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container {
+  width: 100%;
+  max-width: 700px;
+  padding: 48px 24px 80px;
+}
+
+/* ---- Header ---- */
+.header { text-align: center; margin-bottom: 52px; }
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal);
+  border: 1px solid var(--teal);
+  padding: 4px 14px;
+  margin-bottom: 24px;
+}
+.header h1 {
+  font-size: clamp(40px, 8vw, 64px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.header h1 em { color: var(--orange); font-style: normal; }
+.header p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+/* ---- Progress ---- */
+.progress-wrap { margin-bottom: 40px; }
+.progress-bar { height: 1px; background: var(--border); overflow: hidden; }
+.progress-fill { height: 100%; background: var(--orange); transition: width 0.35s ease; }
+.progress-label {
+  font-size: 10px; color: var(--muted);
+  text-align: right; margin-top: 8px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+}
+
+/* ---- Steps ---- */
+.step { display: none; }
+.step.active { display: block; animation: fadeUp 0.25s ease; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.step-q {
+  font-size: clamp(17px, 3vw, 22px);
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.step-hint { font-size: 12px; color: var(--muted); margin-bottom: 28px; font-style: italic; }
+
+/* ---- Options ---- */
+.options { display: flex; flex-direction: column; gap: 10px; }
+.option {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.option:hover { border-color: #444; }
+.option.selected { border-color: var(--orange); background: #160d06; }
+.option.selected .opt-key { background: var(--orange); color: var(--bg); border-color: var(--orange); }
+.opt-key {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+  border: 1px solid var(--muted); padding: 3px 7px;
+  flex-shrink: 0; margin-top: 3px; text-transform: uppercase;
+  transition: background 0.15s, color 0.15s;
+}
+.opt-label { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+.opt-desc { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+/* ---- Nav ---- */
+.nav { display: flex; gap: 10px; margin-top: 28px; }
+.btn-next {
+  flex: 1;
+  background: var(--orange); color: var(--bg);
+  border: none; padding: 14px 28px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  cursor: pointer; transition: opacity 0.15s;
+}
+.btn-next:hover { opacity: 0.85; }
+.btn-next:disabled { opacity: 0.25; cursor: not-allowed; }
+.btn-back {
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--border); padding: 14px 20px;
+  font-family: 'Courier Prime', monospace; font-size: 13px;
+  cursor: pointer; transition: all 0.15s;
+}
+.btn-back:hover { border-color: var(--fg); color: var(--fg); }
+
+/* ---- Loading ---- */
+.loading { text-align: center; padding: 80px 0; }
+.loading-dots span {
+  display: inline-block; font-size: 36px; color: var(--orange);
+  animation: blink 1.2s infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.15; }
+  40% { opacity: 1; }
+}
+.loading-label { margin-top: 20px; color: var(--muted); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; }
+
+/* ---- Results ---- */
+#results { display: none; }
+.results-header { text-align: center; margin-bottom: 40px; }
+.results-header h2 {
+  font-size: clamp(26px, 5vw, 40px);
+  font-weight: 700; margin-bottom: 8px; line-height: 1;
+}
+.results-header h2 em { color: var(--orange); font-style: normal; }
+.results-header p { color: var(--muted); font-size: 12px; }
+
+/* ---- Niche cards ---- */
+.niche-card { border: 1px solid var(--border); margin-bottom: 14px; }
+.niche-card.r1 { border-color: var(--orange); }
+.niche-card.r2 { border-color: #2a2a2a; }
+.niche-card.r3 { border-color: #1a1a1a; }
+
+.niche-head {
+  padding: 18px 20px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; background: var(--card);
+  transition: background 0.15s;
+}
+.niche-card.r1 .niche-head { background: #120a04; }
+.niche-head:hover { background: #161616; }
+
+.niche-rank {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
+  color: var(--muted); text-transform: uppercase;
+  writing-mode: vertical-rl; flex-shrink: 0;
+}
+.niche-card.r1 .niche-rank { color: var(--orange); }
+
+.niche-info { flex: 1; }
+.niche-name { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+.niche-tag { font-size: 11px; color: var(--muted); }
+
+.niche-score { text-align: right; flex-shrink: 0; }
+.niche-score-num { font-size: 32px; font-weight: 700; color: var(--orange); line-height: 1; }
+.niche-score-lbl { font-size: 9px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
+
+.niche-body {
+  padding: 20px; border-top: 1px solid var(--border);
+  display: none;
+}
+.niche-body.open { display: block; animation: fadeUp 0.2s ease; }
+
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 22px; }
+@media (max-width: 480px) { .metrics { grid-template-columns: repeat(2, 1fr); } }
+.metric { background: var(--bg); border: 1px solid var(--border); padding: 12px; }
+.metric-lbl { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.metric-val { font-size: 14px; font-weight: 700; }
+.metric-val.o { color: var(--orange); }
+.metric-val.t { color: var(--teal); }
+
+.insight { margin-bottom: 18px; }
+.insight-lbl { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 7px; }
+.insight-txt { font-size: 13px; line-height: 1.7; color: var(--fg); }
+
+.canaux { display: flex; flex-wrap: wrap; gap: 8px; }
+.canal {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  border: 1px solid var(--teal); color: var(--teal);
+  padding: 4px 10px; text-transform: uppercase;
+}
+
+/* ---- CTA ---- */
+.cta {
+  margin-top: 52px; border: 1px solid var(--orange);
+  padding: 36px; text-align: center;
+}
+.cta h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+.cta p { color: var(--muted); font-size: 13px; margin-bottom: 28px; line-height: 1.7; }
+.btn-cta {
+  display: inline-block;
+  background: var(--orange); color: var(--bg);
+  padding: 16px 40px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  text-decoration: none; cursor: pointer; border: none;
+  transition: opacity 0.15s;
+}
+.btn-cta:hover { opacity: 0.85; }
+.btn-restart {
+  display: block; margin: 16px auto 0;
+  background: none; border: none; color: var(--muted);
+  font-family: 'Courier Prime', monospace; font-size: 12px;
+  cursor: pointer; text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="badge">Closer IA — Outil #01</div>
+    <h1>NICHE<br><em>SELECTOR</em></h1>
+    <p>8 questions. 30 niches analysées.<br>Ta niche idéale en moins de 3 minutes.</p>
+  </div>
+
+  <div id="questionnaire">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="pFill" style="width:0%"></div></div>
+      <div class="progress-label" id="pLabel">0 / 8</div>
+    </div>
+    <div id="stepsWrap"></div>
+  </div>
+
+  <div id="loading" style="display:none" class="loading">
+    <div class="loading-dots"><span>.</span><span>.</span><span>.</span></div>
+    <div class="loading-label">Analyse en cours</div>
+  </div>
+
+  <div id="results">
+    <div class="results-header">
+      <h2>TES 3 NICHES<br><em>RECOMMANDÉES</em></h2>
+      <p>Clique sur une carte pour voir l'analyse complète.</p>
+    </div>
+    <div id="nichesWrap"></div>
+    <div class="cta">
+      <h3>Tu as ta niche. Et maintenant ?</h3>
+      <p>Rejoins la bêta Closer IA — 30 jours pour construire ton agent,<br>trouver tes 3 premiers clients et générer tes premiers revenus récurrents.</p>
+      <a href="https://bigjim-ia.com" class="btn-cta">Rejoindre la bêta →</a>
+      <button class="btn-restart" onclick="restart()">Recommencer le test</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// BASE DE DONNÉES — 30 niches marché français
+// ─────────────────────────────────────────────
+const NICHES = [
+  {
+    id: 'artisan-btp',
+    nom: 'Artisan / Plombier / BTP',
+    tag: 'Gestion RDV + relances devis automatiques',
+    agent: 'Agent réceptionniste + relance devis',
+    ticket: [1200, 2000], mrr: [250, 450],
+    cap_payer: 3, facilite: 4, concurrence: 5, urgence: 4, tech: 2,
+    canaux: ['tel', 'physique'], budget: 'minimal', cycle: 'short',
+    bg: ['sales', 'general'], reseau: ['artisans'], geo: 'local',
+    pourquoi: 'Croulent sous les appels, perdent des devis par manque de relance. ROI immédiatement visible : "avant, je répondais en 2 jours — maintenant en 2 min".',
+    objection: '"J\'ai pas le temps pour apprendre ça." → Tu leur livres un outil clé en main. Ils n\'ont rien à apprendre.'
+  },
+  {
+    id: 'restaurant',
+    nom: 'Restaurant / Food & Beverage',
+    tag: 'Réservations 24/7 + réponse avis Google + relances clients',
+    agent: 'Agent réservations + avis Google automatisés',
+    ticket: [800, 1500], mrr: [200, 400],
+    cap_payer: 2, facilite: 5, concurrence: 4, urgence: 3, tech: 1,
+    canaux: ['physique', 'tel'], budget: 'minimal', cycle: 'short',
+    bg: ['sales', 'general'], reseau: ['artisans', 'none'], geo: 'local',
+    pourquoi: 'Volume de prospects énorme. Accessibles en physique. Réservations perdues le soir et le week-end = problème évident à résoudre.',
+    objection: '"C\'est quoi concrètement l\'IA ?" → Démo live sur leur téléphone en 5 min. Ils voient l\'agent répondre en direct.'
+  },
+  {
+    id: 'dentiste',
+    nom: 'Cabinet Dentaire / Orthodontiste',
+    tag: 'Rappels RDV + qualification nouveaux patients + relances devis',
+    agent: 'Agent rappels automatiques + zéro no-shows',
+    ticket: [2000, 4000], mrr: [400, 900],
+    cap_payer: 5, facilite: 2, concurrence: 3, urgence: 5, tech: 3,
+    canaux: ['email', 'tel'], budget: 'minimal', cycle: 'medium',
+    bg: ['sales', 'marketing'], reseau: ['none', 'corporate'], geo: 'local',
+    pourquoi: 'Un no-show = 80–150€ perdus. Un agent qui réduit les no-shows de 30% = ROI immédiat chiffrable. C\'est le meilleur pitch en santé.',
+    objection: '"On a déjà un logiciel de RDV." → L\'agent complète le logiciel. Il relance les patients qui ne confirment pas — aucun logiciel ne fait ça.'
+  },
+  {
+    id: 'osteo-kine',
+    nom: 'Ostéopathe / Kiné / Thérapeute',
+    tag: 'Rappels RDV + liste d\'attente automatique + suivi patient',
+    agent: 'Agent relance RDV + gestion liste d\'attente',
+    ticket: [1000, 2000], mrr: [200, 500],
+    cap_payer: 3, facilite: 3, concurrence: 3, urgence: 4, tech: 2,
+    canaux: ['email', 'social'], budget: 'minimal', cycle: 'short',
+    bg: ['sales', 'general'], reseau: ['none'], geo: 'local',
+    pourquoi: 'Les trous de planning = argent perdu. Agent qui remplace les annulations avec la liste d\'attente = valeur immédiate.',
+    objection: '"Je suis déjà plein(e)." → Parfait, ton agent gère la liste d\'attente et te prévient quand il y a un trou à combler.'
+  },
+  {
+    id: 'coach-sport',
+    nom: 'Coach Sportif / Salle de Sport',
+    tag: 'Qualification leads + nurturing + relances membres inactifs',
+    agent: 'Agent qualification + relance membres',
+    ticket: [800, 1500], mrr: [200, 400],
+    cap_payer: 2, facilite: 4, concurrence: 3, urgence: 3, tech: 2,
+    canaux: ['social', 'physique'], budget: 'minimal', cycle: 'short',
+    bg: ['marketing', 'sales', 'general'], reseau: ['none', 'artisans'], geo: 'local',
+    pourquoi: 'Instagram est leur terrain principal. Un agent qui répond aux DM 24/7 = leads captés même à 23h. Les membres inactifs = manque à gagner récupérable.',
+    objection: '"J\'ai pas le budget." → Package d\'entrée à 800€ + 200€/mois. 1 nouveau membre suffit à couvrir le coût.'
+  },
+  {
+    id: 'coach-business',
+    nom: 'Coach Business / Life Coach / Formateur solo',
+    tag: 'Qualification leads + booking call stratégie + nurturing email',
+    agent: 'Agent qualification + booking call + séquence nurturing',
+    ticket: [1500, 3000], mrr: [300, 700],
+    cap_payer: 4, facilite: 4, concurrence: 2, urgence: 4, tech: 2,
+    canaux: ['social', 'email'], budget: 'minimal', cycle: 'short',
+    bg: ['marketing', 'sales'], reseau: ['digital', 'none'], geo: 'national',
+    pourquoi: 'Comprennent l\'IA, voient la valeur immédiatement. Passent 2h/jour à répondre aux mêmes questions → l\'agent récupère ces 2h.',
+    objection: '"Je suis pas sûr que ça marche pour ma cible." → Tu proposes de builder un agent test en 48h. Si ça marche, ils signent. Sinon, tu gardes l\'agent.'
+  },
+  {
+    id: 'comptable',
+    nom: 'Comptable / Expert-Comptable',
+    tag: 'FAQ clients automatisée + rappels documents + qualification prospects',
+    agent: 'Agent FAQ clients + rappels pièces manquantes',
+    ticket: [2000, 4000], mrr: [400, 900],
+    cap_payer: 5, facilite: 2, concurrence: 4, urgence: 4, tech: 3,
+    canaux: ['email', 'tel'], budget: 'minimal', cycle: 'medium',
+    bg: ['sales', 'general'], reseau: ['corporate'], geo: 'local',
+    pourquoi: 'Reçoivent les mêmes 50 questions en boucle de leurs clients. Un agent FAQ = économise 5h/semaine → ROI direct sur le temps facturable.',
+    objection: '"Données confidentielles." → L\'agent ne stocke aucune donnée sensible. Il redirige les questions complexes vers l\'humain.'
+  },
+  {
+    id: 'avocat',
+    nom: 'Avocat / Notaire',
+    tag: 'Qualification nouveaux clients + prise de RDV + FAQ juridique de base',
+    agent: 'Agent accueil + qualification + booking',
+    ticket: [3000, 6000], mrr: [600, 1400],
+    cap_payer: 5, facilite: 1, concurrence: 5, urgence: 3, tech: 3,
+    canaux: ['email', 'tel'], budget: 'minimal', cycle: 'long',
+    bg: ['sales'], reseau: ['corporate'], geo: 'local',
+    pourquoi: 'Tickets très élevés. Peu concurrentiel. Dur à closer mais 1 deal = 3000–6000€ setup + récurrent solide.',
+    objection: '"C\'est très réglementé." → L\'agent qualifie et oriente uniquement. Il ne donne aucun conseil juridique — c\'est mentionné explicitement dans ses réponses.'
+  },
+  {
+    id: 'immo',
+    nom: 'Agence Immobilière',
+    tag: 'Qualification acheteurs/vendeurs + prise de RDV visites + relances leads',
+    agent: 'Agent qualification leads + booking visites 24/7',
+    ticket: [1500, 3000], mrr: [350, 800],
+    cap_payer: 4, facilite: 3, concurrence: 3, urgence: 5, tech: 2,
+    canaux: ['tel', 'email', 'social'], budget: 'minimal', cycle: 'short',
+    bg: ['sales', 'marketing'], reseau: ['artisans', 'corporate', 'none'], geo: 'local',
+    pourquoi: 'Un lead qui remplit un formulaire à 2h du matin et ne reçoit pas de réponse = deal perdu. L\'agent répond en 2 min = plus de ventes.',
+    objection: '"On a déjà un CRM." → Le CRM stocke, l\'agent répond. Aucun CRM ne répond à 2h du matin à la place de l\'agent.'
+  },
+  {
+    id: 'garage',
+    nom: 'Garage Automobile / Carrosserie',
+    tag: 'Prise de RDV entretien + devis automatiques + rappels contrôle technique',
+    agent: 'Agent RDV + rappels CT + relance devis',
+    ticket: [1000, 2000], mrr: [200, 450],
+    cap_payer: 3, facilite: 4, concurrence: 5, urgence: 4, tech: 2,
+    canaux: ['tel', 'physique'], budget: 'minimal', cycle: 'short',
+    bg: ['sales', 'general'], reseau: ['artisans'], geo: 'local',
+    pourquoi: 'Niche locale énorme et très peu digitalisée. Un agent qui rappelle le contrôle technique = valeur tangible, visible, et immédiate.',
+    objection: '"Mes clients m\'appellent directement." → L\'agent prend les appels quand tu travailles sous une voiture. Plus de manque-à-gagner.'
+  },
+  {
+    id: 'beaute',
+    nom: 'Institut Beauté / Spa / Coiffeur',
+    tag: 'Booking 24/7 + relances clients inactifs + fidélisation automatisée',
+    agent: 'Agent réservations + relance fidélisation',
+    ticket: [800, 1500], mrr: [200, 380],
+    cap_payer: 2, facilite: 5, concurrence: 3, urgence: 3, tech: 1,
+    canaux: ['social', 'physique'], budget: 'minimal', cycle: 'short',
+    bg: ['marketing', 'sales', 'general'], reseau: ['none', 'artisans'], geo: 'local',
+    pourquoi: 'Très réceptifs aux DM Instagram. Deal rapide. Agent de booking = libère du temps de manière concrète et visible dès la première semaine.',
+    objection: '"J\'utilise déjà Planity." → Planity gère les RDV. Ton agent gère la fidélisation — les clients qui n\'ont pas rebooké depuis 45 jours.'
+  },
+  {
+    id: 'dtc',
+    nom: 'E-commerce DTC (Shopify)',
+    tag: 'SAV automatisé + récupération paniers abandonnés + upsell post-achat',
+    agent: 'Agent SAV + relance paniers + upsell',
+    ticket: [2000, 5000], mrr: [500, 1500],
+    cap_payer: 4, facilite: 3, concurrence: 2, urgence: 5, tech: 4,
+    canaux: ['email', 'social'], budget: 'moderate', cycle: 'medium',
+    bg: ['tech', 'marketing'], reseau: ['digital'], geo: 'national',
+    pourquoi: '70% des paniers sont abandonnés. Un agent de relance = ROI mesurable en semaines. C\'est le cas qu\'on a closé en live pendant le tournage.',
+    objection: '"J\'ai déjà Klaviyo." → Klaviyo envoie des emails programmés. L\'agent répond aux questions en temps réel et relance en fonction du comportement.'
+  },
+  {
+    id: 'agence-mktg',
+    nom: 'Agence Marketing / Communication',
+    tag: 'Reporting automatisé + qualification prospects + chatbot site web',
+    agent: 'Agent lead capture + rapports clients automatisés',
+    ticket: [2000, 4500], mrr: [500, 1100],
+    cap_payer: 4, facilite: 3, concurrence: 2, urgence: 4, tech: 4,
+    canaux: ['social', 'email'], budget: 'moderate', cycle: 'medium',
+    bg: ['tech', 'marketing'], reseau: ['digital', 'corporate'], geo: 'national',
+    pourquoi: 'Comprennent l\'IA et peuvent revendre tes agents à leurs clients = effet levier massif. 1 agence = accès à 10–30 clients potentiels.',
+    objection: '"On a déjà nos propres outils." → Tes agents n8n font ce que leurs outils ne font pas en natif. Et tu leur offres la possibilité de le revendre à leurs clients.'
+  },
+  {
+    id: 'freelance-dev',
+    nom: 'Freelance Dev / Designer / Consultant Digital',
+    tag: 'Qualification clients + suivi projets + génération devis automatique',
+    agent: 'Agent qualification + devis automatique',
+    ticket: [1000, 2500], mrr: [250, 600],
+    cap_payer: 3, facilite: 4, concurrence: 2, urgence: 4, tech: 2,
+    canaux: ['social', 'email'], budget: 'minimal', cycle: 'short',
+    bg: ['tech', 'marketing'], reseau: ['digital'], geo: 'national',
+    pourquoi: 'Très conscients de l\'IA. Deal entre pairs = confiance rapide. Perdent des leads parce qu\'ils répondent trop lentement quand ils sont en mission.',
+    objection: '"Je peux le construire moi-même." → Oui mais t\'as pas le temps. C\'est pour ça que tu me payes — pour que tu aies un agent live en 48h sans toucher au code.'
+  },
+  {
+    id: 'infopreneur',
+    nom: 'Infopreneur / Créateur de Formation',
+    tag: 'Qualification leads + nurturing email + support élèves automatisé',
+    agent: 'Agent qualification + chatbot support formation',
+    ticket: [1500, 3500], mrr: [300, 800],
+    cap_payer: 4, facilite: 4, concurrence: 2, urgence: 5, tech: 3,
+    canaux: ['social', 'email'], budget: 'minimal', cycle: 'short',
+    bg: ['marketing', 'tech'], reseau: ['digital'], geo: 'national',
+    pourquoi: 'Passent 2–3h/jour à répondre aux mêmes questions de leurs élèves. Un agent support = ces heures récupérées = plus de contenu, plus de revenus.',
+    objection: '"Mon audience a besoin de moi personnellement." → L\'agent gère les questions répétitives (accès, technique, contenu de base). Toi tu gères le coaching réel.'
+  },
+  {
+    id: 'consultant-b2b',
+    nom: 'Consultant B2B / Cabinet Conseil',
+    tag: 'Automatisation prospection + qualification + suivi pipeline',
+    agent: 'Agent prospection + qualification leads B2B',
+    ticket: [3000, 6000], mrr: [600, 1500],
+    cap_payer: 5, facilite: 2, concurrence: 4, urgence: 4, tech: 4,
+    canaux: ['email', 'social'], budget: 'moderate', cycle: 'long',
+    bg: ['tech', 'sales'], reseau: ['corporate'], geo: 'national',
+    pourquoi: 'Tickets très élevés. Comprennent le ROI vite. 1 deal = 3000–6000€ setup + récurrent solide. Cycle de vente long mais chaque heure vaut le coup.',
+    objection: '"Notre process est trop spécifique." → On commence par automatiser une seule tâche répétitive. Juste ça. Ensuite on scale.'
+  },
+  {
+    id: 'pme-industrie',
+    nom: 'PME Industrie / Fabrication / BTP',
+    tag: 'Traitement commandes + FAQ techniciens + suivi livraisons clients',
+    agent: 'Agent support technique + traitement commandes',
+    ticket: [3000, 7000], mrr: [700, 2000],
+    cap_payer: 5, facilite: 2, concurrence: 5, urgence: 3, tech: 4,
+    canaux: ['tel', 'email'], budget: 'moderate', cycle: 'long',
+    bg: ['tech', 'sales'], reseau: ['corporate', 'artisans'], geo: 'local',
+    pourquoi: 'Niche quasi inexploitée. Grands budgets. Problèmes concrets et répétitifs = agents à forte valeur perçue. 1 deal bien positionné = récurrent >1000€/mois.',
+    objection: '"On a un ERP." → L\'agent se connecte à l\'ERP via API. Il enrichit, il n\'y touche pas.'
+  },
+  {
+    id: 'photographe',
+    nom: 'Photographe / Vidéaste Pro',
+    tag: 'Qualification clients + gestion devis + relances livraisons',
+    agent: 'Agent qualification + devis + relance',
+    ticket: [800, 1800], mrr: [200, 400],
+    cap_payer: 3, facilite: 4, concurrence: 3, urgence: 3, tech: 2,
+    canaux: ['social', 'email'], budget: 'minimal', cycle: 'short',
+    bg: ['marketing', 'sales', 'general'], reseau: ['digital'], geo: 'local',
+    pourquoi: 'Perdent des deals parce qu\'ils répondent trop lentement aux demandes entrantes (souvent le soir, quand ils tournent). Agent = réponse en 2 min.',
+    objection: '"Je préfère qualifier moi-même." → L\'agent pré-qualifie : budget, date, type de prestation. Toi tu reçois des leads déjà qualifiés à rappeler.'
+  },
+  {
+    id: 'centre-medical',
+    nom: 'Centre Médical / Clinique Privée',
+    tag: 'RDV multi-praticiens + rappels patients + triage questions',
+    agent: 'Agent standard téléphonique IA + gestion RDV',
+    ticket: [3000, 6000], mrr: [600, 1400],
+    cap_payer: 5, facilite: 2, concurrence: 4, urgence: 5, tech: 4,
+    canaux: ['email', 'tel'], budget: 'minimal', cycle: 'medium',
+    bg: ['tech', 'sales'], reseau: ['corporate', 'none'], geo: 'local',
+    pourquoi: 'Standard téléphonique submergé. 50% des appels = questions simples. Agent = réduit les appels entrants de 40% → valeur immédiate et chiffrable.',
+    objection: '"Données médicales sensibles." → L\'agent ne stocke rien. RGPD natif. Il oriente, il ne diagnostique pas.'
+  },
+  {
+    id: 'pharmacie',
+    nom: 'Pharmacie / Para-pharmacie',
+    tag: 'FAQ produits + rappels ordonnances + fidélisation clients',
+    agent: 'Agent FAQ + rappels renouvellements + conseils produits',
+    ticket: [1500, 3000], mrr: [300, 700],
+    cap_payer: 4, facilite: 3, concurrence: 5, urgence: 4, tech: 3,
+    canaux: ['physique', 'email'], budget: 'minimal', cycle: 'medium',
+    bg: ['sales', 'general'], reseau: ['artisans', 'none'], geo: 'local',
+    pourquoi: 'Niche quasi inexploitée. Énorme volume de questions répétitives. Budget solide. L\'agent répond 24/7 sur les questions produits sans ordonnance.',
+    objection: '"C\'est réglementé." → L\'agent donne des informations générales uniquement. Il redirige systématiquement vers le pharmacien pour tout conseil médical.'
+  },
+  {
+    id: 'architecte',
+    nom: 'Architecte / Designer d\'Intérieur',
+    tag: 'Qualification prospects + booking consultation + suivi chantier client',
+    agent: 'Agent qualification + booking + FAQ chantier',
+    ticket: [1500, 3500], mrr: [300, 800],
+    cap_payer: 4, facilite: 3, concurrence: 3, urgence: 3, tech: 3,
+    canaux: ['social', 'email'], budget: 'minimal', cycle: 'medium',
+    bg: ['marketing', 'sales'], reseau: ['digital', 'artisans'], geo: 'local',
+    pourquoi: 'Perdent des leads Instagram qui envoient un DM et ne reçoivent pas de réponse rapide. Agent = répond en 2 min avec les bonnes questions de qualification.',
+    objection: '"Mon image de marque est premium." → L\'agent utilise exactement ton ton, tes mots, ton univers. C\'est toi, en plus rapide.'
+  },
+  {
+    id: 'ecole-privee',
+    nom: 'École Privée / Centre de Formation Pro',
+    tag: 'Qualification candidats + FAQ inscription + support pédagogique',
+    agent: 'Agent admissions + FAQ inscription + support élèves',
+    ticket: [3000, 6000], mrr: [500, 1200],
+    cap_payer: 4, facilite: 3, concurrence: 4, urgence: 4, tech: 3,
+    canaux: ['email', 'social'], budget: 'minimal', cycle: 'medium',
+    bg: ['sales', 'marketing'], reseau: ['corporate', 'digital'], geo: 'national',
+    pourquoi: 'Période d\'inscription = 200 candidats à qualifier en 2 semaines. Agent = gère le flux sans recruter. Valeur immédiate et chiffrable.',
+    objection: '"On a un CRM d\'admissions." → L\'agent alimente le CRM automatiquement en pré-qualifiant. Il ne le remplace pas, il le nourrit.'
+  },
+  {
+    id: 'assureur',
+    nom: 'Assureur / Courtier en Assurance',
+    tag: 'Qualification prospects + explication produits + booking rendez-vous',
+    agent: 'Agent qualification + booking conseil',
+    ticket: [1500, 3500], mrr: [400, 900],
+    cap_payer: 4, facilite: 3, concurrence: 3, urgence: 4, tech: 3,
+    canaux: ['tel', 'email'], budget: 'minimal', cycle: 'medium',
+    bg: ['sales'], reseau: ['corporate', 'none'], geo: 'local',
+    pourquoi: 'Chaque lead coûte cher. Un agent qui pré-qualifie = économie directe sur le coût d\'acquisition. ROI chiffrable en nombre d\'appels évités.',
+    objection: '"ORIAS et réglementation." → L\'agent qualifie uniquement. Le conseil reste 100% humain et réglementé.'
+  },
+  {
+    id: 'rh-recrutement',
+    nom: 'Cabinet RH / Recruteur',
+    tag: 'Tri CVs + pré-qualification candidats + scheduling entretiens',
+    agent: 'Agent pré-qualification candidats + booking entretien',
+    ticket: [2000, 5000], mrr: [500, 1200],
+    cap_payer: 4, facilite: 3, concurrence: 3, urgence: 5, tech: 4,
+    canaux: ['email', 'social'], budget: 'minimal', cycle: 'medium',
+    bg: ['tech', 'sales'], reseau: ['corporate'], geo: 'national',
+    pourquoi: 'Passent 60% de leur temps sur des tâches répétitives : trier CVs, envoyer des emails de relance. Agent = libère du temps directement facturable.',
+    objection: '"Les candidats préfèrent le contact humain." → L\'agent fait le pré-tri. Le recruteur fait les entretiens. Moins de temps perdu sur les profils non-qualifiés.'
+  },
+  {
+    id: 'startup-saas',
+    nom: 'Startup SaaS / Tech',
+    tag: 'Onboarding automatisé + support utilisateurs + activation trials',
+    agent: 'Agent onboarding + support + réactivation trials',
+    ticket: [3000, 8000], mrr: [700, 2500],
+    cap_payer: 5, facilite: 3, concurrence: 1, urgence: 5, tech: 5,
+    canaux: ['email', 'social'], budget: 'comfortable', cycle: 'medium',
+    bg: ['tech'], reseau: ['digital'], geo: 'national',
+    pourquoi: 'Comprennent l\'IA, mesurent le ROI en temps réel. Tickets les plus élevés. Récurrent très solide. 1 deal bien posé = >1000€/mois pendant 12 mois.',
+    objection: '"On a une équipe tech." → Ton agent fait ce que leur équipe ne veut pas construire en interne — trop petit, trop urgent, trop répétitif.'
+  },
+  {
+    id: 'franchise',
+    nom: 'Réseau de Franchise / Multi-sites',
+    tag: 'Agent standardisé déployé sur tous les points de vente du réseau',
+    agent: 'Agent unifié pour tout le réseau',
+    ticket: [5000, 15000], mrr: [1000, 4000],
+    cap_payer: 5, facilite: 2, concurrence: 5, urgence: 4, tech: 5,
+    canaux: ['email', 'tel'], budget: 'comfortable', cycle: 'long',
+    bg: ['tech', 'sales'], reseau: ['corporate'], geo: 'national',
+    pourquoi: '1 deal = agent multiplié par le nombre de franchisés. MRR explosif si tu clostes la tête de réseau. Rare mais extrêmement rentable.',
+    objection: '"Process de validation long." → Tu proposes un pilote sur 3 franchisés. 60 jours. Résultats mesurables. Ensuite tu scales sur tout le réseau.'
+  },
+  {
+    id: 'event',
+    nom: 'Event Planner / Traiteur',
+    tag: 'Qualification demandes événements + devis automatiques + suivi',
+    agent: 'Agent qualification + brief événement + devis',
+    ticket: [1000, 2500], mrr: [250, 550],
+    cap_payer: 3, facilite: 4, concurrence: 4, urgence: 3, tech: 2,
+    canaux: ['email', 'social', 'physique'], budget: 'minimal', cycle: 'short',
+    bg: ['sales', 'marketing', 'general'], reseau: ['none', 'artisans'], geo: 'local',
+    pourquoi: 'Croulent sous les demandes de devis non-qualifiés. Agent qui collecte le brief en amont = ils traitent uniquement des prospects avec budget et date définis.',
+    objection: '"Chaque événement est unique." → L\'agent recueille le brief complet. Toi tu fais le vrai devis avec toutes les infos, pas à l\'aveugle.'
+  },
+  {
+    id: 'transport',
+    nom: 'Transport / Logistique TPE',
+    tag: 'Suivi livraisons client + gestion réclamations + devis automatiques',
+    agent: 'Agent suivi colis + réclamations + devis',
+    ticket: [2000, 4500], mrr: [400, 1000],
+    cap_payer: 3, facilite: 3, concurrence: 5, urgence: 4, tech: 3,
+    canaux: ['tel', 'email'], budget: 'minimal', cycle: 'medium',
+    bg: ['tech', 'sales'], reseau: ['corporate', 'artisans'], geo: 'local',
+    pourquoi: 'Niche peu touchée. Énorme volume de questions répétitives sur les livraisons. Agent = réduction des appels entrants de 50% dès le premier mois.',
+    objection: '"Nos chauffeurs ont pas de smartphone." → L\'agent est côté bureau et clients. Les chauffeurs n\'y touchent pas.'
+  },
+  {
+    id: 'agence-voyage',
+    nom: 'Agence Voyage / Conciergerie',
+    tag: 'Qualification voyageurs + devis automatiques + support 24/7',
+    agent: 'Agent devis voyage + qualification + support',
+    ticket: [1500, 3500], mrr: [300, 800],
+    cap_payer: 4, facilite: 3, concurrence: 4, urgence: 4, tech: 3,
+    canaux: ['social', 'email'], budget: 'minimal', cycle: 'short',
+    bg: ['sales', 'marketing'], reseau: ['digital', 'none'], geo: 'national',
+    pourquoi: 'Les demandes arrivent le soir et le week-end. Agent = répond à toute heure = deals captés même quand l\'agence est fermée.',
+    objection: '"Booking.com gère déjà ça." → Tu vends du sur-mesure et de l\'humain premium — pas du standardisé comme Booking. L\'agent qualifie les bons clients.'
+  },
+  {
+    id: 'medecin',
+    nom: 'Médecin / Praticien de Santé (libéral)',
+    tag: 'Prise de RDV intelligente + triage questions + FAQ patients',
+    agent: 'Agent accueil + triage + RDV automatisé',
+    ticket: [2000, 4500], mrr: [400, 1000],
+    cap_payer: 5, facilite: 2, concurrence: 4, urgence: 5, tech: 3,
+    canaux: ['tel', 'email'], budget: 'minimal', cycle: 'medium',
+    bg: ['sales', 'tech'], reseau: ['none', 'corporate'], geo: 'local',
+    pourquoi: 'Standard téléphonique = cauchemar. 50% des appels = questions simples (horaires, renouvellement ordonnance). Agent = secrétaire libérée pour les urgences vraies.',
+    objection: '"Données médicales sensibles." → L\'agent ne stocke rien. RGPD natif. Zéro donnée médicale traitée.'
+  }
+];
+
+// ─────────────────────────────────────────────
+// QUESTIONS
+// ─────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    id: 'background',
+    q: 'Ton background principal ?',
+    hint: 'Ce que tu maîtrisais avant de démarrer dans l\'IA.',
+    opts: [
+      { v: 'tech',      l: 'Tech / Dev / Automation',        d: 'Code, outils, APIs, systèmes. Tu sais ce que fait une API sans chercher.' },
+      { v: 'sales',     l: 'Sales / Commercial / Closing',   d: 'Prospection, négociation, closing. Tu as l\'habitude de décrocher le téléphone.' },
+      { v: 'marketing', l: 'Marketing / Copy / Social Media', d: 'Contenu, pub, copywriting. Tu sais parler à une audience.' },
+      { v: 'general',   l: 'Autre / Pas de background précis', d: 'Tu repars de zéro ou d\'un domaine sans rapport.' }
+    ]
+  },
+  {
+    id: 'prospection',
+    q: 'Ta méthode de prospection préférée ?',
+    hint: 'Celle que tu es prêt à répéter 50 fois cette semaine sans te forcer.',
+    opts: [
+      { v: 'tel',      l: 'Téléphone (cold call)',           d: 'Tu décroches, tu appelles, tu pitches. Un "non" ne te dérange pas.' },
+      { v: 'email',    l: 'Cold email / LinkedIn',           d: 'Tu préfères écrire, tester des séquences, optimiser les taux.' },
+      { v: 'social',   l: 'DM Instagram / Réseaux sociaux', d: 'Tu chasses sur Instagram, Facebook, TikTok. Tu consommes du contenu.' },
+      { v: 'physique', l: 'Physique / Terrain',              d: 'Tu te déplaces, porte-à-porte, face-à-face. Tu aimes voir les gens.' }
+    ]
+  },
+  {
+    id: 'temps',
+    q: 'Combien d\'heures par semaine tu peux y consacrer ?',
+    hint: 'Sois honnête — pas l\'objectif, la réalité de la semaine prochaine.',
+    opts: [
+      { v: 'low',    l: 'Moins de 10h/semaine', d: 'Side project en parallèle d\'un job ou d\'études.' },
+      { v: 'medium', l: '10 à 20h/semaine',     d: 'Soirées et week-ends engagés sérieusement.' },
+      { v: 'high',   l: 'Plus de 20h/semaine',  d: 'C\'est ton projet principal. Full focus.' }
+    ]
+  },
+  {
+    id: 'budget',
+    q: 'Ton budget mensuel pour démarrer (outils, serveurs) ?',
+    hint: 'Pas les pubs — juste les outils techniques.',
+    opts: [
+      { v: 'minimal',    l: 'Moins de 100€/mois',  d: 'Budget serré. Tu veux démarrer sans investir.' },
+      { v: 'moderate',   l: '100 à 300€/mois',     d: 'Tu peux te payer quelques outils si le ROI est clair.' },
+      { v: 'comfortable',l: 'Plus de 300€/mois',   d: 'Tu es prêt à investir pour aller plus vite.' }
+    ]
+  },
+  {
+    id: 'reseau',
+    q: 'Tu as déjà des contacts dans un secteur ?',
+    hint: 'Un contact = quelqu\'un qui répondrait à ton message en 24h.',
+    opts: [
+      { v: 'artisans',  l: 'Commerce local / Artisans / Santé',    d: 'Plombiers, restau, médecins, coiffeurs — tu connais du monde en local.' },
+      { v: 'corporate', l: 'B2B / Entreprises / PME',              d: 'Comptables, consultants, PME — contacts en milieu pro.' },
+      { v: 'digital',   l: 'Digital / E-commerce / Créateurs',     d: 'Freelances, boutiques en ligne, infopreneurs — tu vis dans le web.' },
+      { v: 'none',      l: 'Zéro réseau existant',                 d: 'Tu repars de zéro. Tu vas tout construire à froid.' }
+    ]
+  },
+  {
+    id: 'technique',
+    q: 'Ton niveau sur Claude Code + n8n aujourd\'hui ?',
+    hint: 'Pas le niveau que tu veux atteindre — celui d\'aujourd\'hui.',
+    opts: [
+      { v: 'low',    l: 'Débutant',       d: 'Je découvre Claude Code et n8n. Je veux un agent simple à livrer.' },
+      { v: 'medium', l: 'Intermédiaire',  d: 'J\'ai suivi les prérecs. Je me débrouille, je veux quelque chose de concret.' },
+      { v: 'high',   l: 'Avancé',         d: 'Je maîtrise déjà. Je veux du complexe avec APIs et intégrations.' }
+    ]
+  },
+  {
+    id: 'ambition',
+    q: 'Objectif MRR dans 3 mois ?',
+    hint: 'MRR = revenus récurrents mensuels. Pas le setup one-shot.',
+    opts: [
+      { v: 'conservative', l: '500 — 1 000€/mois',  d: 'Premiers revenus. Je valide le modèle avant de scaler.' },
+      { v: 'moderate',     l: '1 000 — 3 000€/mois', d: 'Je veux remplacer un salaire ou atteindre l\'indépendance.' },
+      { v: 'aggressive',   l: '3 000€+/mois',         d: 'Je vise fort. Full focus pendant 90 jours.' }
+    ]
+  },
+  {
+    id: 'geo',
+    q: 'Tu veux prospecter où ?',
+    hint: 'Le périmètre change tout : canal, volume, difficulté.',
+    opts: [
+      { v: 'local',    l: 'Local — ma ville / région',     d: 'Google Maps, physique, réseaux locaux. Je connais mon terrain.' },
+      { v: 'national', l: 'National — toute la France',    d: 'Cold email, LinkedIn, DM — je prospecte à distance.' },
+      { v: 'both',     l: 'Les deux',                      d: 'Je commence local puis je scale à distance.' }
+    ]
+  }
+];
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let step = 0;
+let answers = {};
+
+// ─────────────────────────────────────────────
+// SCORING
+// ─────────────────────────────────────────────
+function score(niche, a) {
+  let s = 0;
+
+  // Canal match — 20 pts
+  s += niche.canaux.includes(a.prospection) ? 20 : 5;
+
+  // Budget match — 15 pts
+  const bMap = { minimal: 1, moderate: 2, comfortable: 3 };
+  const uB = bMap[a.budget] || 1, nB = bMap[niche.budget] || 1;
+  if (uB >= nB) s += 15; else if (uB === nB - 1) s += 8;
+
+  // Background match — 10 pts
+  s += niche.bg.includes(a.background) ? 10 : 3;
+
+  // Réseau match — 18 pts
+  if (a.reseau === 'none') s += 5;
+  else s += niche.reseau.includes(a.reseau) ? 18 : 4;
+
+  // Tech match — 12 pts
+  const tMap = { low: 1, medium: 2, high: 3 };
+  const uT = tMap[a.technique] || 1, nT = niche.tech;
+  if (uT === 1 && nT <= 2) s += 12;
+  else if (uT === 1 && nT === 3) s += 6;
+  else if (uT === 1 && nT >= 4) s += 2;
+  else if (uT === 2 && nT <= 3) s += 12;
+  else if (uT === 2 && nT >= 4) s += 6;
+  else s += 12; // high tech can handle anything
+
+  // MRR ambition — 15 pts
+  const avgMrr = (niche.mrr[0] + niche.mrr[1]) / 2;
+  if (a.ambition === 'conservative')  s += avgMrr <= 700 ? 15 : avgMrr <= 1200 ? 10 : 5;
+  if (a.ambition === 'moderate')      s += avgMrr >= 400 && avgMrr <= 1500 ? 15 : avgMrr >= 200 ? 8 : 3;
+  if (a.ambition === 'aggressive')    s += avgMrr >= 800 ? 15 : avgMrr >= 400 ? 8 : 3;
+
+  // Geo match — 10 pts
+  s += (a.geo === 'both' || niche.geo === 'both' || a.geo === niche.geo) ? 10 : 3;
+
+  // Inherent quality bonus — 10 pts
+  s += ((niche.cap_payer * 0.35 + niche.facilite * 0.35 + niche.concurrence * 0.3) / 5) * 10;
+
+  // Time / cycle penalty
+  if (a.temps === 'low' && niche.cycle === 'long') s -= 6;
+  if (a.temps === 'low' && niche.cycle === 'short') s += 4;
+  if (a.temps === 'high') s += 2;
+
+  // Max possible ≈ 20+15+10+18+12+15+10+10+4 = 114
+  return Math.min(Math.round((s / 114) * 100), 99);
+}
+
+function top3(a) {
+  return [...NICHES]
+    .map(n => ({ ...n, pct: score(n, a) }))
+    .sort((a, b) => b.pct - a.pct)
+    .slice(0, 3);
+}
+
+// ─────────────────────────────────────────────
+// RENDER QUESTIONNAIRE
+// ─────────────────────────────────────────────
+function renderQuestionnaire() {
+  const wrap = document.getElementById('stepsWrap');
+  wrap.innerHTML = QUESTIONS.map((q, i) => `
+    <div class="step ${i === 0 ? 'active' : ''}" id="s${i}">
+      <div class="step-q">${q.q}</div>
+      <div class="step-hint">${q.hint}</div>
+      <div class="options">
+        ${q.opts.map(o => `
+          <div class="option" data-qid="${q.id}" data-val="${o.v}"
+               onclick="pick(this,'${q.id}','${o.v}')">
+            <div class="opt-key">${o.v.slice(0,3).toUpperCase()}</div>
+            <div>
+              <div class="opt-label">${o.l}</div>
+              <div class="opt-desc">${o.d}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="nav">
+        ${i > 0 ? `<button class="btn-back" onclick="prev()">← Retour</button>` : ''}
+        <button class="btn-next" id="n${i}" onclick="next()" disabled>
+          ${i < QUESTIONS.length - 1 ? 'Suivant →' : 'Voir mes niches →'}
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function pick(el, qid, val) {
+  document.querySelectorAll(`[data-qid="${qid}"]`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[qid] = val;
+  document.getElementById(`n${step}`).disabled = false;
+}
+
+function next() {
+  if (step < QUESTIONS.length - 1) {
+    document.getElementById(`s${step}`).classList.remove('active');
+    step++;
+    document.getElementById(`s${step}`).classList.add('active');
+    syncProgress();
+  } else {
+    showResults();
+  }
+}
+
+function prev() {
+  if (step > 0) {
+    document.getElementById(`s${step}`).classList.remove('active');
+    step--;
+    document.getElementById(`s${step}`).classList.add('active');
+    syncProgress();
+  }
+}
+
+function syncProgress() {
+  document.getElementById('pFill').style.width = ((step / QUESTIONS.length) * 100) + '%';
+  document.getElementById('pLabel').textContent = `${step} / ${QUESTIONS.length}`;
+}
+
+// ─────────────────────────────────────────────
+// RESULTS
+// ─────────────────────────────────────────────
+function showResults() {
+  document.getElementById('questionnaire').style.display = 'none';
+  document.getElementById('loading').style.display = 'block';
+  setTimeout(() => {
+    document.getElementById('loading').style.display = 'none';
+    const r = document.getElementById('results');
+    r.style.display = 'block';
+    renderResults();
+  }, 1800);
+}
+
+function dots(n, max) {
+  return '●'.repeat(n) + '○'.repeat(max - n);
+}
+
+function canalName(c) {
+  return { tel: 'Telephone', email: 'Cold email', social: 'DM Social', physique: 'Physique' }[c] || c;
+}
+
+function renderResults() {
+  const niches = top3(answers);
+  const ranks = ['#01 — RECOMMANDEE', '#02 — ALTERNATIVE A', '#03 — ALTERNATIVE B'];
+  const cls = ['r1', 'r2', 'r3'];
+
+  document.getElementById('nichesWrap').innerHTML = niches.map((n, i) => `
+    <div class="niche-card ${cls[i]}">
+      <div class="niche-head" onclick="toggle(${i})">
+        <div class="niche-rank">${ranks[i]}</div>
+        <div class="niche-info">
+          <div class="niche-name">${n.nom}</div>
+          <div class="niche-tag">${n.tag}</div>
+        </div>
+        <div class="niche-score">
+          <div class="niche-score-num">${n.pct}%</div>
+          <div class="niche-score-lbl">match</div>
+        </div>
+      </div>
+      <div class="niche-body ${i === 0 ? 'open' : ''}" id="b${i}">
+        <div class="metrics">
+          <div class="metric">
+            <div class="metric-lbl">Setup</div>
+            <div class="metric-val o">${n.ticket[0]}–${n.ticket[1]}€</div>
+          </div>
+          <div class="metric">
+            <div class="metric-lbl">MRR potentiel</div>
+            <div class="metric-val t">${n.mrr[0]}–${n.mrr[1]}€/mois</div>
+          </div>
+          <div class="metric">
+            <div class="metric-lbl">Cycle de vente</div>
+            <div class="metric-val">${{ short: 'Court', medium: 'Moyen', long: 'Long' }[n.cycle]}</div>
+          </div>
+          <div class="metric">
+            <div class="metric-lbl">Capacité à payer</div>
+            <div class="metric-val">${dots(n.cap_payer, 5)}</div>
+          </div>
+          <div class="metric">
+            <div class="metric-lbl">Facilité prospection</div>
+            <div class="metric-val">${dots(n.facilite, 5)}</div>
+          </div>
+          <div class="metric">
+            <div class="metric-lbl">Difficulté tech</div>
+            <div class="metric-val">${dots(n.tech, 5)}</div>
+          </div>
+        </div>
+
+        <div class="insight">
+          <div class="insight-lbl">Agent a construire</div>
+          <div class="insight-txt">${n.agent}</div>
+        </div>
+        <div class="insight">
+          <div class="insight-lbl">Pourquoi c'est le bon moment</div>
+          <div class="insight-txt">${n.pourquoi}</div>
+        </div>
+        <div class="insight">
+          <div class="insight-lbl">Objection principale + reponse</div>
+          <div class="insight-txt">${n.objection}</div>
+        </div>
+        <div class="insight">
+          <div class="insight-lbl">Canaux de prospection</div>
+          <div class="canaux">${n.canaux.map(c => `<div class="canal">${canalName(c)}</div>`).join('')}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggle(i) {
+  document.getElementById(`b${i}`).classList.toggle('open');
+}
+
+function restart() {
+  step = 0;
+  answers = {};
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('questionnaire').style.display = 'block';
+  document.querySelectorAll('.step').forEach((s, i) => s.classList.toggle('active', i === 0));
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('[id^="n"]').forEach(b => b.disabled = true);
+  syncProgress();
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+renderQuestionnaire();
+syncProgress();
+</script>
+</body>
+</html>
