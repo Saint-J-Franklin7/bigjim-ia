@@ -60,17 +60,17 @@
     }
     @media (hover: none) { .cursor, .cursor-dot { display: none; } }
 
-    /* HEADER */
-    header {
+    /* NAV */
+    nav {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 28px; border-bottom: 1px solid #1a1a1a;
+      padding: 20px 40px; border-bottom: 1px solid #222;
       position: sticky; top: 0; background: var(--noir); z-index: 100;
     }
-    .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .logo-wrap span { font-size: 13px; font-weight: 700; color: var(--orange); letter-spacing: 3px; text-transform: uppercase; }
-    .header-tag {
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo span { font-size: 13px; font-weight: 700; color: var(--orange); letter-spacing: 3px; text-transform: uppercase; }
+    .nav-tag {
       font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--tiffany); padding: 6px 14px; border: 1px solid var(--tiffany);
+      color: var(--tiffany); padding: 5px 12px; border: 1px solid var(--tiffany);
     }
 
     /* PAGES */
@@ -332,7 +332,7 @@
     .md-output a { color: var(--tiffany); }
 
     @media (max-width: 520px) {
-      header { padding: 16px 20px; }
+      nav { padding: 16px 20px; }
       .landing, .form-page, .gen-page, .results-page { padding-left: 20px; padding-right: 20px; }
       .nav-buttons { flex-direction: column; }
       .btn-prev { order: 2; text-align: center; }
@@ -345,19 +345,19 @@
 <div class="cursor" id="cursor"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 
-<header>
-  <a href="/" class="logo-wrap">
-    <img src="../BigJim.png" alt="BigJim" style="width:36px;height:36px;object-fit:contain" />
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/BigJim.png" alt="BigJim" style="width:34px;height:34px;object-fit:contain" />
     <span>BigJim</span>
   </a>
-  <div class="header-tag">Closer IA — Agent Hormozi</div>
-</header>
+  <div class="nav-tag">Closer IA — Agent Hormozi</div>
+</nav>
 
 <!-- ══════════ PAGE 0 — LANDING ══════════ -->
 <div class="page active fade-in" id="page-0">
   <div class="landing">
 
-    <div class="badge">CLOSER IA — BONUS #03</div>
+    <div class="badge">Closer IA — BONUS #03</div>
     <h1>Ton offre<br><span class="orange">à 100M</span><br><span class="tiff">en 3 questions.</span></h1>
     <p class="subtitle">
       Tu donnes 3 infos de base.<br>
