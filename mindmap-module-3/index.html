@@ -113,12 +113,12 @@ const T = {
             {id:'tip2', label:'Vidéo teaser',     sub:'30 sec coupée avant la fin → curiosité', lv:3, side:'left'},
             {id:'tip3', label:'Message perso',    sub:'1 détail spécifique sur leur business',  lv:3, side:'left'},
             {id:'tip4', label:'Séquence relance',  sub:'J+2 · J+5 · J+10 puis arrêt',                          lv:3, side:'left'},
-            {id:'tip5', label:'Mail HTML perso',  sub:'Claude Code · domaine pro · pas gmail brut · fait pro', lv:3, side:'left',
+            {id:'tip5', label:'Mail HTML perso',  sub:'Claude Code · MCP Gmail · annuaire local', lv:3, side:'left',
               children:[
-                {id:'mail1', label:'Loom → GIF animé',       sub:'s\'ouvre dans un nouvel onglet · effet curiosité',           lv:4, side:'left'},
-                {id:'mail2', label:'Claude Code + MCP Gmail', sub:'rédige chaque mail perso automatiquement depuis l\'annuaire', lv:4, side:'left'},
-                {id:'mail3', label:'Annuaire / CRM interne',  sub:'branché MCP Gmail · template HTML · liens Loom intégrés',   lv:4, side:'left'},
-                {id:'mail4', label:'Checker + mail test',     sub:'prévisualise la page · envoie-toi un test avant d\'envoyer', lv:4, side:'left'},
+                {id:'mail1', label:'Domaine pro',           sub:'pas gmail brut · adresse @tondomaine.fr · crédibilité',        lv:4, side:'left'},
+                {id:'mail2', label:'Loom → GIF animé',      sub:'s\'ouvre dans un nouvel onglet · effet curiosité',             lv:4, side:'left'},
+                {id:'mail3', label:'Rédaction automatisée', sub:'Claude Code lit l\'annuaire · phrase perso à chaque contact',  lv:4, side:'left'},
+                {id:'mail4', label:'Checker + mail test',   sub:'prévisualise la page · envoie-toi un test avant d\'envoyer',   lv:4, side:'left'},
               ]},
           ]},
 
@@ -130,7 +130,7 @@ const T = {
           ]},
 
         { id:'hotseat3', label:'Hot seat', sub:'40 min · 2-3 coachés corrigés en live', lv:2, side:'left'},
-        { id:'hw3', label:'50 messages', sub:'Homework · pas négociable', lv:2, side:'left', hw:true},
+        { id:'hw3', label:'100 leads contactés', sub:'Homework · pas négociable', lv:2, side:'left', hw:true},
       ]},
 
     { id:'call4', label:'CALL 4', sub:'Trouver des numéros', lv:1, side:'right', col:ORANGE,
@@ -197,7 +197,7 @@ function sz(n){
 }
 
 const XG = 300;
-const YG = 100; // espace centre-à-centre entre siblings (> hauteur max d'un nœud)
+const YG = 114; // espace centre-à-centre entre siblings (> hauteur max d'un nœud)
 
 // ── LAYOUT ──────────────────────────────────────────────────────
 function tH(n){
