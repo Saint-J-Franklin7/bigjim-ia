@@ -100,12 +100,26 @@ const T = {
             {id:'followers', label:'Followers concurrents',sub:'abonnés d\'un concurrent direct',lv:3, side:'left'},
           ]},
 
+        { id:'linkedin', label:'Trouver sur LinkedIn', lv:2, side:'left',
+          children:[
+            {id:'waalaxy',   label:'Waalaxy',              sub:'Essai 14 jours gratuit · DM automatisé',        lv:3, side:'left'},
+            {id:'lknative',  label:'Connexion + note',     sub:'message dans l\'invitation · +40% réponse',     lv:3, side:'left'},
+            {id:'lkfilter',  label:'Filtre secteur',       sub:'titre + entreprise + lieu · ciblage précis',    lv:3, side:'left'},
+          ]},
+
         { id:'tips', label:'Tips taux de réponse', lv:2, side:'left',
           children:[
             {id:'tip1', label:'Site web pro',     sub:'montre le tien → crédibilité immédiate', lv:3, side:'left'},
             {id:'tip2', label:'Vidéo teaser',     sub:'30 sec coupée avant la fin → curiosité', lv:3, side:'left'},
             {id:'tip3', label:'Message perso',    sub:'1 détail spécifique sur leur business',  lv:3, side:'left'},
-            {id:'tip4', label:'Séquence relance', sub:'J+2 · J+5 · J+10 puis arrêt',            lv:3, side:'left'},
+            {id:'tip4', label:'Séquence relance',  sub:'J+2 · J+5 · J+10 puis arrêt',                          lv:3, side:'left'},
+            {id:'tip5', label:'Mail HTML perso',  sub:'Claude Code · domaine pro · pas gmail brut · fait pro', lv:3, side:'left',
+              children:[
+                {id:'mail1', label:'Loom → GIF animé',       sub:'s\'ouvre dans un nouvel onglet · effet curiosité',           lv:4, side:'left'},
+                {id:'mail2', label:'Claude Code + MCP Gmail', sub:'rédige chaque mail perso automatiquement depuis l\'annuaire', lv:4, side:'left'},
+                {id:'mail3', label:'Annuaire / CRM interne',  sub:'branché MCP Gmail · template HTML · liens Loom intégrés',   lv:4, side:'left'},
+                {id:'mail4', label:'Checker + mail test',     sub:'prévisualise la page · envoie-toi un test avant d\'envoyer', lv:4, side:'left'},
+              ]},
           ]},
 
         { id:'message', label:'Rédiger le message', lv:2, side:'left',
@@ -171,12 +185,12 @@ const exp = new Set(['root','call3','call4']);
 
 // ── SIZES ── dynamique selon présence de sub ────────────────────
 // base [w, h] par level — la hauteur augmente si le nœud a un sous-titre
-const BASE_W = [240, 268, 250, 266];
-const BASE_H = [72,  72,  66,  64];
+const BASE_W = [240, 268, 250, 266, 240];
+const BASE_H = [72,  72,  66,  64,  60];
 const SUB_EXTRA = 22; // px ajoutés en hauteur si sub présent
 
 function sz(n){
-  const lv = Math.min(n.lv, 3);
+  const lv = Math.min(n.lv, 4);
   const w  = BASE_W[lv];
   const h  = BASE_H[lv] + (n.sub ? SUB_EXTRA : 0);
   return [w, h];
@@ -326,7 +340,7 @@ function render(){
 
       // label — centré verticalement selon présence de sub
       const labelY = n.sub ? h/2 - 10 : h/2;
-      const fs=[16,15,13,12][Math.min(n.lv,3)];
+      const fs=[16,15,13,12,11][Math.min(n.lv,4)];
       const fw=n.lv<=1||n.hw?700:400;
 
       mk('text',{
