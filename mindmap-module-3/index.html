@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3 — Prospection · Closer IA</title>
+<link rel="icon" type="image/png" href="/BigJim.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#080810;-webkit-font-smoothing:antialiased}
+#svg{width:100vw;height:100vh;cursor:grab;user-select:none;display:block}
+#svg.drag{cursor:grabbing}
+.node{cursor:pointer}
+.node rect{transition:filter .15s}
+.node:hover rect{filter:brightness(1.3)}
+#logo{
+  position:fixed;top:20px;right:28px;z-index:100;
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;user-select:none;
+}
+#logo img{width:34px;height:34px;object-fit:contain}
+#logo span{
+  font-family:"Courier Prime",monospace;font-size:14px;font-weight:700;
+  color:#FF6535;letter-spacing:.18em;text-transform:uppercase;
+}
+#badge{
+  position:fixed;top:24px;left:28px;z-index:100;
+  font-family:"Courier Prime",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:#1DBDB8;opacity:.6;
+}
+#ui{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  font-family:"Courier Prime",monospace;font-size:10px;letter-spacing:.12em;
+  color:#252540;pointer-events:none;transition:opacity .6s;
+  display:flex;gap:14px;align-items:center;
+}
+#ui kbd{background:#0f0f1c;border:1px solid #1a1a2e;border-radius:3px;padding:2px 8px;color:#333350;font-family:inherit}
+</style>
+</head>
+<body>
+<a id="logo" href="/">
+  <img src="/BigJim.png" alt="BigJim" />
+  <span>BigJim</span>
+</a>
+<div id="badge">Closer IA · Module 3</div>
+<div id="ui"><kbd>Scroll</kbd> zoom <kbd>Drag</kbd> déplacer <kbd>Click</kbd> explorer</div>
+
+<svg id="svg">
+  <defs>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="100%" height="100%" fill="#080810"/>
+  <pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".9" fill="#101020"/>
+  </pattern>
+  <rect width="100%" height="100%" fill="url(#dots)"/>
+  <g id="vp"><g id="edges"/><g id="nodes"/></g>
+</svg>
+
+<script>
+const TEAL   = '#1DBDB8';
+const ORANGE = '#FF6535';
+
+// ── DATA ────────────────────────────────────────────────────────
+const T = {
+  id:'root', label:'MODULE 3', sub:'Prospection · Semaine 2', lv:0,
+  children:[
+
+    { id:'call3', label:'CALL 3', sub:'Prospection écrite', lv:1, side:'left', col:TEAL,
+      children:[
+
+        { id:'prerec3', label:'Prérec', sub:'avant le call', lv:2, side:'left',
+          children:[
+            {id:'pr3a', label:'Site web pro',  sub:'Claude Code · 2 min · créé',      lv:3, side:'left'},
+            {id:'pr3b', label:'Vidéo teaser',  sub:'agent 30 sec · déjà enregistrée', lv:3, side:'left'},
+          ]},
+
+        { id:'canal', label:'Canal par niche', lv:2, side:'left',
+          children:[
+            {id:'pme',     label:'PME locales',         sub:'Appel direct + Google Maps', lv:3, side:'left'},
+            {id:'coach',   label:'Coach / Thérapeute',  sub:'DM Instagram + Facebook',   lv:3, side:'left'},
+            {id:'cabinet', label:'Comptable / Cabinet', sub:'Email + LinkedIn',           lv:3, side:'left'},
+            {id:'dtc',     label:'E-commerce DTC',      sub:'Email + DM Instagram',       lv:3, side:'left'},
+          ]},
+
+        { id:'scraping', label:'Scraper des emails', lv:2, side:'left',
+          children:[
+            {id:'hunter',   label:'Hunter.io',     sub:'emails par domaine · 25 gratuits/mois', lv:3, side:'left'},
+            {id:'apollo3',  label:'Apollo.io',     sub:'BDD BtoB · filtre secteur + titre',     lv:3, side:'left'},
+            {id:'phantom3', label:'PhantomBuster', sub:'scraping auto LinkedIn + Instagram',    lv:3, side:'left'},
+          ]},
+
+        { id:'insta', label:'Trouver sur Instagram', lv:2, side:'left',
+          children:[
+            {id:'hashtag',   label:'Hashtag + ville',      sub:'#plombier + Paris',              lv:3, side:'left'},
+            {id:'lieu',      label:'Recherche par lieu',   sub:'géolocalisation Instagram',      lv:3, side:'left'},
+            {id:'followers', label:'Followers concurrents',sub:'abonnés d\'un concurrent direct',lv:3, side:'left'},
+          ]},
+
+        { id:'tips', label:'Tips taux de réponse', lv:2, side:'left',
+          children:[
+            {id:'tip1', label:'Site web pro',     sub:'montre le tien → crédibilité immédiate', lv:3, side:'left'},
+            {id:'tip2', label:'Vidéo teaser',     sub:'30 sec coupée avant la fin → curiosité', lv:3, side:'left'},
+            {id:'tip3', label:'Message perso',    sub:'1 détail spécifique sur leur business',  lv:3, side:'left'},
+            {id:'tip4', label:'Séquence relance', sub:'J+2 · J+5 · J+10 puis arrêt',            lv:3, side:'left'},
+          ]},
+
+        { id:'message', label:'Rédiger le message', lv:2, side:'left',
+          children:[
+            {id:'msg1', label:'1 seul CTA',       sub:'appel ou démo · pas de question ouverte', lv:3, side:'left'},
+            {id:'msg2', label:'Accroche perso',   sub:'leur prénom + 1 détail vu sur leur compte',lv:3, side:'left'},
+            {id:'msg3', label:'Créer la curiosité',sub:'vidéo coupée · "je t\'explique en 5 min"',lv:3, side:'left'},
+          ]},
+
+        { id:'hotseat3', label:'Hot seat', sub:'40 min · 2-3 coachés corrigés en live', lv:2, side:'left'},
+        { id:'hw3', label:'50 messages', sub:'Homework · pas négociable', lv:2, side:'left', hw:true},
+      ]},
+
+    { id:'call4', label:'CALL 4', sub:'Trouver des numéros', lv:1, side:'right', col:ORANGE,
+      children:[
+
+        { id:'rappel', label:'Rappel important', sub:'périmètre de ce call', lv:2, side:'right',
+          children:[
+            {id:'r1', label:'Sourcing uniquement', sub:'trouver les contacts · pas appeler',          lv:3, side:'right'},
+            {id:'r2', label:'Pas de closing ici',  sub:'scripts + objections = call suivant',          lv:3, side:'right'},
+            {id:'r3', label:'Qualité > quantité',  sub:'100 leads qualifiés > 500 noms au hasard',    lv:3, side:'right'},
+          ]},
+
+        { id:'sources', label:'Sources gratuites', lv:2, side:'right',
+          children:[
+            {id:'gmaps',   label:'Google Maps',      sub:'métier + ville → numéro direct · PME',    lv:3, side:'right'},
+            {id:'pages',   label:'Pages Jaunes',     sub:'+ Kompass · annuaire pro complet',         lv:3, side:'right'},
+            {id:'societe', label:'Societe.com',      sub:'+ Infogreffe · dirigeants + siège',        lv:3, side:'right'},
+            {id:'instabio',label:'Insta / Facebook', sub:'bio du profil · numéro ou lien direct',    lv:3, side:'right'},
+            {id:'sitecon', label:'Site web Contact', sub:'page À propos · coaches + cabinets',       lv:3, side:'right'},
+          ]},
+
+        { id:'outils', label:'Outils payants', sub:'LinkedIn + BtoB', lv:2, side:'right',
+          children:[
+            {id:'kaspr',    label:'Kaspr',         sub:'extension LinkedIn · mobile + email vérifiés',lv:3, side:'right'},
+            {id:'lusha',    label:'Lusha',         sub:'extension LinkedIn · BtoB',                   lv:3, side:'right'},
+            {id:'apollo4',  label:'Apollo.io',     sub:'BDD + téléphone · plan gratuit disponible',  lv:3, side:'right'},
+            {id:'cognism',  label:'Cognism',       sub:'numéros vérifiés · RGPD compliant · premium',lv:3, side:'right'},
+            {id:'phantom4', label:'PhantomBuster', sub:'scraping LinkedIn + Insta en masse',         lv:3, side:'right'},
+          ]},
+
+        { id:'niche', label:'Par niche', sub:'quelle source en priorité', lv:2, side:'right',
+          children:[
+            {id:'npme',   label:'PME locales',     sub:'Google Maps → Pages Jaunes · numéro direct',     lv:3, side:'right'},
+            {id:'nbtob',  label:'BtoB',            sub:'LinkedIn + Kaspr/Lusha · email si pas de tél',  lv:3, side:'right'},
+            {id:'ncoach', label:'Coach / E-comm',  sub:'Instagram bio + site web · DM souvent > appel', lv:3, side:'right'},
+          ]},
+
+        { id:'qualifier', label:'Qualifier le lead', sub:'avant d\'appeler', lv:2, side:'right',
+          children:[
+            {id:'q1', label:'Est-il décideur ?',       sub:'gérant, fondateur, DG · pas un employé',    lv:3, side:'right'},
+            {id:'q2', label:'Budget visible ?',        sub:'CA sur Societe.com · taille entreprise',    lv:3, side:'right'},
+            {id:'q3', label:'Problème IA pertinent ?', sub:'niche validée · use case clair identifié',  lv:3, side:'right'},
+          ]},
+
+        { id:'hw4', label:'100 prospects', sub:'Homework · numéro ou email', lv:2, side:'right', hw:true},
+      ]},
+  ]
+};
+
+// ── STATE ───────────────────────────────────────────────────────
+const exp = new Set(['root','call3','call4']);
+
+// ── SIZES ── dynamique selon présence de sub ────────────────────
+// base [w, h] par level — la hauteur augmente si le nœud a un sous-titre
+const BASE_W = [240, 268, 250, 266];
+const BASE_H = [72,  72,  66,  64];
+const SUB_EXTRA = 22; // px ajoutés en hauteur si sub présent
+
+function sz(n){
+  const lv = Math.min(n.lv, 3);
+  const w  = BASE_W[lv];
+  const h  = BASE_H[lv] + (n.sub ? SUB_EXTRA : 0);
+  return [w, h];
+}
+
+const XG = 300;
+const YG = 100; // espace centre-à-centre entre siblings (> hauteur max d'un nœud)
+
+// ── LAYOUT ──────────────────────────────────────────────────────
+function tH(n){
+  if(!exp.has(n.id)||!n.children) return 1;
+  return n.children.reduce((s,c)=>s+tH(c),0);
+}
+function place(n,x,y,side){
+  n._x=x; n._y=y; n._s=side;
+  if(!exp.has(n.id)||!n.children) return;
+  const tot=tH(n), nx=side==='left'?x-XG:x+XG;
+  let cy=y-(tot*YG)/2+YG/2;
+  for(const c of n.children){
+    const ch=tH(c);
+    place(c, nx, cy+(ch*YG)/2-YG/2, side);
+    cy+=ch*YG;
+  }
+}
+function layout(){
+  T._x=0; T._y=0; T._s='right';
+  if(exp.has('root')&&T.children){
+    place(T.children[0],-XG,0,'left');
+    place(T.children[1], XG,0,'right');
+  }
+}
+
+// ── COLLECT ─────────────────────────────────────────────────────
+function collect(n,par,out){
+  out.push({n,par});
+  if(exp.has(n.id)&&n.children) n.children.forEach(c=>collect(c,n,out));
+}
+
+// ── SVG UTILS ───────────────────────────────────────────────────
+const NS='http://www.w3.org/2000/svg';
+function mk(tag,attrs,parent){
+  const e=document.createElementNS(NS,tag);
+  for(const[k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+  parent&&parent.appendChild(e);
+  return e;
+}
+function mv(el,x,y){ el.setAttribute('transform',`translate(${x.toFixed(1)},${y.toFixed(1)})`); }
+
+// ── STYLES ──────────────────────────────────────────────────────
+function branchCol(n){
+  if(n.lv===0) return null;
+  return n.side==='left' ? TEAL : ORANGE;
+}
+function nFill(n){
+  if(n.lv===0) return '#12121f';
+  if(n.lv===1) return n.side==='left'?'rgba(29,189,184,.1)':'rgba(255,101,53,.08)';
+  if(n.hw)     return n.side==='left'?'rgba(29,189,184,.16)':'rgba(255,101,53,.14)';
+  return n.lv===2?'#111120':'#0e0e1c';
+}
+function nStroke(n){
+  const c=branchCol(n);
+  if(n.lv===0) return '#232342';
+  if(n.lv===1||n.hw) return c;
+  return n.lv===2?'#1e1e38':'#181830';
+}
+function nLabelCol(n){
+  const c=branchCol(n);
+  if(n.lv===0) return '#a0a0cc';
+  if(n.lv===1||n.hw) return c;
+  return n.lv===2?'#c8c8e8':'#9898c8';
+}
+function nSubCol(n){
+  const c=branchCol(n);
+  // hw et lv1 → couleur de branche visible
+  if(n.lv===1) return c+'99';
+  if(n.hw)     return c+'cc';       // bien visible
+  return '#424268';                  // lv2/3 : discret mais lisible
+}
+function eCol(n){
+  const c=branchCol(n)||TEAL;
+  return n.lv===1?c+'bb':n.lv===2?c+'55':c+'2a';
+}
+function eW(n){ return n.lv===1?2:n.lv===2?1.5:1; }
+
+function bez(x1,y1,x2,y2){
+  const cx=(x1+x2)/2;
+  return `M${x1} ${y1} C${cx} ${y1} ${cx} ${y2} ${x2} ${y2}`;
+}
+
+// ── RENDER ──────────────────────────────────────────────────────
+const edgesG=document.getElementById('edges');
+const nodesG=document.getElementById('nodes');
+const nMap=new Map(), eMap=new Map();
+
+function render(){
+  layout();
+  const items=[]; collect(T,null,items);
+  const visIds=new Set(items.map(i=>i.n.id));
+  const visEds=new Set(items.filter(i=>i.par).map(i=>`${i.par.id}→${i.n.id}`));
+
+  // supprimer disparus
+  for(const[k,p] of eMap){ if(!visEds.has(k)){p.remove();eMap.delete(k);} }
+  for(const[id,g] of nMap){ if(!visIds.has(id)){g.remove();nMap.delete(id);} }
+
+  // edges
+  for(const{n,par} of items){
+    if(!par) continue;
+    const key=`${par.id}→${n.id}`;
+    const[nw]=sz(n), [pw]=sz(par);
+    const x1=n._s==='left'?par._x-pw/2:par._x+pw/2;
+    const x2=n._s==='left'?n._x+nw/2:n._x-nw/2;
+    const d=bez(x1,par._y,x2,n._y);
+    if(eMap.has(key)){
+      eMap.get(key).setAttribute('d',d);
+    } else {
+      const p=mk('path',{d,stroke:eCol(n),'stroke-width':eW(n),fill:'none','stroke-linecap':'round',opacity:'0'},edgesG);
+      eMap.set(key,p);
+      requestAnimationFrame(()=>{ p.style.transition='opacity .4s'; p.setAttribute('opacity','1'); });
+    }
+  }
+
+  // nodes
+  for(const{n} of items){
+    const[w,h]=sz(n);
+    const hasKids=!!(n.children?.length);
+    const isExp=exp.has(n.id);
+
+    if(nMap.has(n.id)){
+      mv(nMap.get(n.id),n._x-w/2,n._y-h/2);
+      const g=nMap.get(n.id);
+      if(g._ind) g._ind.textContent=isExp?'−':'+';
+    } else {
+      const g=mk('g',{class:'node'},nodesG);
+      g.style.opacity='0';
+      g.style.transition='opacity .4s';
+      mv(g,n._x-w/2,n._y-h/2);
+      requestAnimationFrame(()=>g.style.opacity='1');
+
+      // rect
+      const r=mk('rect',{
+        width:w, height:h,
+        rx: n.lv<=1?14:9,
+        fill:nFill(n), stroke:nStroke(n),
+        'stroke-width': n.lv===1||n.hw?1.5:1
+      },g);
+      if(n.lv===1||n.hw) r.setAttribute('filter','url(#glow)');
+
+      // label — centré verticalement selon présence de sub
+      const labelY = n.sub ? h/2 - 10 : h/2;
+      const fs=[16,15,13,12][Math.min(n.lv,3)];
+      const fw=n.lv<=1||n.hw?700:400;
+
+      mk('text',{
+        x:w/2, y:labelY,
+        'font-family':'Courier Prime, Courier, monospace',
+        'font-size':fs, 'font-weight':fw,
+        fill:nLabelCol(n),
+        'text-anchor':'middle', 'dominant-baseline':'middle',
+        'pointer-events':'none'
+      },g).textContent=n.label;
+
+      // sub — toujours 20px sous le label
+      if(n.sub){
+        mk('text',{
+          x:w/2, y:labelY+20,
+          'font-family':'Courier Prime, Courier, monospace',
+          'font-size':9.5, 'font-weight':400, 'font-style':'italic',
+          fill:nSubCol(n),
+          'text-anchor':'middle', 'dominant-baseline':'middle',
+          'pointer-events':'none'
+        },g).textContent=n.sub;
+      }
+
+      // indicateur +/−
+      if(hasKids){
+        const ix=n._s==='left'?13:w-13;
+        const ind=mk('text',{
+          x:ix, y:h/2,
+          'font-family':'Courier Prime, Courier, monospace',
+          'font-size':14, 'font-weight':700,
+          fill:branchCol(n)||'#404060',
+          'text-anchor':'middle', 'dominant-baseline':'middle',
+          'pointer-events':'none', opacity:'.5'
+        },g);
+        ind.textContent=isExp?'−':'+';
+        g._ind=ind;
+      }
+
+      g.addEventListener('click',e=>{e.stopPropagation();toggle(n.id);});
+      nMap.set(n.id,g);
+    }
+  }
+}
+
+function toggle(id){
+  if(exp.has(id)) exp.delete(id); else exp.add(id);
+  render();
+}
+
+// ── PAN / ZOOM ───────────────────────────────────────────────────
+const svg=document.getElementById('svg');
+const vp=document.getElementById('vp');
+let px=0,py=0,sc=0.82,drag=false,ox=0,oy=0;
+
+function applyVP(){ vp.setAttribute('transform',`translate(${px},${py}) scale(${sc})`); }
+function init(){ px=window.innerWidth/2; py=window.innerHeight/2; applyVP(); }
+
+svg.onwheel=e=>{
+  e.preventDefault();
+  const f=e.deltaY<0?1.12:0.893;
+  const mx=e.clientX,my=e.clientY;
+  const wx=(mx-px)/sc,wy=(my-py)/sc;
+  sc=Math.min(4,Math.max(0.1,sc*f));
+  px=mx-wx*sc; py=my-wy*sc;
+  applyVP();
+};
+svg.addEventListener('mousedown',e=>{
+  if(e.target.closest('.node')) return;
+  drag=true; ox=e.clientX-px; oy=e.clientY-py; svg.classList.add('drag');
+});
+window.addEventListener('mousemove',e=>{ if(!drag)return; px=e.clientX-ox; py=e.clientY-oy; applyVP(); });
+window.addEventListener('mouseup',()=>{ drag=false; svg.classList.remove('drag'); });
+
+let t0=null;
+svg.addEventListener('touchstart',e=>{ if(e.touches.length===1)t0={x:e.touches[0].clientX-px,y:e.touches[0].clientY-py}; },{passive:true});
+svg.addEventListener('touchmove',e=>{ if(t0&&e.touches.length===1){px=e.touches[0].clientX-t0.x;py=e.touches[0].clientY-t0.y;applyVP();} },{passive:true});
+svg.addEventListener('touchend',()=>t0=null,{passive:true});
+
+// ── INIT ─────────────────────────────────────────────────────────
+init();
+render();
+
+let gone=false;
+function hideHint(){ if(gone)return; gone=true; document.getElementById('ui').style.opacity='0'; }
+svg.addEventListener('click',hideHint,{once:true});
+svg.addEventListener('wheel',hideHint,{once:true});
+</script>
+</body>
+</html>

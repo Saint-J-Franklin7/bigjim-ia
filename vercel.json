@@ -13,6 +13,7 @@
     { "source": "/objection-bible", "destination": "/objection-bible/index.html" },
     { "source": "/template-propale", "destination": "/template-propale/index.html" },
     { "source": "/pack-juridique", "destination": "/pack-juridique/index.html" },
-    { "source": "/sop-livraison", "destination": "/sop-livraison/index.html" }
+    { "source": "/sop-livraison", "destination": "/sop-livraison/index.html" },
+    { "source": "/mindmap-module-3", "destination": "/mindmap-module-3/index.html" }
   ]
 }
