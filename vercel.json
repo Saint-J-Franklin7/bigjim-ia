@@ -15,6 +15,7 @@
     { "source": "/pack-juridique", "destination": "/pack-juridique/index.html" },
     { "source": "/sop-livraison", "destination": "/sop-livraison/index.html" },
     { "source": "/mindmap-module-3", "destination": "/mindmap-module-3/index.html" },
+    { "source": "/mindmap-module-5", "destination": "/mindmap-module-5/index.html" },
     { "source": "/plan-action", "destination": "/plan-action/index.html" }
   ]
 }

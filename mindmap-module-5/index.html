@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 5 — Livraison · Closer IA</title>
+<link rel="icon" type="image/png" href="/BigJim.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#080810;-webkit-font-smoothing:antialiased}
+#svg{width:100vw;height:100vh;cursor:grab;user-select:none;display:block}
+#svg.drag{cursor:grabbing}
+.node{cursor:pointer}
+.node rect{transition:filter .15s}
+.node:hover rect{filter:brightness(1.3)}
+#logo{
+  position:fixed;top:20px;right:28px;
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;user-select:none;
+}
+#logo img{width:34px;height:34px;object-fit:contain}
+#logo span{
+  font-family:"Courier Prime",monospace;font-size:14px;font-weight:700;
+  color:#FF6535;letter-spacing:.18em;text-transform:uppercase;
+}
+#badge{
+  position:fixed;top:24px;left:28px;
+  font-family:"Courier Prime",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:#1DBDB8;opacity:.6;
+}
+#ui{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  font-family:"Courier Prime",monospace;font-size:10px;letter-spacing:.12em;
+  color:#252540;pointer-events:none;transition:opacity .6s;
+  display:flex;gap:14px;align-items:center;
+}
+#ui kbd{background:#0f0f1c;border:1px solid #1a1a2e;border-radius:3px;padding:2px 8px;color:#333350;font-family:inherit}
+</style>
+</head>
+<body>
+<a id="logo" href="/">
+  <img src="/BigJim.png" alt="BigJim" />
+  <span>BigJim</span>
+</a>
+<div id="badge">Closer IA · Module 5</div>
+<div id="ui"><kbd>Scroll</kbd> zoom <kbd>Drag</kbd> déplacer <kbd>Click</kbd> explorer</div>
+
+<svg id="svg">
+  <defs>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="100%" height="100%" fill="#080810"/>
+  <pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r=".9" fill="#101020"/>
+  </pattern>
+  <rect width="100%" height="100%" fill="url(#dots)"/>
+  <g id="vp"><g id="edges"/><g id="nodes"/></g>
+</svg>
+
+<script>
+const TEAL   = '#1DBDB8';
+const ORANGE = '#FF6535';
+
+// ── DATA ────────────────────────────────────────────────────────
+const T = {
+  id:'root', label:'MODULE 5', sub:'Livraison · Semaine 5', lv:0,
+  children:[
+
+    { id:'call7', label:'CALL 7', sub:'Setup opérationnel', lv:1, side:'left', col:TEAL,
+      children:[
+
+        { id:'prerec7', label:'Prérec', sub:'avant le call', lv:2, side:'left',
+          children:[
+            {id:'pr7a', label:'Micro-entreprise',  sub:'autoentrepreneur.urssaf.fr · 10 min',    lv:3, side:'left'},
+            {id:'pr7b', label:'Compte Stripe',     sub:'créé + validé + IBAN connecté',           lv:3, side:'left'},
+          ]},
+
+        { id:'micro', label:'Ouvrir sa micro', sub:'étape par étape', lv:2, side:'left',
+          children:[
+            {id:'mc1', label:'autoentrepreneur.urssaf.fr', sub:'le seul site officiel · gratuit', lv:3, side:'left'},
+            {id:'mc2', label:'Activité à choisir',         sub:'"Conseil en systèmes informatiques"', lv:3, side:'left'},
+            {id:'mc3', label:'SIRET reçu en 48-72h',       sub:'puis déclaration mensuelle ou trimestrielle', lv:3, side:'left'},
+            {id:'mc4', label:'Plafond micro',              sub:'77 700€/an · suffisant pour commencer', lv:3, side:'left'},
+          ]},
+
+        { id:'stripe', label:'Valider Stripe', sub:'zéro friction au moment de payer', lv:2, side:'left',
+          children:[
+            {id:'st1', label:'KYC + pièce d\'identité',   sub:'validation 24-48h · faire ça avant',       lv:3, side:'left'},
+            {id:'st2', label:'IBAN connecté',              sub:'virement test · vérifier que ça arrive',   lv:3, side:'left'},
+            {id:'st3', label:'Lien paiement one-shot',     sub:'setup 2500€ · envoie le lien en 30 sec',  lv:3, side:'left'},
+            {id:'st4', label:'Abonnement récurrent',       sub:'mensuel 500€+ · auto-débit · zéro friction',lv:3, side:'left'},
+          ]},
+
+        { id:'propale', label:'La propale', sub:'avant de parler contrat', lv:2, side:'left',
+          children:[
+            {id:'pp1', label:'Structure en 1 page',        sub:'problème · solution · prix · prochaine étape', lv:3, side:'left'},
+            {id:'pp2', label:'Envoyer dans les 24h',       sub:'après la démo · pas après · momentum chaud',   lv:3, side:'left'},
+            {id:'pp3', label:'Pas de devis Word',          sub:'Notion ou PDF propre · soigné = signal sérieux',lv:3, side:'left'},
+          ]},
+
+        { id:'contrat', label:'Le contrat', sub:'1 page · pas un roman', lv:2, side:'left',
+          children:[
+            {id:'ct1', label:'Ce qu\'il faut absolument',  sub:'périmètre · prix · délai · conditions arrêt', lv:3, side:'left'},
+            {id:'ct2', label:'Ce qu\'on peut ignorer',     sub:'clauses de 3 pages = signal de peur', lv:3, side:'left'},
+            {id:'ct3', label:'Signature',                  sub:'DocuSign gratuit ou HelloSign · pas de papier', lv:3, side:'left'},
+          ]},
+
+        { id:'facturation', label:'Facturer', sub:'mentions obligatoires France', lv:2, side:'left',
+          children:[
+            {id:'fc1', label:'Freebe ou Henrri',           sub:'gratuit · génère les factures conformes', lv:3, side:'left'},
+            {id:'fc2', label:'Mentions obligatoires',      sub:'SIRET · numéro facture · "TVA non applicable"', lv:3, side:'left'},
+            {id:'fc3', label:'Délai de paiement',          sub:'30 jours ou paiement avant livraison', lv:3, side:'left'},
+          ]},
+
+        { id:'bonus7', label:'BONUS', sub:'2 ressources incluses', lv:2, side:'left',
+          children:[
+            {id:'b7a', label:'Bonus #09 Template propale', sub:'Notion + Canva · version visuelle',             lv:3, side:'left', hw:true},
+            {id:'b7b', label:'Bonus #10 Pack juridique',   sub:'contrat type + CGV + modèle facture conforme',  lv:3, side:'left', hw:true},
+          ]},
+
+        { id:'hs7', label:'Hot seat', sub:'30 min · questions setup en live', lv:2, side:'left'},
+        { id:'hw7', label:'Setup complet', sub:'Homework · micro + Stripe + contrat signé', lv:2, side:'left', hw:true},
+      ]},
+
+    { id:'call8', label:'CALL 8', sub:'Onboarding client', lv:1, side:'right', col:ORANGE,
+      children:[
+
+        { id:'jplus0', label:'J+0 : Post-deal', sub:'les 2h après la signature', lv:2, side:'right',
+          children:[
+            {id:'pd1', label:'Message de bienvenue',    sub:'template WA / email · chaud · humain',       lv:3, side:'right'},
+            {id:'pd2', label:'Lien de paiement Stripe', sub:'envoyer immédiatement · pas d\'attente',     lv:3, side:'right'},
+            {id:'pd3', label:'Date du kick-off',        sub:'proposer 2 créneaux dans les 3 jours',       lv:3, side:'right'},
+          ]},
+
+        { id:'kickoff', label:'Kick-off call', sub:'structure 45 min', lv:2, side:'right',
+          children:[
+            {id:'ko1', label:'Valider la situation',    sub:'où il en est vraiment · repartir de zéro', lv:3, side:'right'},
+            {id:'ko2', label:'Niche + use case',        sub:'confirmer ou réorienter avec l\'agent IA',  lv:3, side:'right'},
+            {id:'ko3', label:'Accès + setup technique', sub:'n8n · clé Claude · domaine si besoin',     lv:3, side:'right'},
+            {id:'ko4', label:'Premier objectif',        sub:'1 prospect contacté avant le prochain call',lv:3, side:'right'},
+          ]},
+
+        { id:'livrable', label:'Premier livrable', sub:'J+7 max', lv:2, side:'right',
+          children:[
+            {id:'lv1', label:'Agent IA fonctionnel',    sub:'demo live chez le client · pas juste une vidéo', lv:3, side:'right'},
+            {id:'lv2', label:'Format de livraison',     sub:'screen share · Loom async si client dispo pas', lv:3, side:'right'},
+            {id:'lv3', label:'Feedback immédiat',       sub:'demander ce qui manque pendant la demo',       lv:3, side:'right'},
+          ]},
+
+        { id:'recurrent', label:'Gérer le récurrent', sub:'après le premier mois', lv:2, side:'right',
+          children:[
+            {id:'rc1', label:'Check mensuel',           sub:'30 min · résultats · ajustements · preuves', lv:3, side:'right'},
+            {id:'rc2', label:'Stripe auto-débit',       sub:'abonnement activé · zéro relance manuelle',  lv:3, side:'right'},
+            {id:'rc3', label:'Upsell naturel',          sub:'2ème agent · autre niche · quand c\'est prouvé',lv:3, side:'right'},
+          ]},
+
+        { id:'signaux', label:'Signaux d\'alerte', sub:'avant que le client parte', lv:2, side:'right',
+          children:[
+            {id:'sa1', label:'Pas de réponse J+3',     sub:'relancer une fois · pas dix',                lv:3, side:'right'},
+            {id:'sa2', label:'Résultats pas visibles',  sub:'revoir le use case · pas le bon problème ?', lv:3, side:'right'},
+            {id:'sa3', label:'Demande de pause',        sub:'avoir la conv de résiliation proprement',    lv:3, side:'right'},
+          ]},
+
+        { id:'bonus8', label:'BONUS', sub:'1 ressource incluse', lv:2, side:'right',
+          children:[
+            {id:'b8a', label:'Bonus #11 SOP livraison', sub:'checklist onboarding · templates communication', lv:3, side:'right', hw:true},
+          ]},
+
+        { id:'hw8', label:'Premier onboarding', sub:'Homework · kick-off du 1er client', lv:2, side:'right', hw:true},
+      ]},
+  ]
+};
+
+// ── STATE ───────────────────────────────────────────────────────
+const exp = new Set(['root','call7','call8']);
+
+// ── SIZES ── dynamique selon présence de sub ────────────────────
+const BASE_W = [240, 268, 250, 266];
+const BASE_H = [72,  72,  66,  64];
+const SUB_EXTRA = 22;
+
+function sz(n){
+  const lv = Math.min(n.lv, 3);
+  const w  = BASE_W[lv];
+  const h  = BASE_H[lv] + (n.sub ? SUB_EXTRA : 0);
+  return [w, h];
+}
+
+const XG = 300;
+const YG = 100;
+
+// ── LAYOUT ──────────────────────────────────────────────────────
+function tH(n){
+  if(!exp.has(n.id)||!n.children) return 1;
+  return n.children.reduce((s,c)=>s+tH(c),0);
+}
+function place(n,x,y,side){
+  n._x=x; n._y=y; n._s=side;
+  if(!exp.has(n.id)||!n.children) return;
+  const tot=tH(n), nx=side==='left'?x-XG:x+XG;
+  let cy=y-(tot*YG)/2+YG/2;
+  for(const c of n.children){
+    const ch=tH(c);
+    place(c, nx, cy+(ch*YG)/2-YG/2, side);
+    cy+=ch*YG;
+  }
+}
+function layout(){
+  T._x=0; T._y=0; T._s='right';
+  if(exp.has('root')&&T.children){
+    place(T.children[0],-XG,0,'left');
+    place(T.children[1], XG,0,'right');
+  }
+}
+
+// ── COLLECT ─────────────────────────────────────────────────────
+function collect(n,par,out){
+  out.push({n,par});
+  if(exp.has(n.id)&&n.children) n.children.forEach(c=>collect(c,n,out));
+}
+
+// ── SVG UTILS ───────────────────────────────────────────────────
+const NS='http://www.w3.org/2000/svg';
+function mk(tag,attrs,parent){
+  const e=document.createElementNS(NS,tag);
+  for(const[k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+  parent&&parent.appendChild(e);
+  return e;
+}
+function mv(el,x,y){ el.setAttribute('transform',`translate(${x.toFixed(1)},${y.toFixed(1)})`); }
+
+// ── STYLES ──────────────────────────────────────────────────────
+function branchCol(n){
+  if(n.lv===0) return null;
+  return n.side==='left' ? TEAL : ORANGE;
+}
+function nFill(n){
+  if(n.lv===0) return '#12121f';
+  if(n.lv===1) return n.side==='left'?'rgba(29,189,184,.1)':'rgba(255,101,53,.08)';
+  if(n.hw)     return n.side==='left'?'rgba(29,189,184,.16)':'rgba(255,101,53,.14)';
+  return n.lv===2?'#111120':'#0e0e1c';
+}
+function nStroke(n){
+  const c=branchCol(n);
+  if(n.lv===0) return '#232342';
+  if(n.lv===1||n.hw) return c;
+  return n.lv===2?'#1e1e38':'#181830';
+}
+function nLabelCol(n){
+  const c=branchCol(n);
+  if(n.lv===0) return '#a0a0cc';
+  if(n.lv===1||n.hw) return c;
+  return n.lv===2?'#c8c8e8':'#9898c8';
+}
+function nSubCol(n){
+  const c=branchCol(n);
+  if(n.lv===1) return c+'99';
+  if(n.hw)     return c+'cc';
+  return '#424268';
+}
+function eCol(n){
+  const c=branchCol(n)||TEAL;
+  return n.lv===1?c+'bb':n.lv===2?c+'55':c+'2a';
+}
+function eW(n){ return n.lv===1?2:n.lv===2?1.5:1; }
+
+function bez(x1,y1,x2,y2){
+  const cx=(x1+x2)/2;
+  return `M${x1} ${y1} C${cx} ${y1} ${cx} ${y2} ${x2} ${y2}`;
+}
+
+// ── RENDER ──────────────────────────────────────────────────────
+const edgesG=document.getElementById('edges');
+const nodesG=document.getElementById('nodes');
+const nMap=new Map(), eMap=new Map();
+
+function render(){
+  layout();
+  const items=[]; collect(T,null,items);
+  const visIds=new Set(items.map(i=>i.n.id));
+  const visEds=new Set(items.filter(i=>i.par).map(i=>`${i.par.id}→${i.n.id}`));
+
+  for(const[k,p] of eMap){ if(!visEds.has(k)){p.remove();eMap.delete(k);} }
+  for(const[id,g] of nMap){ if(!visIds.has(id)){g.remove();nMap.delete(id);} }
+
+  for(const{n,par} of items){
+    if(!par) continue;
+    const key=`${par.id}→${n.id}`;
+    const[nw]=sz(n), [pw]=sz(par);
+    const x1=n._s==='left'?par._x-pw/2:par._x+pw/2;
+    const x2=n._s==='left'?n._x+nw/2:n._x-nw/2;
+    const d=bez(x1,par._y,x2,n._y);
+    if(eMap.has(key)){
+      eMap.get(key).setAttribute('d',d);
+    } else {
+      const p=mk('path',{d,stroke:eCol(n),'stroke-width':eW(n),fill:'none','stroke-linecap':'round',opacity:'0'},edgesG);
+      eMap.set(key,p);
+      requestAnimationFrame(()=>{ p.style.transition='opacity .4s'; p.setAttribute('opacity','1'); });
+    }
+  }
+
+  for(const{n} of items){
+    const[w,h]=sz(n);
+    const hasKids=!!(n.children?.length);
+    const isExp=exp.has(n.id);
+
+    if(nMap.has(n.id)){
+      mv(nMap.get(n.id),n._x-w/2,n._y-h/2);
+      const g=nMap.get(n.id);
+      if(g._ind) g._ind.textContent=isExp?'−':'+';
+    } else {
+      const g=mk('g',{class:'node'},nodesG);
+      g.style.opacity='0';
+      g.style.transition='opacity .4s';
+      mv(g,n._x-w/2,n._y-h/2);
+      requestAnimationFrame(()=>g.style.opacity='1');
+
+      const r=mk('rect',{
+        width:w, height:h,
+        rx: n.lv<=1?14:9,
+        fill:nFill(n), stroke:nStroke(n),
+        'stroke-width': n.lv===1||n.hw?1.5:1
+      },g);
+      if(n.lv===1||n.hw) r.setAttribute('filter','url(#glow)');
+
+      const labelY = n.sub ? h/2 - 10 : h/2;
+      const fs=[16,15,13,12][Math.min(n.lv,3)];
+      const fw=n.lv<=1||n.hw?700:400;
+
+      mk('text',{
+        x:w/2, y:labelY,
+        'font-family':'Courier Prime, Courier, monospace',
+        'font-size':fs, 'font-weight':fw,
+        fill:nLabelCol(n),
+        'text-anchor':'middle', 'dominant-baseline':'middle',
+        'pointer-events':'none'
+      },g).textContent=n.label;
+
+      if(n.sub){
+        mk('text',{
+          x:w/2, y:labelY+20,
+          'font-family':'Courier Prime, Courier, monospace',
+          'font-size':9.5, 'font-weight':400, 'font-style':'italic',
+          fill:nSubCol(n),
+          'text-anchor':'middle', 'dominant-baseline':'middle',
+          'pointer-events':'none'
+        },g).textContent=n.sub;
+      }
+
+      if(hasKids){
+        const ix=n._s==='left'?13:w-13;
+        const ind=mk('text',{
+          x:ix, y:h/2,
+          'font-family':'Courier Prime, Courier, monospace',
+          'font-size':14, 'font-weight':700,
+          fill:branchCol(n)||'#404060',
+          'text-anchor':'middle', 'dominant-baseline':'middle',
+          'pointer-events':'none', opacity:'.5'
+        },g);
+        ind.textContent=isExp?'−':'+';
+        g._ind=ind;
+      }
+
+      g.addEventListener('click',e=>{e.stopPropagation();toggle(n.id);});
+      nMap.set(n.id,g);
+    }
+  }
+}
+
+function toggle(id){
+  if(exp.has(id)) exp.delete(id); else exp.add(id);
+  render();
+}
+
+// ── PAN / ZOOM ───────────────────────────────────────────────────
+const svg=document.getElementById('svg');
+const vp=document.getElementById('vp');
+let px=0,py=0,sc=0.82,drag=false,ox=0,oy=0;
+
+function applyVP(){ vp.setAttribute('transform',`translate(${px},${py}) scale(${sc})`); }
+function init(){ px=window.innerWidth/2; py=window.innerHeight/2; applyVP(); }
+
+svg.onwheel=e=>{
+  e.preventDefault();
+  const f=e.deltaY<0?1.12:0.893;
+  const mx=e.clientX,my=e.clientY;
+  const wx=(mx-px)/sc,wy=(my-py)/sc;
+  sc=Math.min(4,Math.max(0.1,sc*f));
+  px=mx-wx*sc; py=my-wy*sc;
+  applyVP();
+};
+svg.addEventListener('mousedown',e=>{
+  if(e.target.closest('.node')) return;
+  drag=true; ox=e.clientX-px; oy=e.clientY-py; svg.classList.add('drag');
+});
+window.addEventListener('mousemove',e=>{ if(!drag)return; px=e.clientX-ox; py=e.clientY-oy; applyVP(); });
+window.addEventListener('mouseup',()=>{ drag=false; svg.classList.remove('drag'); });
+
+let t0=null;
+svg.addEventListener('touchstart',e=>{ if(e.touches.length===1)t0={x:e.touches[0].clientX-px,y:e.touches[0].clientY-py}; },{passive:true});
+svg.addEventListener('touchmove',e=>{ if(t0&&e.touches.length===1){px=e.touches[0].clientX-t0.x;py=e.touches[0].clientY-t0.y;applyVP();} },{passive:true});
+svg.addEventListener('touchend',()=>t0=null,{passive:true});
+
+// ── INIT ─────────────────────────────────────────────────────────
+init();
+render();
+
+let gone=false;
+function hideHint(){ if(gone)return; gone=true; document.getElementById('ui').style.opacity='0'; }
+svg.addEventListener('click',hideHint,{once:true});
+svg.addEventListener('wheel',hideHint,{once:true});
+</script>
+</body>
+</html>
