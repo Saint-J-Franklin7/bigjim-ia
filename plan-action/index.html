@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ton Plan d'Action Client — Closer IA by BigJim</title>
+<meta name="description" content="30 min en visio. On regarde ta situation et tu repars avec ta niche, ton problème à vendre, et ton plan des 60 prochains jours pour signer ton 1er client en service IA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0D0D0D;
+  --fg: #F0F0EB;
+  --orange: #E8612C;
+  --teal: #0ABAB5;
+  --muted: #555;
+  --muted-2: #888;
+  --card: #111;
+  --border: #1e1e1e;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Courier Prime', Courier, monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---- Logo (fixe, cohérent avec les autres pages BigJim) ---- */
+#logo {
+  position: fixed; top: 20px; left: 28px; z-index: 50;
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; user-select: none;
+}
+#logo img { width: 30px; height: 30px; object-fit: contain; }
+#logo span {
+  font-size: 12px; font-weight: 700;
+  color: var(--orange); letter-spacing: .18em; text-transform: uppercase;
+}
+
+.container { width: 100%; max-width: 720px; padding: 96px 24px 80px; }
+
+/* ---- Header ---- */
+.header { text-align: center; margin-bottom: 44px; }
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal);
+  border: 1px solid var(--teal);
+  padding: 4px 14px;
+  margin-bottom: 24px;
+}
+.header h1 {
+  font-size: clamp(34px, 7vw, 56px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.header h1 em { color: var(--orange); font-style: normal; }
+.header .lead {
+  color: var(--fg);
+  font-size: 15px;
+  line-height: 1.75;
+  max-width: 54ch;
+  margin: 0 auto;
+}
+.header .lead b { color: var(--orange); }
+
+.proof {
+  margin: 28px auto 0;
+  max-width: 54ch;
+  border-left: 2px solid var(--teal);
+  padding: 4px 0 4px 16px;
+  text-align: left;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--muted-2);
+  font-style: italic;
+}
+.proof b { color: var(--fg); font-style: normal; }
+
+.scroll-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 36px;
+  background: var(--orange); color: var(--bg);
+  padding: 15px 32px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 12.5px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  text-decoration: none; transition: opacity 0.15s;
+}
+.scroll-cta:hover { opacity: 0.85; }
+
+/* ---- Ce qu'on fait ---- */
+.block { margin-top: 72px; }
+.block-lbl {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 18px; text-align: center;
+}
+.block h2 {
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 700; text-align: center; margin-bottom: 40px; line-height: 1.15;
+}
+.block h2 em { color: var(--orange); font-style: normal; }
+
+.steps { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--border); }
+.step-row {
+  display: flex; gap: 20px; align-items: flex-start;
+  padding: 22px 4px; border-bottom: 1px solid var(--border);
+}
+.step-num {
+  font-size: 11px; font-weight: 700; color: var(--orange);
+  border: 1px solid var(--orange); padding: 4px 8px;
+  flex-shrink: 0; margin-top: 2px;
+}
+.step-txt .t { font-size: 14.5px; font-weight: 700; margin-bottom: 4px; }
+.step-txt .d { font-size: 12.5px; color: var(--muted-2); line-height: 1.6; }
+
+.transparency {
+  margin-top: 28px; padding: 18px 20px;
+  border: 1px solid var(--border); background: var(--card);
+  font-size: 12.5px; line-height: 1.7; color: var(--muted-2);
+}
+.transparency b { color: var(--fg); }
+
+/* ---- Scarcity ---- */
+.scarcity {
+  margin-top: 56px;
+  border: 1px solid var(--orange);
+  background: #120a04;
+  padding: 26px 28px;
+  text-align: center;
+}
+.scarcity .t {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--orange); margin-bottom: 10px;
+}
+.scarcity p { font-size: 13.5px; line-height: 1.7; color: var(--fg); }
+.scarcity p b { color: var(--orange); }
+
+/* ---- Reassurance ---- */
+.reassure {
+  margin-top: 36px;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+}
+.pill {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em;
+  border: 1px solid var(--teal); color: var(--teal);
+  padding: 6px 12px; text-transform: uppercase;
+}
+
+/* ---- Booking ---- */
+#booking { margin-top: 80px; scroll-margin-top: 40px; }
+#booking .block-lbl { color: var(--orange); }
+#booking h2 { margin-bottom: 12px; }
+#booking .sub {
+  text-align: center; color: var(--muted-2); font-size: 12.5px;
+  margin-bottom: 32px;
+}
+.calendly-frame {
+  border: 1px solid var(--border);
+  background: var(--card);
+  padding: 4px;
+}
+
+/* ---- Footer ---- */
+footer {
+  margin-top: 88px; padding-top: 24px; border-top: 1px solid var(--border);
+  width: 100%; max-width: 720px;
+  text-align: center; color: var(--muted); font-size: 10.5px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<a id="logo" href="https://bigjim-ia.com">
+  <img src="/BigJim.png" alt="BigJim">
+  <span>BigJim</span>
+</a>
+
+<div class="container">
+
+  <div class="header">
+    <div class="badge">Closer IA — Session Diagnostic · Gratuite</div>
+    <h1>TON PLAN<br><em>D'ACTION CLIENT</em></h1>
+    <p class="lead">
+      30 minutes, en visio, avec moi. Tu repars avec <b>ta niche</b>, le <b>problème précis à 1000€+/mois</b>
+      à vendre dans cette niche, et ton <b>plan des 60 prochains jours</b> pour signer ton premier client
+      en service IA.
+    </p>
+    <p class="proof">
+      Le mois dernier j'ai closé un fondateur DTC à <b>2 000€ setup + récurrent</b> — pendant le tournage
+      d'une vidéo. Pas de théorie : le même process, appliqué à ta situation.
+    </p>
+    <a href="#booking" class="scroll-cta">Réserver mon créneau ↓</a>
+  </div>
+
+  <div class="block">
+    <div class="block-lbl">Au programme</div>
+    <h2>Ce qu'on fait pendant<br>les <em>30 minutes</em></h2>
+    <div class="steps">
+      <div class="step-row">
+        <span class="step-num">01</span>
+        <div class="step-txt">
+          <div class="t">Ta situation</div>
+          <div class="d">Temps disponible, skills actuels, niche si t'en as déjà une en tête — ou pas.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">02</span>
+        <div class="step-txt">
+          <div class="t">Ta niche + ton problème à vendre</div>
+          <div class="d">Le problème précis à 1000€+/mois à résoudre pour cette niche, pas un pitch générique "l'IA c'est le futur".</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <span class="step-num">03</span>
+        <div class="step-txt">
+          <div class="t">Ton plan des 60 prochains jours</div>
+          <div class="d">Les actions concrètes, dans l'ordre, pour signer ton 1er client — pas une liste de conseils vagues.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="transparency">
+      <b>Transparence :</b> si je vois qu'on peut aller plus vite ensemble avec un accompagnement plus poussé,
+      je te montre comment ça marche à la fin du call. Zéro pression, zéro obligation — tu repars avec ton plan
+      dans tous les cas.
+    </div>
+  </div>
+
+  <div class="scarcity">
+    <div class="t">Places limitées</div>
+    <p>Je fais ces calls <b>moi-même</b>, en 1:1. Pas d'assistant, pas de script générique — ce qui veut dire
+    un nombre de créneaux limité chaque semaine.</p>
+  </div>
+
+  <div class="reassure">
+    <span class="pill">100% gratuit</span>
+    <span class="pill">Zéro carte bancaire</span>
+    <span class="pill">Zéro engagement</span>
+  </div>
+
+  <div id="booking">
+    <div class="block-lbl">Dernière étape</div>
+    <h2>Choisis ton <em>créneau</em></h2>
+    <p class="sub">30 min · Visio · Réponse de confirmation immédiate</p>
+    <div class="calendly-frame">
+      <!-- Calendly inline widget begin -->
+      <div class="calendly-inline-widget" data-url="https://calendly.com/ecombigbillions/call-plan-d-action?hide_landing_page_details=1&hide_gdpr_banner=1&background_color=0d0d0d&text_color=f0f0eb&primary_color=e8612c" style="min-width:320px;height:700px;"></div>
+      <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+      <!-- Calendly inline widget end -->
+    </div>
+  </div>
+
+  <footer>
+    Closer IA by BigJim — bigjim-ia.com
+  </footer>
+
+</div>
+</body>
+</html>
