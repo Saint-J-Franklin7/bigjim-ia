@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Black Friday — Formation Closer IA | BigJim</title>
+<meta name="description" content="La formation vendue 1000-1500€ en 1:1, en libre-service pour la première et dernière fois. -80% jusqu'à Cyber Monday minuit.">
+<link rel="icon" type="image/png" href="/BigJim.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0D0D0D;
+  --fg: #F0F0EB;
+  --orange: #E8612C;
+  --teal: #0ABAB5;
+  --muted: #555;
+  --muted-2: #888;
+  --card: #111;
+  --border: #1e1e1e;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Courier Prime', Courier, monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#logo {
+  position: fixed; top: 20px; left: 28px; z-index: 50;
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; user-select: none;
+}
+#logo img { width: 30px; height: 30px; object-fit: contain; }
+#logo span {
+  font-size: 12px; font-weight: 700;
+  color: var(--orange); letter-spacing: .18em; text-transform: uppercase;
+}
+
+.container { width: 100%; max-width: 920px; padding: 96px 24px 80px; }
+
+/* ---- Countdown bar ---- */
+#countdown-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+  background: var(--orange); color: var(--bg);
+  text-align: center; padding: 10px 12px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+}
+#countdown-bar span#cd-time { font-variant-numeric: tabular-nums; }
+
+/* ---- Header ---- */
+.header { text-align: center; margin-bottom: 44px; max-width: 720px; margin-left: auto; margin-right: auto; }
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid var(--orange);
+  padding: 4px 14px;
+  margin-bottom: 24px;
+}
+.header h1 {
+  font-size: clamp(30px, 6.5vw, 52px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.header h1 em { color: var(--orange); font-style: normal; }
+.header .lead {
+  color: var(--fg);
+  font-size: 15px;
+  line-height: 1.75;
+  max-width: 58ch;
+  margin: 0 auto;
+}
+.header .lead b { color: var(--orange); }
+
+.proof {
+  margin: 28px auto 0;
+  max-width: 58ch;
+  border-left: 2px solid var(--teal);
+  padding: 4px 0 4px 16px;
+  text-align: left;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--muted-2);
+  font-style: italic;
+}
+.proof b { color: var(--fg); font-style: normal; }
+
+.scroll-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 36px;
+  background: var(--orange); color: var(--bg);
+  padding: 15px 32px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 12.5px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  text-decoration: none; transition: opacity 0.15s;
+}
+.scroll-cta:hover { opacity: 0.85; }
+
+.block-lbl {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 18px; text-align: center;
+}
+h2 {
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 700; text-align: center; margin-bottom: 16px; line-height: 1.15;
+}
+h2 em { color: var(--orange); font-style: normal; }
+.section-sub {
+  text-align: center; color: var(--muted-2); font-size: 13px;
+  max-width: 60ch; margin: 0 auto 44px;
+}
+
+/* ---- Value stack ---- */
+#stack { margin-top: 88px; }
+.stack-list { display: flex; flex-direction: column; gap: 14px; max-width: 640px; margin: 0 auto; }
+.stack-item {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  border: 1px solid var(--border); background: var(--card);
+  padding: 16px 20px;
+  font-size: 13.5px;
+}
+.stack-item .label b { color: var(--fg); }
+.stack-item .label span { display: block; color: var(--muted-2); font-size: 11.5px; margin-top: 4px; }
+.stack-item .val { color: var(--teal); font-weight: 700; white-space: nowrap; }
+.stack-total {
+  display: flex; justify-content: space-between; max-width: 640px; margin: 18px auto 0;
+  padding: 16px 20px; border: 1px solid var(--orange);
+  font-size: 14px; font-weight: 700;
+}
+.stack-total .val { color: var(--orange); }
+
+/* ---- DWY anchor ---- */
+.anchor-box {
+  max-width: 640px; margin: 32px auto 0;
+  border: 1px dashed var(--muted); padding: 20px 24px;
+  font-size: 12.5px; line-height: 1.7; color: var(--muted-2); text-align: center;
+}
+.anchor-box b { color: var(--fg); }
+
+/* ---- Pricing ---- */
+#pricing { margin-top: 96px; }
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  max-width: 900px; margin: 0 auto;
+}
+@media (max-width: 760px) { .pricing-grid { grid-template-columns: 1fr; } }
+.plan {
+  border: 1px solid var(--border); background: var(--card);
+  padding: 28px 22px; display: flex; flex-direction: column;
+  position: relative;
+}
+.plan.featured {
+  border-color: var(--orange);
+  transform: scale(1.03);
+  box-shadow: 0 0 0 1px var(--orange);
+}
+.plan .tag {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--orange); color: var(--bg);
+  font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 12px; white-space: nowrap;
+}
+.plan .name { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; text-align: center; }
+.plan.featured .name { color: var(--orange); }
+.plan .price-row { text-align: center; margin-bottom: 6px; }
+.plan .old-price { color: var(--muted); text-decoration: line-through; font-size: 13px; margin-right: 8px; }
+.plan .price { font-size: 34px; font-weight: 700; }
+.plan.featured .price { color: var(--orange); }
+.plan .discount { text-align: center; color: var(--teal); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px; }
+.plan ul { list-style: none; flex-grow: 1; margin-bottom: 22px; }
+.plan li { font-size: 12.5px; line-height: 1.9; padding-left: 18px; position: relative; color: var(--fg); }
+.plan li::before { content: "+"; position: absolute; left: 0; color: var(--teal); font-weight: 700; }
+.plan li.included-prev { color: var(--muted-2); }
+.plan-cta {
+  display: block; text-align: center;
+  padding: 14px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; border: 1px solid var(--fg); color: var(--fg);
+  transition: opacity 0.15s;
+}
+.plan.featured .plan-cta { background: var(--orange); border-color: var(--orange); color: var(--bg); }
+.plan-cta:hover { opacity: 0.8; }
+
+/* ---- Scarcity ---- */
+.scarcity {
+  margin-top: 56px;
+  border: 1px solid var(--orange);
+  background: #120a04;
+  padding: 26px 28px;
+  text-align: center;
+  max-width: 640px; margin-left: auto; margin-right: auto;
+}
+.scarcity .t {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--orange); margin-bottom: 10px;
+}
+.scarcity p { font-size: 13.5px; line-height: 1.7; color: var(--fg); }
+.scarcity p b { color: var(--orange); }
+
+.reassure {
+  margin-top: 36px;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+}
+.pill {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em;
+  border: 1px solid var(--teal); color: var(--teal);
+  padding: 6px 12px; text-transform: uppercase;
+}
+
+/* ---- FAQ ---- */
+#faq { margin-top: 96px; max-width: 680px; margin-left: auto; margin-right: auto; }
+.faq-item { border-bottom: 1px solid var(--border); padding: 18px 0; }
+.faq-item .q { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.faq-item .q::before { content: "Q. "; color: var(--teal); }
+.faq-item .a { font-size: 13px; line-height: 1.7; color: var(--muted-2); }
+
+/* ---- Footer ---- */
+footer {
+  margin-top: 88px; padding-top: 24px; border-top: 1px solid var(--border);
+  width: 100%; max-width: 720px;
+  text-align: center; color: var(--muted); font-size: 10.5px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<div id="countdown-bar">Black Friday ferme ce soir minuit dans <span id="cd-time">--j --h --m --s</span></div>
+
+<a id="logo" href="https://bigjim-ia.com" style="top:52px;">
+  <img src="/BigJim.png" alt="BigJim">
+  <span>BigJim</span>
+</a>
+
+<div class="container">
+
+  <div class="header">
+    <div class="badge">Black Friday — Une seule fois, jamais republié à ce prix</div>
+    <h1>LA FORMATION VENDUE<br>1000-1500€ EN 1:1<br><em>À -80% CETTE SEMAINE</em></h1>
+    <p class="lead">
+      Les vidéos, les assets et les bonus que j'ai livrés en 1:1 à mes premiers clients — en libre-service,
+      pour la première et dernière fois, jusqu'à <b>ce soir minuit</b>.
+    </p>
+    <p class="proof">
+      <b>Pour référence :</b> l'accompagnement 1:1 complet que je vends aujourd'hui dans le Challenge Closer IA
+      est à <b>5000€</b>. Ce que tu vois ici, c'est la version self-study — construite pour que tu avances seul,
+      avec un vrai call ou un vrai support si tu veux pas l'être.
+    </p>
+    <a href="#pricing" class="scroll-cta">Voir les 3 offres ↓</a>
+  </div>
+
+  <div id="stack">
+    <div class="block-lbl">Ce qu'il y a dedans</div>
+    <h2>La <em>stack complète</em></h2>
+    <p class="section-sub">Le même contenu vendu 1000-1500€ en 1:1, désormais accessible sans passer par un call de vente.</p>
+    <div class="stack-list">
+      <div class="stack-item">
+        <div class="label"><b>Formation vidéo complète</b><span>Accès à vie — le process complet, du choix de niche au premier client signé</span></div>
+        <div class="val">Accès à vie</div>
+      </div>
+      <div class="stack-item">
+        <div class="label"><b>Niche Selector</b><span>30 niches analysées (capacité à payer, difficulté, concurrence) — pour ne plus hésiter sur ta niche</span></div>
+        <div class="val">Inclus</div>
+      </div>
+      <div class="stack-item">
+        <div class="label"><b>Agent Hormozi</b><span>Générateur d'offre 100M Offers — pour structurer une offre irrésistible sans partir de zéro</span></div>
+        <div class="val">Inclus</div>
+      </div>
+      <div class="stack-item">
+        <div class="label"><b>Prompt Library</b><span>50 prompts Claude testés pour prospecter, pitcher et livrer</span></div>
+        <div class="val">Inclus</div>
+      </div>
+      <div class="stack-item">
+        <div class="label"><b>Guide Lead Sourcing</b><span>10 méthodes gratuites pour trouver des prospects tous les jours</span></div>
+        <div class="val">Inclus</div>
+      </div>
+      <div class="stack-item">
+        <div class="label"><b>Demo Framework</b><span>Structure de démo en 7 minutes + une démo réelle enregistrée</span></div>
+        <div class="val">Inclus</div>
+      </div>
+      <div class="stack-item">
+        <div class="label"><b>Objection Handling Bible</b><span>20 objections + réponses scriptées — pour ne plus bloquer en call</span></div>
+        <div class="val">Inclus</div>
+      </div>
+      <div class="stack-item">
+        <div class="label"><b>Template de propale</b><span>Notion + Canva — pour clôturer proprement sans repartir de zéro</span></div>
+        <div class="val">Inclus</div>
+      </div>
+      <div class="stack-item">
+        <div class="label"><b>Pack juridique</b><span>Contrat type, CGV, modèle de facture conforme France — pour être couvert</span></div>
+        <div class="val">Inclus</div>
+      </div>
+      <div class="stack-item">
+        <div class="label"><b>SOP de livraison</b><span>Checklist onboarding client — pour livrer sans improviser</span></div>
+        <div class="val">Inclus</div>
+      </div>
+    </div>
+    <div class="anchor-box">
+      Cette formation seule, je l'ai vendue <b>1000 à 1500€</b> à mes premiers clients, en 1:1.
+      L'accompagnement complet (DWY) est encore vendu <b>5000€</b> aujourd'hui. Ce qui change cette semaine :
+      le prix, pas le contenu.
+    </div>
+  </div>
+
+  <div id="pricing">
+    <div class="block-lbl">3 façons d'y accéder</div>
+    <h2>Choisis ton <em>palier</em></h2>
+    <p class="section-sub">Si t'hésites : prends l'Accompagné. C'est celui que je recommanderais à un ami.</p>
+
+    <div id="pricing-closed" style="display:none; max-width:640px; margin:0 auto; border:1px solid var(--border); background:var(--card); padding:32px 24px; text-align:center;">
+      <div class="block-lbl" style="color:var(--orange);">Offre terminée</div>
+      <p style="font-size:13.5px; line-height:1.7;">Le Black Friday est fermé. Les 3 paliers repassent à leur prix normal (497€ à 947€ selon le palier).</p>
+    </div>
+
+    <div class="pricing-grid" id="pricing-live">
+
+      <div class="plan">
+        <div class="name">L'Essentiel</div>
+        <div class="price-row"><span class="old-price">497€</span><span class="price">97€</span></div>
+        <div class="discount">-80%</div>
+        <ul>
+          <li>Formation vidéo complète, accès à vie</li>
+          <li>9 bonus : Niche Selector, Agent Hormozi, Prompt Library, Lead Sourcing, Demo Framework, Objection Bible, Template propale, Pack juridique, SOP livraison</li>
+        </ul>
+        <a href="#" class="plan-cta">Je prends l'Essentiel</a>
+      </div>
+
+      <div class="plan featured">
+        <div class="tag">Le plus choisi</div>
+        <div class="name">L'Accompagné</div>
+        <div class="price-row"><span class="old-price">647€</span><span class="price">129€</span></div>
+        <div class="discount">-80%</div>
+        <ul>
+          <li class="included-prev">Tout le palier Essentiel</li>
+          <li>1h de call live avec moi pour tout mettre en place</li>
+        </ul>
+        <a href="#" class="plan-cta">Je prends l'Accompagné</a>
+      </div>
+
+      <div class="plan">
+        <div class="name">Le Complet</div>
+        <div class="price-row"><span class="old-price">947€</span><span class="price">189€</span></div>
+        <div class="discount">-80%</div>
+        <ul>
+          <li class="included-prev">Tout le palier Accompagné</li>
+          <li>Support quotidien par message, H24, pendant 30 jours</li>
+        </ul>
+        <a href="#" class="plan-cta">Je prends le Complet</a>
+      </div>
+
+    </div>
+
+    <div class="scarcity" id="scarcity-box">
+      <div class="t">Fenêtre réelle, pas une fausse urgence</div>
+      <p>Cette offre ferme <b>ce soir à minuit</b>, sans exception ni extension.
+      Après, retour au prix normal (497€ à 947€ selon le palier) — définitivement.</p>
+    </div>
+
+    <div class="reassure" id="reassure-box">
+      <span class="pill">Accès immédiat</span>
+      <span class="pill">Paiement unique</span>
+      <span class="pill">Aucun engagement récurrent</span>
+    </div>
+  </div>
+
+  <div id="faq">
+    <div class="block-lbl">Avant de te décider</div>
+    <h2>Questions <em>fréquentes</em></h2>
+
+    <div class="faq-item">
+      <div class="q">C'est la même chose que le Challenge Closer IA à 5000€ ?</div>
+      <div class="a">Non. Le Challenge V2 inclut un accompagnement 1:1 sur 60 jours, une garantie conditionnelle et un cadre live. Ici, c'est la formation en libre-service — même contenu de base, sans le coaching continu. Le palier Accompagné inclut un call, mais c'est un point ponctuel, pas un suivi.</div>
+    </div>
+    <div class="faq-item">
+      <div class="q">Le prix va vraiment remonter ce soir ?</div>
+      <div class="a">Oui. Cette offre ne repasse pas en promo après Black Friday — c'est une décision volontaire pour que la deadline reste crédible la prochaine fois.</div>
+    </div>
+    <div class="faq-item">
+      <div class="q">Pourquoi le palier Accompagné plutôt que l'Essentiel ?</div>
+      <div class="a">Pour 32€ de plus, tu as un call en direct avec moi pour transformer la formation en plan concret sur ta situation. C'est la différence entre "j'ai regardé les vidéos" et "je sais exactement quoi faire lundi matin".</div>
+    </div>
+  </div>
+
+  <footer>
+    Closer IA by BigJim — bigjim-ia.com
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var deadline = new Date("2026-11-28T00:00:00+01:00").getTime(); // Black Friday 27 nov 2026, 23:59 Europe/Paris
+  var el = document.getElementById("cd-time");
+  function tick() {
+    var now = Date.now();
+    var diff = deadline - now;
+    if (diff <= 0) {
+      el.textContent = "Offre terminée";
+      var live = document.getElementById("pricing-live");
+      var closed = document.getElementById("pricing-closed");
+      var scarcityBox = document.getElementById("scarcity-box");
+      var reassureBox = document.getElementById("reassure-box");
+      if (live) live.style.display = "none";
+      if (scarcityBox) scarcityBox.style.display = "none";
+      if (reassureBox) reassureBox.style.display = "none";
+      if (closed) closed.style.display = "block";
+      return;
+    }
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    el.textContent = d + "j " + h + "h " + m + "m " + s + "s";
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+
+</body>
+</html>
