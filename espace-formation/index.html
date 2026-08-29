@@ -27,7 +27,7 @@ body {
 #logo img { width: 30px; height: 30px; object-fit: contain; }
 #logo span { font-size: 12px; font-weight: 700; color: var(--orange); letter-spacing: .18em; text-transform: uppercase; }
 
-.container { width: 100%; max-width: 780px; padding: 96px 24px 80px; }
+.container { width: 100%; max-width: 980px; padding: 96px 24px 80px; }
 
 /* ---- Gate ---- */
 #gate { max-width: 420px; margin: 120px auto; text-align: center; }
@@ -46,34 +46,71 @@ body {
 #gate .err { color: var(--orange); font-size: 12px; margin-top: 10px; display: none; }
 
 /* ---- Content ---- */
-#content { display: none; }
-h2 { font-size: clamp(20px, 4vw, 26px); margin-bottom: 8px; }
-h2 em { color: var(--orange); font-style: normal; }
-.block-lbl { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin: 56px 0 16px; }
-.block-lbl:first-of-type { margin-top: 0; }
+#content { display: none; width: 100%; }
+h1.page-title { font-size: clamp(20px, 4vw, 26px); margin-bottom: 4px; }
+h1.page-title em { color: var(--orange); font-style: normal; }
+.page-sub { color: var(--muted-2); font-size: 12.5px; margin-bottom: 36px; }
 
-.video-slot {
-  border: 1px dashed var(--border); background: var(--card);
-  padding: 40px 20px; text-align: center; color: var(--muted-2);
-  font-size: 12.5px; margin-bottom: 14px;
+/* ---- Grid view ---- */
+.grid-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 700px) { .grid-cards { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 460px) { .grid-cards { grid-template-columns: 1fr; } }
+.card {
+  border: 1px solid var(--border); background: var(--card); cursor: pointer;
+  overflow: hidden; transition: border-color 0.15s;
 }
-.video-slot b { color: var(--fg); display: block; margin-bottom: 6px; font-size: 13.5px; }
+.card:hover { border-color: var(--teal); }
+.card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+.card .card-body { padding: 14px 16px; }
+.card .card-name { font-size: 13.5px; font-weight: 700; }
+.card .card-progress {
+  margin-top: 10px; height: 6px; background: #1a1a1a; border-radius: 0;
+}
+.card .card-progress .fill { height: 100%; background: var(--border); width: 0%; }
+.card.locked .card-name { color: var(--teal); }
+.card.locked .card-unlock { font-size: 11px; color: var(--orange); margin-top: 6px; }
+
+/* ---- Detail view (sidebar + main pane) ---- */
+#detail { display: none; }
+.back-btn {
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px;
+  color: var(--muted-2); text-decoration: none; font-size: 12px; letter-spacing: 0.05em;
+  text-transform: uppercase; cursor: pointer; background: none; border: none; font-family: inherit;
+}
+.back-btn:hover { color: var(--fg); }
+.detail-layout { display: grid; grid-template-columns: 220px 1fr; gap: 24px; }
+@media (max-width: 700px) { .detail-layout { grid-template-columns: 1fr; } }
+.sidebar { display: flex; flex-direction: column; gap: 6px; }
+.sidebar .item {
+  padding: 12px 14px; border: 1px solid var(--border); background: var(--card);
+  font-size: 12.5px; cursor: pointer; transition: border-color 0.15s;
+}
+.sidebar .item:hover { border-color: var(--teal); }
+.sidebar .item.active { background: #1a0f08; border-color: var(--orange); color: var(--orange); }
+
+.main-pane .video-wrap {
+  position: relative; width: 100%; aspect-ratio: 16/9; background: #000;
+  border: 1px solid var(--border); margin-bottom: 20px;
+}
+.main-pane .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.main-pane h2 { font-size: 17px; margin-bottom: 16px; }
+.hw-box {
+  border: 1px solid var(--border); background: var(--card); padding: 18px 20px; margin-bottom: 14px;
+}
+.hw-box .lbl { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+.hw-box ul { list-style: none; }
+.hw-box li { font-size: 13px; line-height: 1.9; padding-left: 16px; position: relative; }
+.hw-box li::before { content: "—"; position: absolute; left: 0; color: var(--orange); }
+.res-links a { display: block; color: var(--teal); font-size: 12.5px; margin-top: 6px; }
 
 .bonus-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 @media (max-width: 560px) { .bonus-grid { grid-template-columns: 1fr; } }
 .bonus-grid a {
   display: block; border: 1px solid var(--border); background: var(--card);
   color: var(--fg); text-decoration: none; padding: 14px 16px; font-size: 13px;
-  transition: border-color 0.15s;
 }
 .bonus-grid a:hover { border-color: var(--teal); }
 .bonus-grid a::before { content: "→ "; color: var(--teal); }
-
-.support-box {
-  margin-top: 56px; border: 1px solid var(--orange); background: #120a04;
-  padding: 22px 24px; font-size: 13px; line-height: 1.7;
-}
-.support-box b { color: var(--orange); }
 
 footer {
   margin-top: 88px; padding-top: 24px; border-top: 1px solid var(--border);
@@ -100,41 +137,17 @@ footer {
   </div>
 
   <div id="content">
-    <h2>Bienvenue dans la <em>formation</em></h2>
-    <p style="color:var(--muted-2); font-size:13px; margin-top:8px;">Accès à vie. Reviens ici quand tu veux.</p>
+    <h1 class="page-title">Bienvenue dans la <em>formation</em></h1>
+    <p class="page-sub">Accès à vie. Le programme fonctionne si tu fais les homework — pas parfaitement, mais tu les fais.</p>
 
-    <div class="block-lbl">Pré-enregistrements des sessions</div>
-    <div class="video-slot"><b>Module 1 — Niche & offre</b>🎥 Vidéo à venir</div>
-    <div class="video-slot"><b>Module 2 — Prospection</b>🎥 Vidéo à venir</div>
-    <div class="video-slot"><b>Module 3 — Démo & closing</b>🎥 Vidéo à venir</div>
-    <div class="video-slot"><b>Module 4 — Livraison</b>🎥 Vidéo à venir</div>
+    <div id="grid" class="grid-cards"></div>
 
-    <div class="block-lbl">Rediffusions masterclass</div>
-    <div class="video-slot">🎥 Vidéos à venir</div>
-
-    <div class="block-lbl">Hot-seats — appels live de feedback</div>
-    <div class="video-slot">🎥 Vidéos à venir</div>
-
-    <div class="block-lbl">Ton plan d'action</div>
-    <div class="video-slot">🎥 Vidéo à venir</div>
-
-    <div class="block-lbl">Les 11 bonus</div>
-    <div class="bonus-grid">
-      <a href="https://bigjim-ia.com/niche-selector" target="_blank">Niche Selector</a>
-      <a href="https://bigjim-ia.com/agent-ia" target="_blank">Closer IA Agent</a>
-      <a href="https://bigjim-ia.com/agent-hormozi" target="_blank">Agent Hormozi</a>
-      <a href="https://bigjim-ia.com/prompt-library" target="_blank">Prompt Library</a>
-      <a href="https://bigjim-ia.com/prompts-agents-ia" target="_blank">Prompts Agents IA</a>
-      <a href="https://bigjim-ia.com/lead-sourcing" target="_blank">Guide Lead Sourcing</a>
-      <a href="https://bigjim-ia.com/demo-framework" target="_blank">Demo Framework</a>
-      <a href="https://bigjim-ia.com/objection-bible" target="_blank">Objection Handling Bible</a>
-      <a href="https://bigjim-ia.com/template-propale" target="_blank">Template Propale</a>
-      <a href="https://bigjim-ia.com/pack-juridique" target="_blank">Pack Juridique</a>
-      <a href="https://bigjim-ia.com/sop-livraison" target="_blank">SOP Livraison</a>
-    </div>
-
-    <div class="support-box">
-      <b>Palier Le Complet :</b> ton support quotidien par message (30 jours) — écris-moi directement sur [WhatsApp/Telegram — lien à ajouter] et je te réponds sous 24h.
+    <div id="detail">
+      <button class="back-btn" onclick="showGrid()">← Retour</button>
+      <div class="detail-layout">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="main-pane" id="main-pane"></div>
+      </div>
     </div>
   </div>
 
@@ -143,24 +156,139 @@ footer {
 </div>
 
 <script>
-var PASSWORD = "PREMIERCLIENT";
+var DATA = null;
+
+var CATEGORIES = [
+  { key: "planaction", name: "Ton Plan d'Action", img: "planaction.jpg", locked: true, url: "https://bigjim-ia.com/plan-action" },
+  { key: "masterclass", name: "Rediff Masterclass", img: "rediffmaster.jpg" },
+  { key: "bonuses", name: "Bonus", img: "bonus.jpg" },
+  { key: "hotseats", name: "Hot Seats", img: "hotseats.jpg" },
+  { key: "prerec", name: "Pré-rec", img: "prerec.jpg" }
+];
+
 function checkPw() {
-  var val = document.getElementById("pw").value.trim().toUpperCase();
-  if (val === PASSWORD) {
-    sessionStorage.setItem("bf_access", "1");
-    reveal();
-  } else {
-    document.getElementById("err").style.display = "block";
-  }
+  var val = document.getElementById("pw").value.trim();
+  fetch("/api/formation-content", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password: val })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (json) {
+      if (json.ok) {
+        DATA = json.data;
+        sessionStorage.setItem("bf_pw", val);
+        reveal();
+      } else {
+        document.getElementById("err").style.display = "block";
+      }
+    })
+    .catch(function () {
+      document.getElementById("err").textContent = "Erreur de connexion. Réessaie.";
+      document.getElementById("err").style.display = "block";
+    });
 }
+
 function reveal() {
   document.getElementById("gate").style.display = "none";
   document.getElementById("content").style.display = "block";
+  renderGrid();
 }
+
+function renderGrid() {
+  var grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  CATEGORIES.forEach(function (cat) {
+    var el = document.createElement("div");
+    el.className = "card" + (cat.locked ? " locked" : "");
+    el.innerHTML =
+      '<img src="' + cat.img + '" alt="' + cat.name + '">' +
+      '<div class="card-body">' +
+      '<div class="card-name">' + cat.name + '</div>' +
+      (cat.locked
+        ? '<div class="card-unlock">🎁 Débloque ici : bigjim-ia.com/plan-action</div>'
+        : '<div class="card-progress"><div class="fill"></div></div>') +
+      '</div>';
+    el.onclick = function () {
+      if (cat.locked) { window.open(cat.url, "_blank"); return; }
+      openCategory(cat.key);
+    };
+    grid.appendChild(el);
+  });
+  document.getElementById("grid").style.display = "grid";
+  document.getElementById("detail").style.display = "none";
+}
+
+function showGrid() { renderGrid(); }
+
+function openCategory(key) {
+  document.getElementById("grid").style.display = "none";
+  document.getElementById("detail").style.display = "block";
+
+  if (key === "bonuses") {
+    document.getElementById("sidebar").innerHTML = "";
+    var main = document.getElementById("main-pane");
+    main.innerHTML = '<h2>Les 11 bonus</h2><div class="bonus-grid" id="bonus-links"></div>';
+    var bl = document.getElementById("bonus-links");
+    DATA.bonuses.forEach(function (b) {
+      var a = document.createElement("a");
+      a.href = b.url; a.target = "_blank"; a.textContent = b.name;
+      bl.appendChild(a);
+    });
+    return;
+  }
+
+  var items = DATA[key];
+  var sidebar = document.getElementById("sidebar");
+  sidebar.innerHTML = "";
+  items.forEach(function (item, i) {
+    var el = document.createElement("div");
+    el.className = "item" + (i === 0 ? " active" : "");
+    el.textContent = labelFor(key, item);
+    el.onclick = function () {
+      Array.prototype.forEach.call(sidebar.children, function (c) { c.classList.remove("active"); });
+      el.classList.add("active");
+      renderItem(key, item);
+    };
+    sidebar.appendChild(el);
+  });
+  renderItem(key, items[0]);
+}
+
+function labelFor(key, item) {
+  if (key === "masterclass") return "REDIFF MASTERCLASS #" + (item.n < 10 ? "0" + item.n : item.n);
+  if (key === "prerec") return "PRÉ-REC #" + (item.n < 10 ? "0" + item.n : item.n);
+  if (key === "hotseats") return "HOT SEAT #" + (item.n < 10 ? "0" + item.n : item.n);
+  return item.title || item.n;
+}
+
+function renderItem(key, item) {
+  var main = document.getElementById("main-pane");
+  var title = key === "masterclass" ? labelFor(key, item) : (item.title || labelFor(key, item));
+  var html = '<div class="video-wrap"><iframe src="https://www.youtube.com/embed/' + item.yt + '" allowfullscreen></iframe></div>';
+  html += "<h2>" + title + "</h2>";
+  if (item.homework && item.homework.length) {
+    html += '<div class="hw-box"><div class="lbl">Homework</div><ul>' +
+      item.homework.map(function (h) { return "<li>" + h + "</li>"; }).join("") +
+      "</ul></div>";
+  }
+  if (item.resources && item.resources.length) {
+    html += '<div class="hw-box res-links"><div class="lbl">Ressources</div>' +
+      item.resources.map(function (r) { return '<a href="' + r.url + '" target="_blank">→ ' + r.label + "</a>"; }).join("") +
+      "</div>";
+  }
+  main.innerHTML = html;
+}
+
 document.getElementById("pw").addEventListener("keydown", function (e) {
   if (e.key === "Enter") checkPw();
 });
-if (sessionStorage.getItem("bf_access") === "1") { reveal(); }
+
+var cached = sessionStorage.getItem("bf_pw");
+if (cached) {
+  document.getElementById("pw").value = cached;
+  checkPw();
+}
 </script>
 
 </body>
