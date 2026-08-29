@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merci | BigJim</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="/BigJim.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0D0D0D; --fg: #F0F0EB; --orange: #E8612C; --teal: #0ABAB5;
+  --muted: #555; --muted-2: #888; --card: #111; --border: #1e1e1e;
+}
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: 'Courier Prime', Courier, monospace;
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+}
+#logo {
+  position: fixed; top: 20px; left: 28px; z-index: 50;
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+#logo img { width: 30px; height: 30px; object-fit: contain; }
+#logo span { font-size: 12px; font-weight: 700; color: var(--orange); letter-spacing: .18em; text-transform: uppercase; }
+
+.container { width: 100%; max-width: 620px; padding: 96px 24px 80px; text-align: center; }
+.badge {
+  display: inline-block; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--teal); border: 1px solid var(--teal); padding: 4px 14px; margin-bottom: 24px;
+}
+h1 { font-size: clamp(24px, 5vw, 34px); margin-bottom: 20px; line-height: 1.1; }
+h1 em { color: var(--orange); font-style: normal; }
+.lead { color: var(--fg); font-size: 14.5px; line-height: 1.75; margin-bottom: 28px; }
+
+.access-box {
+  border: 1px solid var(--orange); background: #120a04; padding: 22px 24px; margin-bottom: 40px;
+}
+.access-box .t { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
+.access-box .pw {
+  display: inline-block; background: var(--card); border: 1px solid var(--border);
+  padding: 8px 18px; font-size: 16px; font-weight: 700; letter-spacing: 0.1em; margin: 8px 0 14px;
+}
+.access-box p { font-size: 12.5px; color: var(--muted-2); line-height: 1.6; }
+.access-box a { color: var(--teal); }
+
+.block-lbl { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+.sub { color: var(--muted-2); font-size: 12.5px; margin-bottom: 28px; }
+
+.calendly-frame { border: 2px solid var(--orange); background: #fff; padding: 6px; }
+
+/* ---- Dev note (à retirer une fois le vrai lien Calendly branché) ---- */
+.dev-note {
+  margin-top: 24px; border: 1px dashed var(--muted); padding: 14px 18px;
+  font-size: 11.5px; color: var(--muted-2); text-align: left; line-height: 1.6;
+}
+.dev-note b { color: var(--orange); }
+
+footer {
+  margin-top: 88px; padding-top: 24px; border-top: 1px solid var(--border);
+  width: 100%; max-width: 720px; text-align: center; color: var(--muted);
+  font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<a id="logo" href="https://bigjim-ia.com">
+  <img src="/BigJim.png" alt="BigJim">
+  <span>BigJim</span>
+</a>
+
+<div class="container">
+  <div class="badge">Achat confirmé</div>
+  <h1>Bienvenue.<br><em>Deux choses à faire.</em></h1>
+  <p class="lead">1. Débloque ta formation. 2. Réserve ton call de mise en place 1h.</p>
+
+  <div class="access-box">
+    <div class="t">1 — Ton mot de passe</div>
+    <div class="pw">PREMIERCLIENT</div>
+    <p>Entre-le sur <a href="https://bigjim-ia.com/espace-formation">bigjim-ia.com/espace-formation</a> pour débloquer tout le contenu.</p>
+  </div>
+
+  <div class="block-lbl">2 — Réserve ton call</div>
+  <p class="sub">1h avec moi, pour tout mettre en place sur ta situation.</p>
+
+  <div class="calendly-frame">
+    <!-- TODO Jimmy : remplacer data-url par le vrai lien Calendly une fois l'événement "Call mise en place 1h" créé -->
+    <div class="calendly-inline-widget" data-url="https://calendly.com/ecombigbillions/call-mise-en-place-1h?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=e8612c" style="min-width:320px;height:700px;"></div>
+    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+  </div>
+
+  <div class="dev-note">
+    <b>À faire avant le lancement :</b> créer un événement Calendly dédié de 1h (ex. "Call mise en place — Formation Black Friday") sur le compte ecombigbillions, puis remplacer l'URL dans le code de cette page par le vrai lien. Le slug actuel (<code>call-mise-en-place-1h</code>) est un placeholder qui n'existe pas encore.
+  </div>
+</div>
+
+<footer>Closer IA by BigJim — bigjim-ia.com</footer>
+
+</body>
+</html>

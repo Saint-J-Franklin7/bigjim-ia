@@ -17,6 +17,9 @@
     { "source": "/mindmap-module-3", "destination": "/mindmap-module-3/index.html" },
     { "source": "/mindmap-module-5", "destination": "/mindmap-module-5/index.html" },
     { "source": "/plan-action", "destination": "/plan-action/index.html" },
-    { "source": "/black-friday", "destination": "/black-friday/index.html" }
+    { "source": "/black-friday", "destination": "/black-friday/index.html" },
+    { "source": "/espace-formation", "destination": "/espace-formation/index.html" },
+    { "source": "/merci", "destination": "/merci/index.html" },
+    { "source": "/merci-call", "destination": "/merci-call/index.html" }
   ]
 }

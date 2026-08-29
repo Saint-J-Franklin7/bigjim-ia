@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace Formation | BigJim</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="/BigJim.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0D0D0D; --fg: #F0F0EB; --orange: #E8612C; --teal: #0ABAB5;
+  --muted: #555; --muted-2: #888; --card: #111; --border: #1e1e1e;
+}
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: 'Courier Prime', Courier, monospace;
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+}
+#logo {
+  position: fixed; top: 20px; left: 28px; z-index: 50;
+  display: flex; align-items: center; gap: 10px; text-decoration: none;
+}
+#logo img { width: 30px; height: 30px; object-fit: contain; }
+#logo span { font-size: 12px; font-weight: 700; color: var(--orange); letter-spacing: .18em; text-transform: uppercase; }
+
+.container { width: 100%; max-width: 780px; padding: 96px 24px 80px; }
+
+/* ---- Gate ---- */
+#gate { max-width: 420px; margin: 120px auto; text-align: center; }
+#gate h1 { font-size: 22px; margin-bottom: 16px; }
+#gate p { color: var(--muted-2); font-size: 13px; margin-bottom: 24px; line-height: 1.6; }
+#gate input {
+  width: 100%; padding: 14px; background: var(--card); border: 1px solid var(--border);
+  color: var(--fg); font-family: 'Courier Prime', monospace; font-size: 14px; text-align: center;
+  text-transform: uppercase; margin-bottom: 12px;
+}
+#gate button {
+  width: 100%; padding: 14px; background: var(--orange); color: var(--bg); border: none;
+  font-family: 'Courier Prime', monospace; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  font-size: 12px; cursor: pointer;
+}
+#gate .err { color: var(--orange); font-size: 12px; margin-top: 10px; display: none; }
+
+/* ---- Content ---- */
+#content { display: none; }
+h2 { font-size: clamp(20px, 4vw, 26px); margin-bottom: 8px; }
+h2 em { color: var(--orange); font-style: normal; }
+.block-lbl { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin: 56px 0 16px; }
+.block-lbl:first-of-type { margin-top: 0; }
+
+.video-slot {
+  border: 1px dashed var(--border); background: var(--card);
+  padding: 40px 20px; text-align: center; color: var(--muted-2);
+  font-size: 12.5px; margin-bottom: 14px;
+}
+.video-slot b { color: var(--fg); display: block; margin-bottom: 6px; font-size: 13.5px; }
+
+.bonus-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (max-width: 560px) { .bonus-grid { grid-template-columns: 1fr; } }
+.bonus-grid a {
+  display: block; border: 1px solid var(--border); background: var(--card);
+  color: var(--fg); text-decoration: none; padding: 14px 16px; font-size: 13px;
+  transition: border-color 0.15s;
+}
+.bonus-grid a:hover { border-color: var(--teal); }
+.bonus-grid a::before { content: "→ "; color: var(--teal); }
+
+.support-box {
+  margin-top: 56px; border: 1px solid var(--orange); background: #120a04;
+  padding: 22px 24px; font-size: 13px; line-height: 1.7;
+}
+.support-box b { color: var(--orange); }
+
+footer {
+  margin-top: 88px; padding-top: 24px; border-top: 1px solid var(--border);
+  width: 100%; max-width: 720px; text-align: center; color: var(--muted);
+  font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<a id="logo" href="https://bigjim-ia.com">
+  <img src="/BigJim.png" alt="BigJim">
+  <span>BigJim</span>
+</a>
+
+<div class="container">
+
+  <div id="gate">
+    <h1>Accès formation</h1>
+    <p>Entre le mot de passe reçu sur ta page de confirmation après ton achat.</p>
+    <input type="text" id="pw" placeholder="MOT DE PASSE" autocomplete="off">
+    <button onclick="checkPw()">Entrer</button>
+    <div class="err" id="err">Mot de passe incorrect.</div>
+  </div>
+
+  <div id="content">
+    <h2>Bienvenue dans la <em>formation</em></h2>
+    <p style="color:var(--muted-2); font-size:13px; margin-top:8px;">Accès à vie. Reviens ici quand tu veux.</p>
+
+    <div class="block-lbl">Pré-enregistrements des sessions</div>
+    <div class="video-slot"><b>Module 1 — Niche & offre</b>🎥 Vidéo à venir</div>
+    <div class="video-slot"><b>Module 2 — Prospection</b>🎥 Vidéo à venir</div>
+    <div class="video-slot"><b>Module 3 — Démo & closing</b>🎥 Vidéo à venir</div>
+    <div class="video-slot"><b>Module 4 — Livraison</b>🎥 Vidéo à venir</div>
+
+    <div class="block-lbl">Rediffusions masterclass</div>
+    <div class="video-slot">🎥 Vidéos à venir</div>
+
+    <div class="block-lbl">Hot-seats — appels live de feedback</div>
+    <div class="video-slot">🎥 Vidéos à venir</div>
+
+    <div class="block-lbl">Ton plan d'action</div>
+    <div class="video-slot">🎥 Vidéo à venir</div>
+
+    <div class="block-lbl">Les 11 bonus</div>
+    <div class="bonus-grid">
+      <a href="https://bigjim-ia.com/niche-selector" target="_blank">Niche Selector</a>
+      <a href="https://bigjim-ia.com/agent-ia" target="_blank">Closer IA Agent</a>
+      <a href="https://bigjim-ia.com/agent-hormozi" target="_blank">Agent Hormozi</a>
+      <a href="https://bigjim-ia.com/prompt-library" target="_blank">Prompt Library</a>
+      <a href="https://bigjim-ia.com/prompts-agents-ia" target="_blank">Prompts Agents IA</a>
+      <a href="https://bigjim-ia.com/lead-sourcing" target="_blank">Guide Lead Sourcing</a>
+      <a href="https://bigjim-ia.com/demo-framework" target="_blank">Demo Framework</a>
+      <a href="https://bigjim-ia.com/objection-bible" target="_blank">Objection Handling Bible</a>
+      <a href="https://bigjim-ia.com/template-propale" target="_blank">Template Propale</a>
+      <a href="https://bigjim-ia.com/pack-juridique" target="_blank">Pack Juridique</a>
+      <a href="https://bigjim-ia.com/sop-livraison" target="_blank">SOP Livraison</a>
+    </div>
+
+    <div class="support-box">
+      <b>Palier Le Complet :</b> ton support quotidien par message (30 jours) — écris-moi directement sur [WhatsApp/Telegram — lien à ajouter] et je te réponds sous 24h.
+    </div>
+  </div>
+
+  <footer>Closer IA by BigJim — bigjim-ia.com</footer>
+
+</div>
+
+<script>
+var PASSWORD = "PREMIERCLIENT";
+function checkPw() {
+  var val = document.getElementById("pw").value.trim().toUpperCase();
+  if (val === PASSWORD) {
+    sessionStorage.setItem("bf_access", "1");
+    reveal();
+  } else {
+    document.getElementById("err").style.display = "block";
+  }
+}
+function reveal() {
+  document.getElementById("gate").style.display = "none";
+  document.getElementById("content").style.display = "block";
+}
+document.getElementById("pw").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") checkPw();
+});
+if (sessionStorage.getItem("bf_access") === "1") { reveal(); }
+</script>
+
+</body>
+</html>
