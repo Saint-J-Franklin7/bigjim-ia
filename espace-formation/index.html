@@ -52,8 +52,7 @@ h1.page-title em { color: var(--orange); font-style: normal; }
 .page-sub { color: var(--muted-2); font-size: 12.5px; margin-bottom: 36px; }
 
 /* ---- Grid view ---- */
-.grid-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-@media (max-width: 700px) { .grid-cards { grid-template-columns: 1fr 1fr; } }
+.grid-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 @media (max-width: 460px) { .grid-cards { grid-template-columns: 1fr; } }
 .card {
   border: 1px solid var(--border); background: var(--card); cursor: pointer;
@@ -67,8 +66,6 @@ h1.page-title em { color: var(--orange); font-style: normal; }
   margin-top: 10px; height: 6px; background: #1a1a1a; border-radius: 0;
 }
 .card .card-progress .fill { height: 100%; background: var(--border); width: 0%; }
-.card.locked .card-name { color: var(--teal); }
-.card.locked .card-unlock { font-size: 11px; color: var(--orange); margin-top: 6px; }
 
 /* ---- Detail view (sidebar + main pane) ---- */
 #detail { display: none; }
@@ -159,7 +156,6 @@ footer {
 var DATA = null;
 
 var CATEGORIES = [
-  { key: "planaction", name: "Ton Plan d'Action", img: "/espace-formation/planaction.jpg", locked: true, url: "https://bigjim-ia.com/plan-action" },
   { key: "masterclass", name: "Rediff Masterclass", img: "/espace-formation/rediffmaster.jpg" },
   { key: "bonuses", name: "Bonus", img: "/espace-formation/bonus.jpg" },
   { key: "hotseats", name: "Hot Seats", img: "/espace-formation/hotseats.jpg" },
@@ -200,19 +196,14 @@ function renderGrid() {
   grid.innerHTML = "";
   CATEGORIES.forEach(function (cat) {
     var el = document.createElement("div");
-    el.className = "card" + (cat.locked ? " locked" : "");
+    el.className = "card";
     el.innerHTML =
       '<img src="' + cat.img + '" alt="' + cat.name + '">' +
       '<div class="card-body">' +
       '<div class="card-name">' + cat.name + '</div>' +
-      (cat.locked
-        ? '<div class="card-unlock">🎁 Débloque ici : bigjim-ia.com/plan-action</div>'
-        : '<div class="card-progress"><div class="fill"></div></div>') +
+      '<div class="card-progress"><div class="fill"></div></div>' +
       '</div>';
-    el.onclick = function () {
-      if (cat.locked) { window.open(cat.url, "_blank"); return; }
-      openCategory(cat.key);
-    };
+    el.onclick = function () { openCategory(cat.key); };
     grid.appendChild(el);
   });
   document.getElementById("grid").style.display = "grid";
