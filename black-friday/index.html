@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Black Friday — Formation Closer IA | BigJim</title>
-<meta name="description" content="La formation vendue 1000-1500€ en 1:1, en libre-service pour la première et dernière fois. -80% jusqu'à Cyber Monday minuit.">
+<meta name="description" content="La formation à 947€ pour signer ton premier client en service IA, en liquidation définitive dès 97€. Ce soir seulement.">
 <link rel="icon" type="image/png" href="/BigJim.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,6 +16,7 @@
   --fg: #F0F0EB;
   --orange: #E8612C;
   --teal: #0ABAB5;
+  --red: #E42B2B;
   --muted: #555;
   --muted-2: #888;
   --card: #111;
@@ -33,7 +34,7 @@ body {
 }
 
 #logo {
-  position: fixed; top: 20px; left: 28px; z-index: 50;
+  position: fixed; top: 52px; left: 28px; z-index: 50;
   display: flex; align-items: center; gap: 10px;
   text-decoration: none; user-select: none;
 }
@@ -48,11 +49,16 @@ body {
 /* ---- Countdown bar ---- */
 #countdown-bar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 60;
-  background: var(--orange); color: var(--bg);
-  text-align: center; padding: 10px 12px;
+  background: var(--red); color: #fff;
+  display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;
+  padding: 10px 12px;
   font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
 }
-#countdown-bar span#cd-time { font-variant-numeric: tabular-nums; }
+#cd-pill {
+  background: #fff; color: var(--red);
+  padding: 3px 10px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
 
 /* ---- Header ---- */
 .header { text-align: center; margin-bottom: 44px; max-width: 720px; margin-left: auto; margin-right: auto; }
@@ -61,15 +67,15 @@ body {
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--orange);
-  border: 1px solid var(--orange);
+  color: var(--red);
+  border: 1px solid var(--red);
   padding: 4px 14px;
   margin-bottom: 24px;
 }
 .header h1 {
-  font-size: clamp(30px, 6.5vw, 52px);
+  font-size: clamp(28px, 6vw, 48px);
   font-weight: 700;
-  line-height: 1.02;
+  line-height: 1.05;
   letter-spacing: -0.02em;
   margin-bottom: 20px;
 }
@@ -122,28 +128,42 @@ h2 em { color: var(--orange); font-style: normal; }
   max-width: 60ch; margin: 0 auto 44px;
 }
 
-/* ---- Value stack ---- */
-#stack { margin-top: 88px; }
-.stack-list { display: flex; flex-direction: column; gap: 14px; max-width: 640px; margin: 0 auto; }
-.stack-item {
-  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
-  border: 1px solid var(--border); background: var(--card);
-  padding: 16px 20px;
-  font-size: 13.5px;
+/* ---- Proof (testimonials) ---- */
+#proof-section { margin-top: 88px; }
+.proof-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+  max-width: 760px; margin: 0 auto;
 }
-.stack-item .label b { color: var(--fg); }
-.stack-item .label span { display: block; color: var(--muted-2); font-size: 11.5px; margin-top: 4px; }
-.stack-item .val { color: var(--teal); font-weight: 700; white-space: nowrap; }
-.stack-total {
-  display: flex; justify-content: space-between; max-width: 640px; margin: 18px auto 0;
-  padding: 16px 20px; border: 1px solid var(--orange);
-  font-size: 14px; font-weight: 700;
+@media (max-width: 640px) { .proof-grid { grid-template-columns: 1fr; } }
+.proof-grid img {
+  width: 100%; display: block;
+  border: 1px solid var(--border);
 }
-.stack-total .val { color: var(--orange); }
+
+/* ---- Content preview ---- */
+#preview { margin-top: 88px; }
+.preview-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  max-width: 900px; margin: 0 auto 32px;
+}
+@media (max-width: 700px) { .preview-grid { grid-template-columns: repeat(2, 1fr); } }
+.preview-grid img {
+  width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover;
+  border: 1px solid var(--border);
+}
+.bonus-tags {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  max-width: 760px; margin: 0 auto 32px;
+}
+.bonus-tags span {
+  font-size: 10.5px; letter-spacing: 0.04em;
+  border: 1px solid var(--border); color: var(--muted-2);
+  padding: 6px 12px;
+}
 
 /* ---- DWY anchor ---- */
 .anchor-box {
-  max-width: 640px; margin: 32px auto 0;
+  max-width: 640px; margin: 0 auto;
   border: 1px dashed var(--muted); padding: 20px 24px;
   font-size: 12.5px; line-height: 1.7; color: var(--muted-2); text-align: center;
 }
@@ -195,18 +215,18 @@ h2 em { color: var(--orange); font-style: normal; }
 /* ---- Scarcity ---- */
 .scarcity {
   margin-top: 56px;
-  border: 1px solid var(--orange);
-  background: #120a04;
+  border: 1px solid var(--red);
+  background: #150707;
   padding: 26px 28px;
   text-align: center;
   max-width: 640px; margin-left: auto; margin-right: auto;
 }
 .scarcity .t {
   font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--orange); margin-bottom: 10px;
+  color: var(--red); margin-bottom: 10px;
 }
 .scarcity p { font-size: 13.5px; line-height: 1.7; color: var(--fg); }
-.scarcity p b { color: var(--orange); }
+.scarcity p b { color: var(--red); }
 
 .reassure {
   margin-top: 36px;
@@ -236,9 +256,12 @@ footer {
 </head>
 <body>
 
-<div id="countdown-bar">Black Friday ferme ce soir minuit dans <span id="cd-time">--j --h --m --s</span></div>
+<div id="countdown-bar">
+  <span id="cd-label">OFFRE À DURÉE LIMITÉE</span>
+  <span id="cd-pill"><span id="cd-time">--j --h --m --s</span></span>
+</div>
 
-<a id="logo" href="https://bigjim-ia.com" style="top:52px;">
+<a id="logo" href="https://bigjim-ia.com">
   <img src="/BigJim.png" alt="BigJim">
   <span>BigJim</span>
 </a>
@@ -246,70 +269,57 @@ footer {
 <div class="container">
 
   <div class="header">
-    <div class="badge">Black Friday — Une seule fois, jamais republié à ce prix</div>
-    <h1>LA FORMATION VENDUE<br>1000-1500€ EN 1:1<br><em>À -80% CETTE SEMAINE</em></h1>
+    <div class="badge">Liquidation définitive — jamais revendue après ce soir</div>
+    <h1>LA FORMATION À 947€<br>POUR SIGNER TON<br><em>PREMIER CLIENT IA</em><br>DÈS 97€. CE SOIR.</h1>
     <p class="lead">
-      Les vidéos, les assets et les bonus que j'ai livrés en 1:1 à mes premiers clients — en libre-service,
-      pour la première et dernière fois, jusqu'à <b>ce soir minuit</b>.
+      Niche, offre, prospection, démo, closing, livraison — le système complet, pas la théorie.
+      Après ce soir, je retire cette formation de la vente. <b>Définitivement, à aucun prix.</b>
     </p>
     <p class="proof">
       <b>Pour référence :</b> l'accompagnement 1:1 complet que je vends aujourd'hui dans le Challenge Closer IA
-      est à <b>5000€</b>. Ce que tu vois ici, c'est la version self-study — construite pour que tu avances seul,
-      avec un vrai call ou un vrai support si tu veux pas l'être.
+      est à <b>5000€</b>. Ce que tu vois ici, c'est la version self-study — pour une fraction du prix,
+      pour la dernière fois.
     </p>
-    <a href="#pricing" class="scroll-cta">Voir les 3 offres ↓</a>
+    <a href="#pricing" class="scroll-cta">J'entre avant la fermeture →</a>
   </div>
 
-  <div id="stack">
-    <div class="block-lbl">Ce qu'il y a dedans</div>
-    <h2>La <em>stack complète</em></h2>
-    <p class="section-sub">Le même contenu vendu 1000-1500€ en 1:1, désormais accessible sans passer par un call de vente.</p>
-    <div class="stack-list">
-      <div class="stack-item">
-        <div class="label"><b>Formation vidéo complète</b><span>Accès à vie — le process complet, du choix de niche au premier client signé</span></div>
-        <div class="val">Accès à vie</div>
-      </div>
-      <div class="stack-item">
-        <div class="label"><b>Niche Selector</b><span>30 niches analysées (capacité à payer, difficulté, concurrence) — pour ne plus hésiter sur ta niche</span></div>
-        <div class="val">Inclus</div>
-      </div>
-      <div class="stack-item">
-        <div class="label"><b>Agent Hormozi</b><span>Générateur d'offre 100M Offers — pour structurer une offre irrésistible sans partir de zéro</span></div>
-        <div class="val">Inclus</div>
-      </div>
-      <div class="stack-item">
-        <div class="label"><b>Prompt Library</b><span>50 prompts Claude testés pour prospecter, pitcher et livrer</span></div>
-        <div class="val">Inclus</div>
-      </div>
-      <div class="stack-item">
-        <div class="label"><b>Guide Lead Sourcing</b><span>10 méthodes gratuites pour trouver des prospects tous les jours</span></div>
-        <div class="val">Inclus</div>
-      </div>
-      <div class="stack-item">
-        <div class="label"><b>Demo Framework</b><span>Structure de démo en 7 minutes + une démo réelle enregistrée</span></div>
-        <div class="val">Inclus</div>
-      </div>
-      <div class="stack-item">
-        <div class="label"><b>Objection Handling Bible</b><span>20 objections + réponses scriptées — pour ne plus bloquer en call</span></div>
-        <div class="val">Inclus</div>
-      </div>
-      <div class="stack-item">
-        <div class="label"><b>Template de propale</b><span>Notion + Canva — pour clôturer proprement sans repartir de zéro</span></div>
-        <div class="val">Inclus</div>
-      </div>
-      <div class="stack-item">
-        <div class="label"><b>Pack juridique</b><span>Contrat type, CGV, modèle de facture conforme France — pour être couvert</span></div>
-        <div class="val">Inclus</div>
-      </div>
-      <div class="stack-item">
-        <div class="label"><b>SOP de livraison</b><span>Checklist onboarding client — pour livrer sans improviser</span></div>
-        <div class="val">Inclus</div>
-      </div>
+  <div id="proof-section">
+    <div class="block-lbl">Preuve, pas promesses</div>
+    <h2>Ce qu'ils en <em>disent</em></h2>
+    <div class="proof-grid">
+      <img src="/black-friday/proof-1.png" alt="Témoignage client — retour sur la valeur reçue">
+      <img src="/black-friday/proof-2.png" alt="Témoignage client — retour sur la qualité du contenu">
+    </div>
+  </div>
+
+  <div id="preview">
+    <div class="block-lbl">Ce qui t'attend à l'intérieur</div>
+    <h2>Accès à vie + <em>11 ressources exclusives</em></h2>
+    <p class="section-sub">Masterclasses, rediffusions, hot-seats et bonus prêts à l'emploi — tout ce qu'il faut pour signer, sans improviser.</p>
+    <div class="preview-grid">
+      <img src="/black-friday/hero.png" alt="Closer IA — vends des services IA">
+      <img src="/black-friday/prerec.jpg" alt="Pré-enregistrements des sessions">
+      <img src="/black-friday/rediffmaster.jpg" alt="Rediffusions masterclass">
+      <img src="/black-friday/hotseats.jpg" alt="Hot-seats — appels live de feedback">
+      <img src="/black-friday/planaction.jpg" alt="Ton plan d'action">
+      <img src="/black-friday/bonus.jpg" alt="11 ressources exclusives">
+    </div>
+    <div class="bonus-tags">
+      <span>Niche Selector</span>
+      <span>Closer IA Agent</span>
+      <span>Agent Hormozi</span>
+      <span>Prompt Library</span>
+      <span>Prompts Agents IA</span>
+      <span>Guide Lead Sourcing</span>
+      <span>Demo Framework</span>
+      <span>Objection Handling Bible</span>
+      <span>Template Propale</span>
+      <span>Pack Juridique</span>
+      <span>SOP Livraison</span>
     </div>
     <div class="anchor-box">
-      Cette formation seule, je l'ai vendue <b>1000 à 1500€</b> à mes premiers clients, en 1:1.
-      L'accompagnement complet (DWY) est encore vendu <b>5000€</b> aujourd'hui. Ce qui change cette semaine :
-      le prix, pas le contenu.
+      Cette formation vaut <b>947€</b>. L'accompagnement complet (DWY) est à <b>5000€</b> aujourd'hui.
+      Ce qui change ce soir : le prix descend à 97€. Après, elle disparaît. <b>Définitivement.</b>
     </div>
   </div>
 
@@ -319,8 +329,8 @@ footer {
     <p class="section-sub">Si t'hésites : prends l'Accompagné. C'est celui que je recommanderais à un ami.</p>
 
     <div id="pricing-closed" style="display:none; max-width:640px; margin:0 auto; border:1px solid var(--border); background:var(--card); padding:32px 24px; text-align:center;">
-      <div class="block-lbl" style="color:var(--orange);">Offre terminée</div>
-      <p style="font-size:13.5px; line-height:1.7;">Le Black Friday est fermé. Les 3 paliers repassent à leur prix normal (497€ à 947€ selon le palier).</p>
+      <div class="block-lbl" style="color:var(--red);">Offre terminée</div>
+      <p style="font-size:13.5px; line-height:1.7;">Cette formation est retirée de la vente. Définitivement.</p>
     </div>
 
     <div class="pricing-grid" id="pricing-live">
@@ -331,9 +341,9 @@ footer {
         <div class="discount">-80%</div>
         <ul>
           <li>Formation vidéo complète, accès à vie</li>
-          <li>9 bonus : Niche Selector, Agent Hormozi, Prompt Library, Lead Sourcing, Demo Framework, Objection Bible, Template propale, Pack juridique, SOP livraison</li>
+          <li>Les 11 bonus (valeur 497€)</li>
         </ul>
-        <a href="#" class="plan-cta">Je prends l'Essentiel</a>
+        <a href="#" class="plan-cta">Je fonce — 97€</a>
       </div>
 
       <div class="plan featured">
@@ -345,7 +355,7 @@ footer {
           <li class="included-prev">Tout le palier Essentiel</li>
           <li>1h de call live avec moi pour tout mettre en place</li>
         </ul>
-        <a href="#" class="plan-cta">Je prends l'Accompagné</a>
+        <a href="#" class="plan-cta">Je fonce — 129€</a>
       </div>
 
       <div class="plan">
@@ -356,15 +366,15 @@ footer {
           <li class="included-prev">Tout le palier Accompagné</li>
           <li>Support quotidien par message, H24, pendant 30 jours</li>
         </ul>
-        <a href="#" class="plan-cta">Je prends le Complet</a>
+        <a href="#" class="plan-cta">Je fonce — 189€</a>
       </div>
 
     </div>
 
     <div class="scarcity" id="scarcity-box">
-      <div class="t">Fenêtre réelle, pas une fausse urgence</div>
-      <p>Cette offre ferme <b>ce soir à minuit</b>, sans exception ni extension.
-      Après, retour au prix normal (497€ à 947€ selon le palier) — définitivement.</p>
+      <div class="t">Ce n'est pas une promo. C'est un adieu.</div>
+      <p>Cette formation ferme <b>ce soir à minuit</b>. Pas de retour au prix normal, pas de deuxième chance :
+      je la retire de la vente, <b>définitivement, à aucun prix</b>.</p>
     </div>
 
     <div class="reassure" id="reassure-box">
@@ -383,8 +393,8 @@ footer {
       <div class="a">Non. Le Challenge V2 inclut un accompagnement 1:1 sur 60 jours, une garantie conditionnelle et un cadre live. Ici, c'est la formation en libre-service — même contenu de base, sans le coaching continu. Le palier Accompagné inclut un call, mais c'est un point ponctuel, pas un suivi.</div>
     </div>
     <div class="faq-item">
-      <div class="q">Le prix va vraiment remonter ce soir ?</div>
-      <div class="a">Oui. Cette offre ne repasse pas en promo après Black Friday — c'est une décision volontaire pour que la deadline reste crédible la prochaine fois.</div>
+      <div class="q">Cette formation revient à un prix normal après ce soir ?</div>
+      <div class="a">Non — elle ne revient pas du tout. Je la retire complètement de la vente, à n'importe quel prix. C'est la dernière fois qu'elle est disponible sous cette forme.</div>
     </div>
     <div class="faq-item">
       <div class="q">Pourquoi le palier Accompagné plutôt que l'Essentiel ?</div>
@@ -401,12 +411,15 @@ footer {
 <script>
 (function () {
   var deadline = new Date("2026-11-28T00:00:00+01:00").getTime(); // Black Friday 27 nov 2026, 23:59 Europe/Paris
+  var label = document.getElementById("cd-label");
+  var pill = document.getElementById("cd-pill");
   var el = document.getElementById("cd-time");
   function tick() {
     var now = Date.now();
     var diff = deadline - now;
     if (diff <= 0) {
-      el.textContent = "Offre terminée";
+      if (label) label.textContent = "OFFRE TERMINÉE";
+      if (pill) pill.style.display = "none";
       var live = document.getElementById("pricing-live");
       var closed = document.getElementById("pricing-closed");
       var scarcityBox = document.getElementById("scarcity-box");
