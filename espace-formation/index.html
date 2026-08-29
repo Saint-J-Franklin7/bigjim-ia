@@ -284,8 +284,15 @@ document.getElementById("pw").addEventListener("keydown", function (e) {
   if (e.key === "Enter") checkPw();
 });
 
+var urlParams = new URLSearchParams(window.location.search);
+var fromLink = urlParams.get("pw");
 var cached = sessionStorage.getItem("bf_pw");
-if (cached) {
+
+if (fromLink) {
+  document.getElementById("pw").value = fromLink;
+  checkPw();
+  history.replaceState(null, "", window.location.pathname);
+} else if (cached) {
   document.getElementById("pw").value = cached;
   checkPw();
 }
