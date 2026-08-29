@@ -52,12 +52,8 @@ h1 em { color: var(--orange); font-style: normal; }
 
 .calendly-frame { border: 2px solid var(--orange); background: #fff; padding: 6px; }
 
-/* ---- Dev note (à retirer une fois le vrai lien Calendly branché) ---- */
-.dev-note {
-  margin-top: 24px; border: 1px dashed var(--muted); padding: 14px 18px;
-  font-size: 11.5px; color: var(--muted-2); text-align: left; line-height: 1.6;
-}
-.dev-note b { color: var(--orange); }
+.contact-note { margin-top: 28px; font-size: 12px; color: var(--muted-2); }
+.contact-note a { color: var(--teal); }
 
 footer {
   margin-top: 88px; padding-top: 24px; border-top: 1px solid var(--border);
@@ -88,14 +84,11 @@ footer {
   <p class="sub">1h avec moi, pour tout mettre en place sur ta situation.</p>
 
   <div class="calendly-frame">
-    <!-- TODO Jimmy : remplacer data-url par le vrai lien Calendly une fois l'événement "Call mise en place 1h" créé -->
-    <div class="calendly-inline-widget" data-url="https://calendly.com/ecombigbillions/call-mise-en-place-1h?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=e8612c" style="min-width:320px;height:700px;"></div>
+    <div class="calendly-inline-widget" data-url="https://calendly.com/ecombigbillions/call-mise-en-place-formation-black-friday" style="min-width:320px;height:700px;"></div>
     <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
   </div>
 
-  <div class="dev-note">
-    <b>À faire avant le lancement :</b> créer un événement Calendly dédié de 1h (ex. "Call mise en place — Formation Black Friday") sur le compte ecombigbillions, puis remplacer l'URL dans le code de cette page par le vrai lien. Le slug actuel (<code>call-mise-en-place-1h</code>) est un placeholder qui n'existe pas encore.
-  </div>
+  <p class="contact-note">Un souci ? Écris à <a href="mailto:contact@bigjim-ia.com">contact@bigjim-ia.com</a></p>
 </div>
 
 <footer>Closer IA by BigJim — bigjim-ia.com</footer>
