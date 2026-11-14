@@ -5,7 +5,7 @@
 //   FORMATION_PASSWORD = PREMIERCLIENT
 //
 // Le mot de passe et tout le contenu (liens vidéo, homework, bonus) ne quittent
-// jamais le serveur tant que le mot de passe n'est pas validé — rien n'est visible
+// jamais le serveur tant que le mot de passe n'est pas validé - rien n'est visible
 // dans le HTML/JS envoyé au navigateur avant authentification.
 
 const CONTENT = {

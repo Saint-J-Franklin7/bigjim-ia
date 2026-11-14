@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prompts Agents IA — BONUS #04 · Closer IA</title>
+<title>Prompts Agents IA - BONUS #04 · Closer IA</title>
 <link rel="icon" type="image/png" href="/BigJim.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -130,21 +130,21 @@ nav {
     <img src="/BigJim.png" alt="BigJim" style="width:34px;height:34px;object-fit:contain" />
     <span>BigJim</span>
   </a>
-  <div class="nav-tag">Closer IA — Prompts Agent IA</div>
+  <div class="nav-tag">Closer IA - Prompts Agent IA</div>
 </nav>
 
 <div class="container">
 
   <div class="hero">
-    <div class="badge">Closer IA — BONUS #04</div>
+    <div class="badge">Closer IA - BONUS #04</div>
     <h1>PROMPTS<br><em>AGENTS IA</em></h1>
-    <p>36 niches. Un prompt par niche.<br>Colle-le dans Claude Code — ton agent n8n est généré en 60 secondes.</p>
+    <p>36 niches. Un prompt par niche.<br>Colle-le dans Claude Code - ton agent n8n est généré en 60 secondes.</p>
   </div>
 
   <div class="warning-block">
     <div class="warning-icon">!</div>
     <div class="warning-text">
-      <strong>Pourquoi ces prompts sont différents.</strong> Par défaut, Claude Code construit des <em>automatisations</em> (trigger → étapes fixes → output). Ces prompts forcent l'architecture <code>AI Agent</code> de n8n — le nœud qui raisonne, décide seul quels outils utiliser, et itère jusqu'à la bonne réponse. Copie-colle tel quel, sans modifier la structure.
+      <strong>Pourquoi ces prompts sont différents.</strong> Par défaut, Claude Code construit des <em>automatisations</em> (trigger → étapes fixes → output). Ces prompts forcent l'architecture <code>AI Agent</code> de n8n - le nœud qui raisonne, décide seul quels outils utiliser, et itère jusqu'à la bonne réponse. Copie-colle tel quel, sans modifier la structure.
     </div>
   </div>
 
@@ -156,8 +156,8 @@ nav {
   <div class="grid" id="grid"></div>
 
   <div class="next-bonus">
-    <h3>BONUS #05 — Prompt Library</h3>
-    <p>50 prompts Claude testés pour tous les cas d'usage business — prospection, copywriting, analyse, qualification, relance.</p>
+    <h3>BONUS #05 - Prompt Library</h3>
+    <p>50 prompts Claude testés pour tous les cas d'usage business - prospection, copywriting, analyse, qualification, relance.</p>
     <a href="/prompt-library" class="btn-next-bonus">Accéder au BONUS #05 →</a>
   </div>
 
@@ -172,13 +172,13 @@ const AGENTS = [
     tips: "Remplace <code>[NOM_ENTREPRISE]</code> et <code>[ZONE_GEO]</code>. Active le trigger Webhook sur ton numéro WhatsApp ou Gmail entrant.",
     prompt: `Crée un workflow n8n avec un vrai AI Agent pour un artisan plombier/BTP.
 
-⚡ ARCHITECTURE OBLIGATOIRE — pas une automatisation :
+⚡ ARCHITECTURE OBLIGATOIRE - pas une automatisation :
 • Nœud principal : "AI Agent" (type Tools Agent)
 • LLM : Anthropic Chat Model (Claude Sonnet)
 • Mémoire : Window Buffer Memory (10 derniers messages)
 • L'agent décide seul quels outils utiliser selon chaque demande
 
-📥 TRIGGER : Webhook (reçoit les messages entrants — WhatsApp ou email)
+📥 TRIGGER : Webhook (reçoit les messages entrants - WhatsApp ou email)
 
 🎯 MISSION DE L'AGENT :
 L'agent s'appelle [NOM_AGENT] et travaille pour [NOM_ENTREPRISE], artisan basé à [ZONE_GEO].
@@ -211,13 +211,13 @@ Génère le JSON complet exportable directement dans n8n via Workflows > Import 
     tips: "Connecte le Webhook à ton formulaire de réservation ou numéro WhatsApp. Remplace <code>[NB_COUVERTS_MAX]</code> par ta capacité.",
     prompt: `Crée un workflow n8n avec un vrai AI Agent pour un restaurant.
 
-⚡ ARCHITECTURE OBLIGATOIRE — pas une automatisation :
+⚡ ARCHITECTURE OBLIGATOIRE - pas une automatisation :
 • Nœud principal : "AI Agent" (type Tools Agent)
 • LLM : Anthropic Chat Model (Claude Sonnet)
 • Mémoire : Window Buffer Memory (8 derniers messages)
 • L'agent raisonne et choisit ses outils selon chaque message reçu
 
-📥 TRIGGER : Webhook (messages entrants — formulaire site web ou WhatsApp)
+📥 TRIGGER : Webhook (messages entrants - formulaire site web ou WhatsApp)
 
 🎯 MISSION DE L'AGENT :
 L'agent gère les réservations et questions pour [NOM_RESTAURANT] à [VILLE].
@@ -250,7 +250,7 @@ Génère le JSON complet exportable dans n8n.`
     tips: "Le trigger Schedule lance les rappels automatiques J-2 et J-1. Le Webhook gère les nouvelles demandes entrantes. Remplace <code>[DR_NOM]</code>.",
     prompt: `Crée un workflow n8n avec un vrai AI Agent pour un cabinet dentaire.
 
-⚡ ARCHITECTURE OBLIGATOIRE — pas une automatisation :
+⚡ ARCHITECTURE OBLIGATOIRE - pas une automatisation :
 • Nœud principal : "AI Agent" (type Tools Agent)
 • LLM : Anthropic Chat Model (Claude Sonnet)
 • Mémoire : Window Buffer Memory
@@ -266,8 +266,8 @@ Il gère deux missions distinctes selon le trigger reçu.
 
 💬 SYSTEM PROMPT :
 "Tu es l'assistant du cabinet [NOM_CABINET].
-Mission 1 — Nouvelle demande : collecte nom, prénom, motif, urgence (oui/non), disponibilités préférées. Propose un créneau adapté. Si urgence → propose sous 24h.
-Mission 2 — Rappels : pour chaque RDV du lendemain/surlendemain, envoie un rappel personnalisé avec option de confirmation ou annulation.
+Mission 1 - Nouvelle demande : collecte nom, prénom, motif, urgence (oui/non), disponibilités préférées. Propose un créneau adapté. Si urgence → propose sous 24h.
+Mission 2 - Rappels : pour chaque RDV du lendemain/surlendemain, envoie un rappel personnalisé avec option de confirmation ou annulation.
 Si annulation → propose immédiatement un remplaçant depuis la liste d'attente.
 Ton objectif chiffré : 0 no-show. Chaque no-show = [PERTE_MOYENNE]€ perdus."
 
@@ -289,7 +289,7 @@ Génère le JSON complet exportable dans n8n.`
     tips: "Crée une table Airtable 'ListeAttente' avec : nom, tel, créneaux préférés, urgence. L'agent la consulte dès qu'un RDV se libère.",
     prompt: `Crée un workflow n8n avec un vrai AI Agent pour un thérapeute (ostéo/kiné/psy).
 
-⚡ ARCHITECTURE OBLIGATOIRE — pas une automatisation :
+⚡ ARCHITECTURE OBLIGATOIRE - pas une automatisation :
 • Nœud principal : "AI Agent" (type Tools Agent)
 • LLM : Anthropic Chat Model (Claude Sonnet)
 • Mémoire : Window Buffer Memory (6 messages)
@@ -301,9 +301,9 @@ Génère le JSON complet exportable dans n8n.`
 
 💬 SYSTEM PROMPT :
 "Tu es l'assistant de [NOM_PRATICIEN], [SPÉCIALITÉ] à [VILLE].
-Scénario 1 — Demande de RDV : vérifie les disponibilités, propose 2 créneaux, confirme.
-Scénario 2 — Annulation reçue : supprime le RDV. Cherche immédiatement dans la liste d'attente quelqu'un disponible sur ce créneau. Contacte-le en priorité.
-Scénario 3 — Matin (routine) : si créneau libre aujourd'hui ou demain → contacte le premier patient en liste d'attente correspondant.
+Scénario 1 - Demande de RDV : vérifie les disponibilités, propose 2 créneaux, confirme.
+Scénario 2 - Annulation reçue : supprime le RDV. Cherche immédiatement dans la liste d'attente quelqu'un disponible sur ce créneau. Contacte-le en priorité.
+Scénario 3 - Matin (routine) : si créneau libre aujourd'hui ou demain → contacte le premier patient en liste d'attente correspondant.
 Tu ne poses jamais de questions médicales. Tu restes dans la logique de planning uniquement."
 
 🔧 TOOLS À CONNECTER :
@@ -323,7 +323,7 @@ Génère le JSON complet exportable dans n8n.`
     tips: "Connecte le Webhook à Instagram via un service comme ManyChat ou directement via Meta Graph API pour capter les DM.",
     prompt: `Crée un workflow n8n avec un vrai AI Agent pour un coach sportif ou salle de sport.
 
-⚡ ARCHITECTURE OBLIGATOIRE — pas une automatisation :
+⚡ ARCHITECTURE OBLIGATOIRE - pas une automatisation :
 • Nœud principal : "AI Agent" (type Tools Agent)
 • LLM : Anthropic Chat Model (Claude Sonnet)
 • Mémoire : Window Buffer Memory (8 messages)
@@ -336,7 +336,7 @@ Objectif : transformer chaque message en inscrit ou en RDV découverte.
 
 Scénario prospect : pose max 3 questions (objectif, disponibilités, budget), puis propose une séance découverte gratuite de 30 min.
 Scénario membre inactif : message chaleureux, rappelle ses progrès passés, propose une offre de réengagement.
-Scénario question tarif : donne la fourchette et oriente vers la séance découverte — ne jamais fermer avec un prix seul.
+Scénario question tarif : donne la fourchette et oriente vers la séance découverte - ne jamais fermer avec un prix seul.
 Ne promets jamais de résultats physiques précis."
 
 🔧 TOOLS À CONNECTER :
@@ -358,7 +358,7 @@ Génère le JSON complet exportable dans n8n.`
 ⚡ ARCHITECTURE OBLIGATOIRE :
 • Nœud principal : "AI Agent" (type Tools Agent)
 • LLM : Anthropic Chat Model (Claude Sonnet)
-• Mémoire : Window Buffer Memory (10 messages — conversation longue)
+• Mémoire : Window Buffer Memory (10 messages - conversation longue)
 
 📥 TRIGGER : Webhook (formulaire site web, DM Instagram, email entrant)
 
@@ -504,7 +504,7 @@ Génère le JSON complet exportable dans n8n.`
 "Tu es l'assistant de [NOM_GARAGE] à [VILLE].
 Scénarios :
 RDV entretien : demande véhicule (marque/modèle/année), type d'intervention, kilométrage, disponibilités. Propose 2 créneaux dans la semaine.
-Rappel CT : message proactif 'Votre contrôle technique expire le [DATE] — réservez dès maintenant pour éviter l'amende.'
+Rappel CT : message proactif 'Votre contrôle technique expire le [DATE] - réservez dès maintenant pour éviter l'amende.'
 Relance devis : 'Votre devis du [DATE] pour [TRAVAUX] est toujours disponible jusqu'au [DATE_EXPIRY]. Des questions ?'
 Urgence (panne) : propose dépannage immédiat + créneau prioritaire sous 24h."
 
@@ -535,10 +535,10 @@ Génère le JSON complet exportable dans n8n.`
 
 💬 SYSTEM PROMPT :
 "Tu es l'assistant de [NOM_ÉTABLISSEMENT] à [VILLE].
-Services proposés : [LISTE_SERVICES] — tarifs entre [PRIX_MIN] et [PRIX_MAX]€.
+Services proposés : [LISTE_SERVICES] - tarifs entre [PRIX_MIN] et [PRIX_MAX]€.
 
 Réservation : demande service souhaité, date/heure de préférence, nom. Vérifie disponibilité. Confirme avec rappel J-1.
-Fidélisation : pour les clients inactifs, message personnalisé 'Cela fait X semaines qu'on ne vous a pas vu(e) — on a une nouveauté qui pourrait vous plaire : [NOUVEAUTÉ]. On a quelques créneaux cette semaine.'
+Fidélisation : pour les clients inactifs, message personnalisé 'Cela fait X semaines qu'on ne vous a pas vu(e) - on a une nouveauté qui pourrait vous plaire : [NOUVEAUTÉ]. On a quelques créneaux cette semaine.'
 Upsell doux : si quelqu'un réserve coupe → mentionne naturellement le soin associé sans forcer.
 Réponds avec chaleur et bonne humeur."
 
@@ -572,7 +572,7 @@ Génère le JSON complet exportable dans n8n.`
 Scénarios :
 Suivi commande : récupère numéro de commande, vérifie statut via API Shopify, donne info précise (préparation/expédié/livré/retardé).
 Retour/échange : explique la politique de retour ([NB_JOURS] jours), génère un email de retour avec instructions.
-Panier abandonné : message naturel 'On a gardé votre panier — [PRODUIT] est encore disponible. Y a-t-il quelque chose qui vous a bloqué ?'
+Panier abandonné : message naturel 'On a gardé votre panier - [PRODUIT] est encore disponible. Y a-t-il quelque chose qui vous a bloqué ?'
 Réclamation : empathie d'abord, solution concrète ensuite (remboursement/renvoi/bon de réduction selon cas).
 Réponds toujours en moins de 4 phrases."
 
@@ -603,9 +603,9 @@ Génère le JSON complet exportable dans n8n.`
 
 💬 SYSTEM PROMPT :
 "Tu es l'assistant de [NOM_AGENCE], agence spécialisée en [SPÉCIALITÉ].
-Mission 1 — Nouveaux leads : qualifie budget ([MIN]€+/mois ?), type de prestation, délai, CA actuel. Si qualifié → booke un appel découverte.
-Mission 2 — Rapports clients : récupère les données de la semaine, identifie les métriques clés (ROAS, CPL, reach), rédige un résumé en 5 points avec recommandation.
-Mission 3 — Support client : répond aux questions des clients existants sur leurs campagnes.
+Mission 1 - Nouveaux leads : qualifie budget ([MIN]€+/mois ?), type de prestation, délai, CA actuel. Si qualifié → booke un appel découverte.
+Mission 2 - Rapports clients : récupère les données de la semaine, identifie les métriques clés (ROAS, CPL, reach), rédige un résumé en 5 points avec recommandation.
+Mission 3 - Support client : répond aux questions des clients existants sur leurs campagnes.
 Ton : expert mais accessible, orienté résultats chiffrés."
 
 🔧 TOOLS À CONNECTER :
@@ -664,7 +664,7 @@ Génère le JSON complet exportable dans n8n.`
 ⚡ ARCHITECTURE OBLIGATOIRE :
 • Nœud principal : "AI Agent" (type Tools Agent)
 • LLM : Anthropic Chat Model (Claude Sonnet)
-• Mémoire : Window Buffer Memory (10 messages — conversations longues)
+• Mémoire : Window Buffer Memory (10 messages - conversations longues)
 
 📥 TRIGGERS :
 - Webhook : questions élèves + demandes prospects
@@ -700,7 +700,7 @@ Génère le JSON complet exportable dans n8n.`
 
 📥 TRIGGERS :
 - Webhook : réponses prospects (email, formulaire)
-- Schedule : chaque mercredi (suivi pipeline — relances J+2, J+5, J+10)
+- Schedule : chaque mercredi (suivi pipeline - relances J+2, J+5, J+10)
 
 💬 SYSTEM PROMPT :
 "Tu es l'assistant de [NOM_CONSULTANT], consultant spécialisé en [DOMAINE] pour [CIBLE_ICP].
@@ -934,7 +934,7 @@ Génère le JSON complet exportable dans n8n.`
     niche: "Assureur / Courtier en Assurance",
     desc: "Agent qui qualifie les demandes et booke les rendez-vous de conseil",
     nodes: ["AI Agent","Anthropic Chat Model","Window Buffer Memory","Gmail","Google Calendar","Airtable","Webhook"],
-    tips: "L'agent ne fait PAS de comparaison de produits — il qualifie uniquement. La recommandation reste humaine pour rester dans le cadre réglementaire ORIAS.",
+    tips: "L'agent ne fait PAS de comparaison de produits - il qualifie uniquement. La recommandation reste humaine pour rester dans le cadre réglementaire ORIAS.",
     prompt: `Crée un workflow n8n avec un vrai AI Agent pour un assureur ou courtier.
 
 ⚡ ARCHITECTURE OBLIGATOIRE :
@@ -1006,7 +1006,7 @@ Génère le JSON complet exportable dans n8n.`
 ⚡ ARCHITECTURE OBLIGATOIRE :
 • Nœud principal : "AI Agent" (type Tools Agent)
 • LLM : Anthropic Chat Model (Claude Sonnet)
-• Mémoire : Window Buffer Memory (12 messages — onboarding long)
+• Mémoire : Window Buffer Memory (12 messages - onboarding long)
 
 📥 TRIGGERS :
 - Webhook : nouvel utilisateur inscrit + tickets support entrants
@@ -1139,7 +1139,7 @@ Génère le JSON complet exportable dans n8n.`
 ⚡ ARCHITECTURE OBLIGATOIRE :
 • Nœud principal : "AI Agent" (type Tools Agent)
 • LLM : Anthropic Chat Model (Claude Sonnet)
-• Mémoire : Window Buffer Memory (10 messages — voyage = conversation longue)
+• Mémoire : Window Buffer Memory (10 messages - voyage = conversation longue)
 
 📥 TRIGGER : Webhook (formulaire site, email, DM Instagram)
 
@@ -1282,7 +1282,7 @@ Génère le JSON complet exportable dans n8n.`
 💬 SYSTEM PROMPT :
 "Tu es l'assistant de la clinique vétérinaire [NOM_CLINIQUE] à [VILLE].
 Triage des demandes :
-Urgence vraie (accident, convulsions, détresse respiratoire) → 'Venez immédiatement au [ADRESSE] — appelez le [NUMÉRO] en venant.'
+Urgence vraie (accident, convulsions, détresse respiratoire) → 'Venez immédiatement au [ADRESSE] - appelez le [NUMÉRO] en venant.'
 RDV standard : demande nom propriétaire + animal + motif. Vérifie disponibilité. Confirme avec rappel J-1.
 Rappels vaccins : message personnalisé 'Bonjour [PRÉNOM], le rappel vaccin de [NOM_ANIMAL] est prévu ce mois-ci. On vous propose...'
 Questions générales (alimentation, comportement) : informe avec prudence et recommande une consultation si doute.
@@ -1378,7 +1378,7 @@ Génère le JSON complet exportable dans n8n.`
 • LLM : Anthropic Chat Model (Claude Sonnet)
 • Mémoire : Window Buffer Memory (6 messages)
 
-📥 TRIGGER : Webhook (WhatsApp Business API — messages entrants clients)
+📥 TRIGGER : Webhook (WhatsApp Business API - messages entrants clients)
 
 💬 SYSTEM PROMPT :
 "Tu es l'assistant de [NOM_ÉPICERIE] à [VILLE], ouvert [HORAIRES].

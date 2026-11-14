@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Niche Selector — BONUS #01 · Closer IA</title>
+<title>Niche Selector - BONUS #01 · Closer IA</title>
 <link rel="icon" type="image/png" href="/BigJim.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -248,13 +248,13 @@ nav {
     <img src="/BigJim.png" alt="BigJim" style="width:34px;height:34px;object-fit:contain" />
     <span>BigJim</span>
   </a>
-  <div class="nav-tag">Closer IA — Niche Selector</div>
+  <div class="nav-tag">Closer IA - Niche Selector</div>
 </nav>
 
 <div class="container">
 
   <div class="header">
-    <div class="badge">Closer IA — BONUS #01</div>
+    <div class="badge">Closer IA - BONUS #01</div>
     <h1>NICHE<br><em>SELECTOR</em></h1>
     <p>8 questions. 30 niches analysées.<br>Ta niche idéale en moins de 3 minutes.</p>
   </div>
@@ -280,8 +280,8 @@ nav {
     <div id="nichesWrap"></div>
     <div class="cta">
       <h3>Tu as ta niche. Et maintenant ?</h3>
-      <p>Utilise l'Agent IA pour aller plus loin — il va identifier le problème exact à résoudre dans ta niche, construire ton pitch de prospection, anticiper les objections et te donner le squelette de l'agent à builder.</p>
-      <a href="/agent-ia" class="btn-cta">Utiliser l'Agent IA — BONUS #02 →</a>
+      <p>Utilise l'Agent IA pour aller plus loin - il va identifier le problème exact à résoudre dans ta niche, construire ton pitch de prospection, anticiper les objections et te donner le squelette de l'agent à builder.</p>
+      <a href="/agent-ia" class="btn-cta">Utiliser l'Agent IA - BONUS #02 →</a>
       <button class="btn-restart" onclick="restart()">Recommencer le test</button>
     </div>
   </div>
@@ -290,7 +290,7 @@ nav {
 
 <script>
 // ─────────────────────────────────────────────
-// BASE DE DONNÉES — 30 niches marché français
+// BASE DE DONNÉES - 30 niches marché français
 // ─────────────────────────────────────────────
 const NICHES = [
   {
@@ -302,7 +302,7 @@ const NICHES = [
     cap_payer: 3, facilite: 4, concurrence_ia: 5, urgence: 4, tech: 2,
     canaux: ['tel', 'physique'], budget: 'minimal', cycle: 'short',
     bg: ['sales', 'general'], reseau: ['artisans'], geo: 'local',
-    pourquoi: 'Croulent sous les appels, perdent des devis par manque de relance. ROI immédiatement visible : "avant, je répondais en 2 jours — maintenant en 2 min".',
+    pourquoi: 'Croulent sous les appels, perdent des devis par manque de relance. ROI immédiatement visible : "avant, je répondais en 2 jours - maintenant en 2 min".',
     objection: '"J\'ai pas le temps pour apprendre ça." → Tu leur livres un outil clé en main. Ils n\'ont rien à apprendre.'
   },
   {
@@ -327,7 +327,7 @@ const NICHES = [
     canaux: ['email', 'tel'], budget: 'minimal', cycle: 'medium',
     bg: ['sales', 'marketing'], reseau: ['none', 'corporate'], geo: 'local',
     pourquoi: 'Un no-show = 80–150€ perdus. Un agent qui réduit les no-shows de 30% = ROI immédiat chiffrable. C\'est le meilleur pitch en santé.',
-    objection: '"On a déjà un logiciel de RDV." → L\'agent complète le logiciel. Il relance les patients qui ne confirment pas — aucun logiciel ne fait ça.'
+    objection: '"On a déjà un logiciel de RDV." → L\'agent complète le logiciel. Il relance les patients qui ne confirment pas - aucun logiciel ne fait ça.'
   },
   {
     id: 'osteo-kine',
@@ -387,7 +387,7 @@ const NICHES = [
     canaux: ['email', 'tel'], budget: 'minimal', cycle: 'long',
     bg: ['sales'], reseau: ['corporate'], geo: 'local',
     pourquoi: 'Tickets très élevés. Peu concurrentiel. Dur à closer mais 1 deal = 3000–6000€ setup + récurrent solide.',
-    objection: '"C\'est très réglementé." → L\'agent qualifie et oriente uniquement. Il ne donne aucun conseil juridique — c\'est mentionné explicitement dans ses réponses.'
+    objection: '"C\'est très réglementé." → L\'agent qualifie et oriente uniquement. Il ne donne aucun conseil juridique - c\'est mentionné explicitement dans ses réponses.'
   },
   {
     id: 'immo',
@@ -423,7 +423,7 @@ const NICHES = [
     canaux: ['social', 'physique'], budget: 'minimal', cycle: 'short',
     bg: ['marketing', 'sales', 'general'], reseau: ['none', 'artisans'], geo: 'local',
     pourquoi: 'Très réceptifs aux DM Instagram. Deal rapide. Agent de booking = libère du temps de manière concrète et visible dès la première semaine.',
-    objection: '"J\'utilise déjà Planity." → Planity gère les RDV. Ton agent gère la fidélisation — les clients qui n\'ont pas rebooké depuis 45 jours.'
+    objection: '"J\'utilise déjà Planity." → Planity gère les RDV. Ton agent gère la fidélisation - les clients qui n\'ont pas rebooké depuis 45 jours.'
   },
   {
     id: 'dtc',
@@ -459,7 +459,7 @@ const NICHES = [
     canaux: ['social', 'email'], budget: 'minimal', cycle: 'short',
     bg: ['tech', 'marketing'], reseau: ['digital'], geo: 'national',
     pourquoi: 'Très conscients de l\'IA. Deal entre pairs = confiance rapide. Perdent des leads parce qu\'ils répondent trop lentement quand ils sont en mission.',
-    objection: '"Je peux le construire moi-même." → Oui mais t\'as pas le temps. C\'est pour ça que tu me payes — pour que tu aies un agent live en 48h sans toucher au code.'
+    objection: '"Je peux le construire moi-même." → Oui mais t\'as pas le temps. C\'est pour ça que tu me payes - pour que tu aies un agent live en 48h sans toucher au code.'
   },
   {
     id: 'infopreneur',
@@ -591,7 +591,7 @@ const NICHES = [
     canaux: ['email', 'social'], budget: 'comfortable', cycle: 'medium',
     bg: ['tech'], reseau: ['digital'], geo: 'national',
     pourquoi: 'Comprennent l\'IA, mesurent le ROI en temps réel. Tickets les plus élevés. Récurrent très solide. 1 deal bien posé = >1000€/mois pendant 12 mois.',
-    objection: '"On a une équipe tech." → Ton agent fait ce que leur équipe ne veut pas construire en interne — trop petit, trop urgent, trop répétitif.'
+    objection: '"On a une équipe tech." → Ton agent fait ce que leur équipe ne veut pas construire en interne - trop petit, trop urgent, trop répétitif.'
   },
   {
     id: 'franchise',
@@ -639,7 +639,7 @@ const NICHES = [
     canaux: ['social', 'email'], budget: 'minimal', cycle: 'short',
     bg: ['sales', 'marketing'], reseau: ['digital', 'none'], geo: 'national',
     pourquoi: 'Les demandes arrivent le soir et le week-end. Agent = répond à toute heure = deals captés même quand l\'agence est fermée.',
-    objection: '"Booking.com gère déjà ça." → Tu vends du sur-mesure et de l\'humain premium — pas du standardisé comme Booking. L\'agent qualifie les bons clients.'
+    objection: '"Booking.com gère déjà ça." → Tu vends du sur-mesure et de l\'humain premium - pas du standardisé comme Booking. L\'agent qualifie les bons clients.'
   },
   {
     id: 'medecin',
@@ -756,7 +756,7 @@ const QUESTIONS = [
   {
     id: 'temps',
     q: 'Combien d\'heures par semaine tu peux y consacrer ?',
-    hint: 'Sois honnête — pas l\'objectif, la réalité de la semaine prochaine.',
+    hint: 'Sois honnête - pas l\'objectif, la réalité de la semaine prochaine.',
     opts: [
       { v: 'low',    l: 'Moins de 10h/semaine', d: 'Side project en parallèle d\'un job ou d\'études.' },
       { v: 'medium', l: '10 à 20h/semaine',     d: 'Soirées et week-ends engagés sérieusement.' },
@@ -766,7 +766,7 @@ const QUESTIONS = [
   {
     id: 'budget',
     q: 'Ton budget mensuel pour démarrer (outils, serveurs) ?',
-    hint: 'Pas les pubs — juste les outils techniques.',
+    hint: 'Pas les pubs - juste les outils techniques.',
     opts: [
       { v: 'minimal',    l: 'Moins de 100€/mois',  d: 'Budget serré. Tu veux démarrer sans investir.' },
       { v: 'moderate',   l: '100 à 300€/mois',     d: 'Tu peux te payer quelques outils si le ROI est clair.' },
@@ -778,16 +778,16 @@ const QUESTIONS = [
     q: 'Tu as déjà des contacts dans un secteur ?',
     hint: 'Un contact = quelqu\'un qui répondrait à ton message en 24h.',
     opts: [
-      { v: 'artisans',  l: 'Commerce local / Artisans / Santé',    d: 'Plombiers, restau, médecins, coiffeurs — tu connais du monde en local.' },
-      { v: 'corporate', l: 'B2B / Entreprises / PME',              d: 'Comptables, consultants, PME — contacts en milieu pro.' },
-      { v: 'digital',   l: 'Digital / E-commerce / Créateurs',     d: 'Freelances, boutiques en ligne, infopreneurs — tu vis dans le web.' },
+      { v: 'artisans',  l: 'Commerce local / Artisans / Santé',    d: 'Plombiers, restau, médecins, coiffeurs - tu connais du monde en local.' },
+      { v: 'corporate', l: 'B2B / Entreprises / PME',              d: 'Comptables, consultants, PME - contacts en milieu pro.' },
+      { v: 'digital',   l: 'Digital / E-commerce / Créateurs',     d: 'Freelances, boutiques en ligne, infopreneurs - tu vis dans le web.' },
       { v: 'none',      l: 'Zéro réseau existant',                 d: 'Tu repars de zéro. Tu vas tout construire à froid.' }
     ]
   },
   {
     id: 'technique',
     q: 'Ton niveau sur Claude Code + n8n aujourd\'hui ?',
-    hint: 'Pas le niveau que tu veux atteindre — celui d\'aujourd\'hui.',
+    hint: 'Pas le niveau que tu veux atteindre - celui d\'aujourd\'hui.',
     opts: [
       { v: 'low',    l: 'Débutant',       d: 'Je découvre Claude Code et n8n. Je veux un agent simple à livrer.' },
       { v: 'medium', l: 'Intermédiaire',  d: 'J\'ai suivi les prérecs. Je me débrouille, je veux quelque chose de concret.' },
@@ -799,8 +799,8 @@ const QUESTIONS = [
     q: 'Objectif MRR dans 3 mois ?',
     hint: 'MRR = revenus récurrents mensuels. Pas le setup one-shot.',
     opts: [
-      { v: 'conservative', l: '500 — 1 000€/mois',  d: 'Premiers revenus. Je valide le modèle avant de scaler.' },
-      { v: 'moderate',     l: '1 000 — 3 000€/mois', d: 'Je veux remplacer un salaire ou atteindre l\'indépendance.' },
+      { v: 'conservative', l: '500 - 1 000€/mois',  d: 'Premiers revenus. Je valide le modèle avant de scaler.' },
+      { v: 'moderate',     l: '1 000 - 3 000€/mois', d: 'Je veux remplacer un salaire ou atteindre l\'indépendance.' },
       { v: 'aggressive',   l: '3 000€+/mois',         d: 'Je vise fort. Full focus pendant 90 jours.' }
     ]
   },
@@ -809,8 +809,8 @@ const QUESTIONS = [
     q: 'Tu veux prospecter où ?',
     hint: 'Le périmètre change tout : canal, volume, difficulté.',
     opts: [
-      { v: 'local',    l: 'Local — ma ville / région',     d: 'Google Maps, physique, réseaux locaux. Je connais mon terrain.' },
-      { v: 'national', l: 'National — toute la France',    d: 'Cold email, LinkedIn, DM — je prospecte à distance.' },
+      { v: 'local',    l: 'Local - ma ville / région',     d: 'Google Maps, physique, réseaux locaux. Je connais mon terrain.' },
+      { v: 'national', l: 'National - toute la France',    d: 'Cold email, LinkedIn, DM - je prospecte à distance.' },
       { v: 'both',     l: 'Les deux',                      d: 'Je commence local puis je scale à distance.' }
     ]
   }
@@ -828,22 +828,22 @@ let answers = {};
 function score(niche, a) {
   let s = 0;
 
-  // Canal match — 20 pts
+  // Canal match - 20 pts
   s += niche.canaux.includes(a.prospection) ? 20 : 5;
 
-  // Budget match — 15 pts
+  // Budget match - 15 pts
   const bMap = { minimal: 1, moderate: 2, comfortable: 3 };
   const uB = bMap[a.budget] || 1, nB = bMap[niche.budget] || 1;
   if (uB >= nB) s += 15; else if (uB === nB - 1) s += 8;
 
-  // Background match — 10 pts
+  // Background match - 10 pts
   s += niche.bg.includes(a.background) ? 10 : 3;
 
-  // Réseau match — 18 pts
+  // Réseau match - 18 pts
   if (a.reseau === 'none') s += 5;
   else s += niche.reseau.includes(a.reseau) ? 18 : 4;
 
-  // Tech match — 12 pts
+  // Tech match - 12 pts
   const tMap = { low: 1, medium: 2, high: 3 };
   const uT = tMap[a.technique] || 1, nT = niche.tech;
   if (uT === 1 && nT <= 2) s += 12;
@@ -853,16 +853,16 @@ function score(niche, a) {
   else if (uT === 2 && nT >= 4) s += 6;
   else s += 12; // high tech can handle anything
 
-  // MRR ambition — 15 pts
+  // MRR ambition - 15 pts
   const avgMrr = (niche.mrr[0] + niche.mrr[1]) / 2;
   if (a.ambition === 'conservative')  s += avgMrr <= 700 ? 15 : avgMrr <= 1200 ? 10 : 5;
   if (a.ambition === 'moderate')      s += avgMrr >= 400 && avgMrr <= 1500 ? 15 : avgMrr >= 200 ? 8 : 3;
   if (a.ambition === 'aggressive')    s += avgMrr >= 800 ? 15 : avgMrr >= 400 ? 8 : 3;
 
-  // Geo match — 10 pts
+  // Geo match - 10 pts
   s += (a.geo === 'both' || niche.geo === 'both' || a.geo === niche.geo) ? 10 : 3;
 
-  // Inherent quality bonus — 10 pts
+  // Inherent quality bonus - 10 pts
   s += ((niche.cap_payer * 0.35 + niche.facilite * 0.35 + niche.concurrence_ia * 0.3) / 5) * 10;
 
   // Time / cycle penalty
@@ -968,7 +968,7 @@ function canalName(c) {
 
 function renderResults() {
   const niches = top3(answers);
-  const ranks = ['#01 — RECOMMANDEE', '#02 — ALTERNATIVE A', '#03 — ALTERNATIVE B'];
+  const ranks = ['#01 - RECOMMANDEE', '#02 - ALTERNATIVE A', '#03 - ALTERNATIVE B'];
   const cls = ['r1', 'r2', 'r3'];
 
   document.getElementById('nichesWrap').innerHTML = niches.map((n, i) => `

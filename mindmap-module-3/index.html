@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Module 3 — Prospection · Closer IA</title>
+<title>Module 3 - Prospection · Closer IA</title>
 <link rel="icon" type="image/png" href="/BigJim.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -184,7 +184,7 @@ const T = {
 const exp = new Set(['root','call3','call4']);
 
 // ── SIZES ── dynamique selon présence de sub ────────────────────
-// base [w, h] par level — la hauteur augmente si le nœud a un sous-titre
+// base [w, h] par level - la hauteur augmente si le nœud a un sous-titre
 const BASE_W = [240, 268, 250, 266, 240];
 const BASE_H = [72,  72,  66,  64,  60];
 const SUB_EXTRA = 22; // px ajoutés en hauteur si sub présent
@@ -338,7 +338,7 @@ function render(){
       },g);
       if(n.lv===1||n.hw) r.setAttribute('filter','url(#glow)');
 
-      // label — centré verticalement selon présence de sub
+      // label - centré verticalement selon présence de sub
       const labelY = n.sub ? h/2 - 10 : h/2;
       const fs=[16,15,13,12,11][Math.min(n.lv,4)];
       const fw=n.lv<=1||n.hw?700:400;
@@ -352,7 +352,7 @@ function render(){
         'pointer-events':'none'
       },g).textContent=n.label;
 
-      // sub — toujours 20px sous le label
+      // sub - toujours 20px sous le label
       if(n.sub){
         mk('text',{
           x:w/2, y:labelY+20,
