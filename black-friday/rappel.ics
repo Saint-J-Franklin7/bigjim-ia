@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//BigJim//Closer IA//FR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:closer-ia-bf-2026@bigjim-ia.com
+DTSTAMP:20261114T120000Z
+DTSTART:20261127T070000Z
+DTEND:20261127T073000Z
+SUMMARY:Ouverture Closer IA (un seul jour)
+DESCRIPTION:La formation Closer IA ouvre à 8h\, dès 97€. Fermeture à minuit. https://www.bigjim-ia.com/black-friday
+URL:https://www.bigjim-ia.com/black-friday
+BEGIN:VALARM
+TRIGGER:PT0M
+ACTION:DISPLAY
+DESCRIPTION:Closer IA est ouvert
+END:VALARM
+END:VEVENT
+END:VCALENDAR
