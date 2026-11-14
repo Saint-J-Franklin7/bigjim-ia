@@ -337,38 +337,44 @@ footer {
 
       <div class="plan">
         <div class="name">L'Essentiel</div>
-        <div class="price-row"><span class="old-price">497€</span><span class="price">97€</span></div>
-        <div class="discount">-80%</div>
+        <div class="price-row"><span class="old-price">497€</span><span class="price" id="price-1">97€</span></div>
+        <div class="discount js-disc">-80%</div>
         <ul>
           <li>Formation vidéo complète, accès à vie</li>
           <li>Les 11 bonus (valeur 497€)</li>
         </ul>
-        <a href="#" class="plan-cta">Je fonce — 97€</a>
+        <a href="#" class="plan-cta" id="cta-1">Je fonce — 97€</a>
       </div>
 
       <div class="plan featured">
         <div class="tag">Le plus choisi</div>
         <div class="name">L'Accompagné</div>
-        <div class="price-row"><span class="old-price">647€</span><span class="price">129€</span></div>
-        <div class="discount">-80%</div>
+        <div class="price-row"><span class="old-price">647€</span><span class="price" id="price-2">129€</span></div>
+        <div class="discount js-disc">-80%</div>
         <ul>
           <li class="included-prev">Tout le palier Essentiel</li>
           <li>1h de call live avec moi pour tout mettre en place</li>
         </ul>
-        <a href="#" class="plan-cta">Je fonce — 129€</a>
+        <a href="#" class="plan-cta" id="cta-2">Je fonce — 129€</a>
       </div>
 
       <div class="plan">
         <div class="name">Le Complet</div>
-        <div class="price-row"><span class="old-price">947€</span><span class="price">189€</span></div>
-        <div class="discount">-80%</div>
+        <div class="price-row"><span class="old-price">947€</span><span class="price" id="price-3">189€</span></div>
+        <div class="discount js-disc">-80%</div>
         <ul>
           <li class="included-prev">Tout le palier Accompagné</li>
           <li>Support quotidien par message, H24, pendant 30 jours</li>
         </ul>
-        <a href="#" class="plan-cta">Je fonce — 189€</a>
+        <a href="#" class="plan-cta" id="cta-3">Je fonce — 189€</a>
       </div>
 
+    </div>
+
+
+    <div id="wa-box" style="max-width:640px; margin:22px auto 0; text-align:center; font-size:13.5px; line-height:1.7;">
+      Pas de carte ni de PayPal ? Mobile Money, Revolut, virement…<br>
+      <a id="wa-link" href="#" target="_blank" rel="noopener" style="display:inline-block; margin-top:10px; padding:12px 20px; background:#25D366; color:#fff; font-weight:700; text-decoration:none;">Écris-moi sur WhatsApp →</a>
     </div>
 
     <div class="scarcity" id="scarcity-box">
@@ -411,31 +417,57 @@ footer {
 
 <script>
 (function () {
-  var deadline = new Date("2026-11-28T00:00:00+01:00").getTime(); // Black Friday 27 nov 2026, 23:59 Europe/Paris
-  var label = document.getElementById("cd-label");
-  var pill = document.getElementById("cd-pill");
-  var el = document.getElementById("cd-time");
-  function tick() {
-    var now = Date.now();
-    var diff = deadline - now;
-    if (diff <= 0) {
-      if (label) label.textContent = "OFFRE TERMINÉE";
-      if (pill) pill.style.display = "none";
-      var live = document.getElementById("pricing-live");
-      var closed = document.getElementById("pricing-closed");
-      var scarcityBox = document.getElementById("scarcity-box");
-      var reassureBox = document.getElementById("reassure-box");
-      if (live) live.style.display = "none";
-      if (scarcityBox) scarcityBox.style.display = "none";
-      if (reassureBox) reassureBox.style.display = "none";
-      if (closed) closed.style.display = "block";
+  // ===== À REMPLIR : liens PayPal (un par palier). Retour après paiement :
+  //   palier 1 -> https://www.bigjim-ia.com/merci-n03000me9a
+  //   paliers 2 et 3 -> https://www.bigjim-ia.com/merci-call-n03000me9a
+  var LINKS = {
+    bf: ["", "", ""],   // 97€ / 129€ / 189€
+    cm: ["", "", ""]    // Cyber Monday : 87€ / 116€ / 170€
+  };
+  var WA = "https://wa.me/33609322060?text=" + encodeURIComponent("Salut Jimmy, je veux la formation Closer IA mais je ne peux pas payer par carte / PayPal");
+  // ===== Phases (heure de Paris)
+  var BF_END = new Date("2026-11-28T00:00:00+01:00").getTime();
+  var CM_START = new Date("2026-11-30T00:00:00+01:00").getTime();
+  var CM_END = new Date("2026-12-01T00:00:00+01:00").getTime();
+  var PRICES = { bf: ["97€", "129€", "189€"], cm: ["87€", "116€", "170€"] };
+
+  var $ = function (id) { return document.getElementById(id); };
+  $("wa-link").href = WA;
+  function phase(now) {
+    if (now < BF_END) return "bf";
+    if (now >= CM_START && now < CM_END) return "cm";
+    return "closed";
+  }
+  function apply(ph) {
+    if (ph === "closed") {
+      $("cd-label").textContent = "OFFRE TERMINÉE";
+      $("cd-pill").style.display = "none";
+      ["pricing-live", "scarcity-box", "reassure-box", "wa-box"].forEach(function (id) { $(id).style.display = "none"; });
+      $("pricing-closed").style.display = "block";
       return;
     }
-    var d = Math.floor(diff / 86400000);
-    var h = Math.floor((diff % 86400000) / 3600000);
-    var m = Math.floor((diff % 3600000) / 60000);
-    var s = Math.floor((diff % 60000) / 1000);
-    el.textContent = d + "j " + h + "h " + m + "m " + s + "s";
+    $("pricing-closed").style.display = "none";
+    ["pricing-live", "scarcity-box", "reassure-box", "wa-box"].forEach(function (id) { $(id).style.display = ""; });
+    $("cd-pill").style.display = "";
+    for (var i = 0; i < 3; i++) {
+      $("price-" + (i + 1)).textContent = PRICES[ph][i];
+      $("cta-" + (i + 1)).textContent = "Je fonce — " + PRICES[ph][i];
+      $("cta-" + (i + 1)).href = LINKS[ph][i] || WA;
+    }
+    if (ph === "cm") {
+      $("cd-label").textContent = "RÉOUVERTURE EXCEPTIONNELLE 24H · -10% EN PLUS";
+      Array.prototype.forEach.call(document.querySelectorAll(".js-disc"), function (d) { d.textContent = "-82%"; });
+    }
+  }
+  var current = null;
+  function tick() {
+    var now = Date.now(), ph = phase(now);
+    if (ph !== current) { apply(ph); current = ph; }
+    if (ph === "closed") return;
+    var diff = (ph === "bf" ? BF_END : CM_END) - now;
+    var d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000),
+        m = Math.floor((diff % 3600000) / 60000), sec = Math.floor((diff % 60000) / 1000);
+    $("cd-time").textContent = d + "j " + h + "h " + m + "m " + sec + "s";
   }
   tick();
   setInterval(tick, 1000);
