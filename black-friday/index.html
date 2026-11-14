@@ -333,6 +333,11 @@ footer {
       <p style="font-size:13.5px; line-height:1.7;">Cette formation est retirée de la vente. Définitivement.</p>
     </div>
 
+    <div id="pricing-soon" style="display:none; max-width:640px; margin:0 auto; border:1px solid var(--border); background:var(--card); padding:32px 24px; text-align:center;">
+      <div class="block-lbl" style="color:var(--orange);">Ouverture vendredi 27 novembre · 8h</div>
+      <p style="font-size:13.5px; line-height:1.7;">La formation ouvre pour une seule journée, à partir de 97€. À minuit, elle disparaît.</p>
+    </div>
+
     <div class="pricing-grid" id="pricing-live">
 
       <div class="plan">
@@ -373,7 +378,7 @@ footer {
 
 
     <div id="wa-box" style="max-width:640px; margin:22px auto 0; text-align:center; font-size:13.5px; line-height:1.7;">
-      Pas de carte ni de PayPal ? Mobile Money, Revolut, virement…<br>
+      <span id="wa-text">Pas de carte ni de PayPal ? Mobile Money, Revolut, virement…</span><br>
       <a id="wa-link" href="#" target="_blank" rel="noopener" style="display:inline-block; margin-top:10px; padding:12px 20px; background:#25D366; color:#fff; font-weight:700; text-decoration:none;">Écris-moi sur WhatsApp →</a>
     </div>
 
@@ -421,11 +426,12 @@ footer {
   //   palier 1 -> https://www.bigjim-ia.com/merci-n03000me9a
   //   paliers 2 et 3 -> https://www.bigjim-ia.com/merci-call-n03000me9a
   var LINKS = {
-    bf: ["", "", ""],   // 97€ / 129€ / 189€
-    cm: ["", "", ""]    // Cyber Monday : 87€ / 116€ / 170€
+    bf: ["https://www.paypal.com/ncp/payment/ZJ8WE9GEZD9DN", "https://www.paypal.com/ncp/payment/Z86WVJXGD59B2", "https://www.paypal.com/ncp/payment/EXH8XJ279DAEJ"],   // 97€ / 129€ / 189€
+    cm: ["https://www.paypal.com/ncp/payment/JEFTP949E5KKJ", "https://www.paypal.com/ncp/payment/6T5Y2YQY46FF2", "https://www.paypal.com/ncp/payment/C3P32EJL2WH38"]    // Cyber Monday : 87€ / 116€ / 170€
   };
   var WA = "https://wa.me/33609322060?text=" + encodeURIComponent("Salut Big Jim, je veux la formation Closer IA mais je ne peux pas payer par carte / PayPal");
   // ===== Phases (heure de Paris)
+  var BF_START = new Date("2026-11-27T08:00:00+01:00").getTime();
   var BF_END = new Date("2026-11-28T00:00:00+01:00").getTime();
   var CM_START = new Date("2026-11-30T00:00:00+01:00").getTime();
   var CM_END = new Date("2026-12-01T00:00:00+01:00").getTime();
@@ -434,11 +440,26 @@ footer {
   var $ = function (id) { return document.getElementById(id); };
   $("wa-link").href = WA;
   function phase(now) {
+    if (now < BF_START) return "soon";
     if (now < BF_END) return "bf";
     if (now >= CM_START && now < CM_END) return "cm";
     return "closed";
   }
+  var WA_SOON = "https://wa.me/33609322060?text=" + encodeURIComponent("Salut Big Jim, préviens-moi de l'ouverture Closer IA le 27 novembre");
   function apply(ph) {
+    if (ph === "soon") {
+      $("cd-label").textContent = "OUVERTURE VENDREDI 27 NOV À 8H · UNE SEULE JOURNÉE";
+      ["pricing-live", "scarcity-box", "reassure-box", "pricing-closed"].forEach(function (id) { $(id).style.display = "none"; });
+      $("pricing-soon").style.display = "block";
+      $("wa-text").innerHTML = "Tu veux être prévenu à l'ouverture ?";
+      $("wa-link").textContent = "Préviens-moi sur WhatsApp →";
+      $("wa-link").href = WA_SOON;
+      return;
+    }
+    if ($("pricing-soon")) $("pricing-soon").style.display = "none";
+    $("wa-text").innerHTML = "Pas de carte ni de PayPal ? Mobile Money, Revolut, virement…";
+    $("wa-link").textContent = "Écris-moi sur WhatsApp →";
+    $("wa-link").href = WA;
     if (ph === "closed") {
       $("cd-label").textContent = "OFFRE TERMINÉE";
       $("cd-pill").style.display = "none";
@@ -454,6 +475,7 @@ footer {
       $("cta-" + (i + 1)).textContent = "Je fonce — " + PRICES[ph][i];
       $("cta-" + (i + 1)).href = LINKS[ph][i] || WA;
     }
+    $("cd-label").textContent = "OFFRE À DURÉE LIMITÉE · FERME CE SOIR À MINUIT";
     if (ph === "cm") {
       $("cd-label").textContent = "RÉOUVERTURE EXCEPTIONNELLE 24H · -10% EN PLUS";
       Array.prototype.forEach.call(document.querySelectorAll(".js-disc"), function (d) { d.textContent = "-82%"; });
@@ -464,7 +486,7 @@ footer {
     var now = Date.now(), ph = phase(now);
     if (ph !== current) { apply(ph); current = ph; }
     if (ph === "closed") return;
-    var diff = (ph === "bf" ? BF_END : CM_END) - now;
+    var diff = (ph === "soon" ? BF_START : ph === "bf" ? BF_END : CM_END) - now;
     var d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000),
         m = Math.floor((diff % 3600000) / 60000), sec = Math.floor((diff % 60000) / 1000);
     $("cd-time").textContent = d + "j " + h + "h " + m + "m " + sec + "s";
